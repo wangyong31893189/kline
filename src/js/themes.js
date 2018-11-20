@@ -63,18 +63,27 @@ export class DarkTheme extends Theme {
         this._colors = [];
 
         if (Kline.instance.reverseColor) {
-            this._colors[Theme.Color.Positive] = "#990e0e";
-            this._colors[Theme.Color.Negative] = "#19b34c";
+            // this._colors[Theme.Color.Positive] = "#990e0e";
+            this._colors[Theme.Color.Positive] = "#f00";//涨的颜色
+            // this._colors[Theme.Color.Negative] = "#19b34c";
+            this._colors[Theme.Color.Negative] = "#ff0"; //跌的颜色
             this._colors[Theme.Color.PositiveDark] = "#3b0e08";
+            this._colors[Theme.Color.PositiveDark] = "#00f";//深度图涨颜色
             this._colors[Theme.Color.NegativeDark] = "#004718";
+            this._colors[Theme.Color.NegativeDark] = "#ff0";//深度图跌颜色
         } else {
-            this._colors[Theme.Color.Positive] = "#19b34c";
-            this._colors[Theme.Color.Negative] = "#990e0e";
+            // this._colors[Theme.Color.Positive] = "#19b34c";
+            this._colors[Theme.Color.Positive] = "#0f0";//涨的颜色
+            // this._colors[Theme.Color.Negative] = "#990e0e";
+            this._colors[Theme.Color.Negative] = "#ff0";//跌的颜色
             this._colors[Theme.Color.PositiveDark] = "#004718";
+            this._colors[Theme.Color.PositiveDark] = "#00f";//深度图涨颜色
             this._colors[Theme.Color.NegativeDark] = "#3b0e08";
+            this._colors[Theme.Color.NegativeDark] = "#ff0";//深度图跌颜色
         }
         this._colors[Theme.Color.Unchanged] = "#fff";
-        this._colors[Theme.Color.Background] = "#0a0a0a";
+        // this._colors[Theme.Color.Background] = "#0a0a0a";
+        this._colors[Theme.Color.Background] = "#f00";//背景颜色
         this._colors[Theme.Color.Cursor] = "#aaa";
         this._colors[Theme.Color.RangeMark] = "#f9ee30";
         this._colors[Theme.Color.Indicator0] = "#ddd";
