@@ -76,10 +76,10 @@ export class DarkTheme extends Theme {
         } else {
             // this._colors[Theme.Color.Positive] = "#19b34c";
             color_pos='#ff577a';
-            this._colors[Theme.Color.Positive] = "#ff577a";//k线涨的颜色
+            this._colors[Theme.Color.Positive] = color_pos;//k线涨的颜色
             // this._colors[Theme.Color.Negative] = "#990e0e";
             color_neg='#2d7bff';
-            this._colors[Theme.Color.Negative] = "#2d7bff";//k线跌的颜色
+            this._colors[Theme.Color.Negative] = color_neg;//k线跌的颜色
             // this._colors[Theme.Color.PositiveDark] = "#004718";
             this._colors[Theme.Color.PositiveDark] = "#ffb2ad";//深度图涨颜色
             // this._colors[Theme.Color.NegativeDark] = "#3b0e08";
@@ -90,9 +90,9 @@ export class DarkTheme extends Theme {
         // this._colors[Theme.Color.Background] = "#0a0a0a";
         this._colors[Theme.Color.Background] = "#f3f9ff";//背景颜色
         this._colors[Theme.Color.Cursor] = "#aaa";//鼠标经过的十字线颜色
-        this._colors[Theme.Color.RangeMark] = "#f9ee30";//右边最低最高价位的标记颜色
+        this._colors[Theme.Color.RangeMark] = "#f4853c";//右边最低最高价位的标记颜色
         this._colors[Theme.Color.Indicator0] = "#ddd";//MA5线的颜色
-        this._colors[Theme.Color.Indicator1] = "#f9ee30";//未知
+        this._colors[Theme.Color.Indicator1] = "#f00";//MA10线的颜色
         this._colors[Theme.Color.Indicator2] = "#f600ff";//BOLL线颜色
         this._colors[Theme.Color.Indicator3] = "#6bf";//SAR线颜色
         this._colors[Theme.Color.Indicator4] = "#a5cf81";//未知
@@ -112,7 +112,7 @@ export class DarkTheme extends Theme {
         this._colors[Theme.Color.LineColorNormal] = "#a6a6a6";//画线工具画出的颜色 
         this._colors[Theme.Color.LineColorSelected] = "#ffffff";//鼠标经过画线的颜色
         this._colors[Theme.Color.CircleColorFill] = "#000000";//画线工具画的线上圆点颜色
-        this._colors[Theme.Color.CircleColorStroke] = "#f00";//画线工具画的线上圆点边框颜色
+        this._colors[Theme.Color.CircleColorStroke] = "#393c40";//画线工具画的线上圆点边框颜色
         this._fonts = [];
         this._fonts[Theme.Font.Default] = "12px Tahoma";
     }
@@ -125,42 +125,95 @@ export class LightTheme extends Theme {
     constructor() {
         super();
         this._colors = [];
-
+        var color_pos='',color_neg='';
+        // if (Kline.instance.reverseColor) {
+        //     this._colors[Theme.Color.Positive] = "#db5542";
+        //     this._colors[Theme.Color.Negative] = "#53b37b";
+        //     this._colors[Theme.Color.PositiveDark] = "#ffadaa";
+        //     this._colors[Theme.Color.NegativeDark] = "#66d293";
+        // } else {
+        //     this._colors[Theme.Color.Positive] = "#53b37b";
+        //     this._colors[Theme.Color.Negative] = "#db5542";
+        //     this._colors[Theme.Color.PositiveDark] = "#66d293";
+        //     this._colors[Theme.Color.NegativeDark] = "#ffadaa";
+        // }
+        // this._colors[Theme.Color.Unchanged] = "#fff";
+        // this._colors[Theme.Color.Background] = "#fff";
+        // this._colors[Theme.Color.Cursor] = "#aaa";
+        // this._colors[Theme.Color.RangeMark] = "#f27935";
+        // this._colors[Theme.Color.Indicator0] = "#2fd2b2";
+        // this._colors[Theme.Color.Indicator1] = "#ffb400";
+        // this._colors[Theme.Color.Indicator2] = "#e849b9";
+        // this._colors[Theme.Color.Indicator3] = "#1478c8";
+        // this._colors[Theme.Color.Grid0] = "#eee";
+        // this._colors[Theme.Color.Grid1] = "#afb1b3";
+        // this._colors[Theme.Color.Grid2] = "#ccc";
+        // this._colors[Theme.Color.Grid3] = "#bbb";
+        // this._colors[Theme.Color.Grid4] = "#aaa";
+        // this._colors[Theme.Color.TextPositive] = "#53b37b";
+        // this._colors[Theme.Color.TextNegative] = "#db5542";
+        // this._colors[Theme.Color.Text0] = "#ccc";
+        // this._colors[Theme.Color.Text1] = "#aaa";
+        // this._colors[Theme.Color.Text2] = "#888";
+        // this._colors[Theme.Color.Text3] = "#666";
+        // this._colors[Theme.Color.Text4] = "#444";
+        // this._colors[Theme.Color.LineColorNormal] = "#8c8c8c";
+        // this._colors[Theme.Color.LineColorSelected] = "#393c40";
+        // this._colors[Theme.Color.CircleColorFill] = "#ffffff";
+        // this._colors[Theme.Color.CircleColorStroke] = "#393c40";
+        // this._fonts = [];
+        // this._fonts[Theme.Font.Default] = "12px Tahoma";
         if (Kline.instance.reverseColor) {
-            this._colors[Theme.Color.Positive] = "#db5542";
-            this._colors[Theme.Color.Negative] = "#53b37b";
-            this._colors[Theme.Color.PositiveDark] = "#ffadaa";
-            this._colors[Theme.Color.NegativeDark] = "#66d293";
+            // this._colors[Theme.Color.Positive] = "#990e0e";
+            color_pos='#2d7bff';
+            this._colors[Theme.Color.Positive] =color_pos;//涨的颜色
+            // this._colors[Theme.Color.Negative] = "#19b34c";
+            color_neg='#ff577a';
+            this._colors[Theme.Color.Negative] = "#ff577a"; //跌的颜色
+            // this._colors[Theme.Color.PositiveDark] = "#3b0e08";
+            this._colors[Theme.Color.PositiveDark] = "#5fd292";//深度图涨颜色
+            // this._colors[Theme.Color.NegativeDark] = "#004718";
+            this._colors[Theme.Color.NegativeDark] = "#ffb2ad";//深度图跌颜色
         } else {
-            this._colors[Theme.Color.Positive] = "#53b37b";
-            this._colors[Theme.Color.Negative] = "#db5542";
-            this._colors[Theme.Color.PositiveDark] = "#66d293";
-            this._colors[Theme.Color.NegativeDark] = "#ffadaa";
+            // this._colors[Theme.Color.Positive] = "#19b34c";
+            color_pos='#ff577a';
+            this._colors[Theme.Color.Positive] = color_pos;//k线涨的颜色
+            // this._colors[Theme.Color.Negative] = "#990e0e";
+            color_neg='#2d7bff';
+            this._colors[Theme.Color.Negative] = color_neg;//k线跌的颜色
+            // this._colors[Theme.Color.PositiveDark] = "#004718";
+            this._colors[Theme.Color.PositiveDark] = "#ffb2ad";//深度图涨颜色
+            // this._colors[Theme.Color.NegativeDark] = "#3b0e08";
+            this._colors[Theme.Color.NegativeDark] = "#5fd292";//深度图跌颜色
         }
-        this._colors[Theme.Color.Unchanged] = "#fff";
-        this._colors[Theme.Color.Background] = "#fff";
-        this._colors[Theme.Color.Cursor] = "#aaa";
-        this._colors[Theme.Color.RangeMark] = "#f27935";
-        this._colors[Theme.Color.Indicator0] = "#2fd2b2";
-        this._colors[Theme.Color.Indicator1] = "#ffb400";
-        this._colors[Theme.Color.Indicator2] = "#e849b9";
-        this._colors[Theme.Color.Indicator3] = "#1478c8";
-        this._colors[Theme.Color.Grid0] = "#eee";
-        this._colors[Theme.Color.Grid1] = "#afb1b3";
-        this._colors[Theme.Color.Grid2] = "#ccc";
-        this._colors[Theme.Color.Grid3] = "#bbb";
-        this._colors[Theme.Color.Grid4] = "#aaa";
-        this._colors[Theme.Color.TextPositive] = "#53b37b";
-        this._colors[Theme.Color.TextNegative] = "#db5542";
-        this._colors[Theme.Color.Text0] = "#ccc";
-        this._colors[Theme.Color.Text1] = "#aaa";
-        this._colors[Theme.Color.Text2] = "#888";
-        this._colors[Theme.Color.Text3] = "#666";
-        this._colors[Theme.Color.Text4] = "#444";
-        this._colors[Theme.Color.LineColorNormal] = "#8c8c8c";
-        this._colors[Theme.Color.LineColorSelected] = "#393c40";
-        this._colors[Theme.Color.CircleColorFill] = "#ffffff";
-        this._colors[Theme.Color.CircleColorStroke] = "#393c40";
+        // this._colors[Theme.Color.Unchanged] = "#fff";
+        this._colors[Theme.Color.Unchanged] = "#f00";
+        // this._colors[Theme.Color.Background] = "#0a0a0a";
+        this._colors[Theme.Color.Background] = "#f3f9ff";//背景颜色
+        this._colors[Theme.Color.Cursor] = "#aaa";//鼠标经过的十字线颜色
+        this._colors[Theme.Color.RangeMark] = "#f4853c";//右边最低最高价位的标记颜色
+        this._colors[Theme.Color.Indicator0] = "#ddd";//MA5线的颜色
+        this._colors[Theme.Color.Indicator1] = "#f00";//MA10线的颜色
+        this._colors[Theme.Color.Indicator2] = "#f600ff";//BOLL线颜色
+        this._colors[Theme.Color.Indicator3] = "#6bf";//SAR线颜色
+        this._colors[Theme.Color.Indicator4] = "#a5cf81";//未知
+        this._colors[Theme.Color.Indicator5] = "#e18b89";//未知
+        this._colors[Theme.Color.Grid0] = "#f3f9ff";// 水平线颜色 默认dash
+        this._colors[Theme.Color.Grid1] = "#444";//网络颜色
+        this._colors[Theme.Color.Grid2] = "#666";//未知
+        this._colors[Theme.Color.Grid3] = "#888";//横向时间线标签提示边框颜色
+        this._colors[Theme.Color.Grid4] = "#aaa";//竖向价格标签提示边框颜色
+        this._colors[Theme.Color.TextPositive] = color_pos;//k线跌的颜色
+        this._colors[Theme.Color.TextNegative] = color_neg;//k线涨的颜色
+        this._colors[Theme.Color.Text0] = "#444";//未知
+        this._colors[Theme.Color.Text1] = "#666";//未知
+        this._colors[Theme.Color.Text2] = "#000";//时间线标签颜色 
+        this._colors[Theme.Color.Text3] = "#aaa";//鼠标指针指向的提示文字颜色 
+        this._colors[Theme.Color.Text4] = "#000";//高低收涨幅显示文字颜色
+        this._colors[Theme.Color.LineColorNormal] = "#a6a6a6";//画线工具画出的颜色 
+        this._colors[Theme.Color.LineColorSelected] = "#ffffff";//鼠标经过画线的颜色
+        this._colors[Theme.Color.CircleColorFill] = "#000000";//画线工具画的线上圆点颜色
+        this._colors[Theme.Color.CircleColorStroke] = "#393c40";//画线工具画的线上圆点边框颜色
         this._fonts = [];
         this._fonts[Theme.Font.Default] = "12px Tahoma";
     }
