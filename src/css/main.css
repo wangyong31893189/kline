@@ -52,7 +52,8 @@ body {
 }
 
 .chart_container.dark #chart_toolbar {
-    background-color: #0a0a0a;
+    /* background-color: #0a0a0a; */
+    background-color: #fff;
     border-bottom-color: #404040
 }
 
@@ -402,7 +403,8 @@ body {
 
 .chart_container #chart_toolbar_theme {
     float: left;
-    padding: 0 8px
+    padding: 0 8px;
+    display: none;
 }
 
 .chart_container #chart_toolbar_theme a.chart_icon {
@@ -877,7 +879,8 @@ body {
 }
 
 .trade_container.dark {
-    background: #0a0a0a;
+    /* background: #0a0a0a; */
+    background-color: #fff;
     color: #f1f1f1
 }
 

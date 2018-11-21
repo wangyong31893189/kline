@@ -65,8 +65,10 @@ export class Control {
         }
         if (Kline.instance.type === "stomp" && Kline.instance.stompClient) {
             Control.requestOverStomp();
-        } else {
+        } else if(Kline.instance.type === "poll") {
             Control.requestOverHttp();
+        }else{
+            Control.requestOverData();
         }
     }
 
@@ -131,6 +133,51 @@ export class Control {
             })
         );
     }
+    //通过传入数据渲染
+    static requestOverData() {
+        if (Kline.instance.debug) {
+            console.log("DEBUG: " + Kline.instance.requestParam);
+        }
+        // $(document).ready(
+            // Kline.instance.G_HTTP_REQUEST = $.ajax({
+            //     type: "GET",
+            //     url: Kline.instance.url,
+            //     dataType: 'json',
+            //     data: Kline.instance.requestParam,
+            //     timeout: 30000,
+            //     created: Date.now(),
+            //     beforeSend: function () {
+                    // this.range = Kline.instance.range;
+                    // this.symbol = Kline.instance.symbol;
+                // },
+                // success: function (res) {
+                //     if (Kline.instance.G_HTTP_REQUEST) {
+                        // Control.requestSuccessHandler(res);
+                //     }
+                // },
+                // error: function (xhr, textStatus, errorThrown) {
+                //     if (Kline.instance.debug) {
+                //         console.log(xhr);
+                //     }
+                //     if (xhr.status === 200 && xhr.readyState === 4) {
+                //         return;
+                //     }
+                //     Kline.instance.timer = setTimeout(function () {
+                //         Control.requestData(true);
+                //     }, Kline.instance.intervalTime);
+                // },
+                // complete: function () {
+                //     Kline.instance.G_HTTP_REQUEST = null;
+                // }
+            // })
+            // );
+        $(document).ready(function(){
+            var res={success:true,data:Kline.instance.data};
+            this.range = Kline.instance.range;
+            this.symbol = Kline.instance.symbol;
+            Control.requestSuccessHandler(res);
+        });
+    }
 
     static requestSuccessHandler(res) {
         if (Kline.instance.debug) {
@@ -158,6 +205,8 @@ export class Control {
         if (!updateDataRes) {
             if (Kline.instance.type === 'poll') {
                 Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
+            }else if(Kline.instance.type === 'data'){
+                Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
             }
             return;
         }
@@ -173,6 +222,7 @@ export class Control {
         if (Kline.instance.type === 'poll') {
             Kline.instance.timer = setTimeout(Control.TwoSecondThread, intervalTime);
         }
+        //增加data 数据更新的方法
 
         ChartManager.instance.redraw('All', false);
     }

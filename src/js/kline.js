@@ -5,7 +5,7 @@ import {ChartSettings} from './chart_settings'
 import {Template} from './templates'
 import '../css/main.css'
 import tpl from '../view/tpl.html'
-import fire from './firebase'
+// import fire from './firebase'
 import $ from 'jquery'
 
 
@@ -30,7 +30,7 @@ export default class Kline {
         this.range = null;
         this.url = "";
         this.limit = 1000;
-        this.type = "poll";
+        this.type = "poll";  //poll|stomp|data   新增加一个类型取数据
         this.subscribePath = "";
         this.sendPath = "";
         this.stompClient = null;
@@ -114,10 +114,10 @@ export default class Kline {
         if (this.type === "stomp") {
             Control.socketConnect();
         }
-
-        if (!this.disableFirebase) {
-            fire();
-        }
+        //谷歌的firebase
+        // if (!this.disableFirebase) {
+        //     fire();
+        // }
 
         this.registerMouseEvent();
         ChartManager.instance.bindCanvas("main", document.getElementById("chart_mainCanvas"));
