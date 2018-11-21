@@ -52,7 +52,7 @@ body {
 }
 
 .chart_container.dark #chart_toolbar {
-    /* background-color: #0a0a0a; */
+    /* background-color: #0a0a0a;  工具条背景色*/
     background-color: #fff;
     border-bottom-color: #404040
 }
@@ -256,7 +256,7 @@ body {
 
 .chart_container .chart_toolbar_label {
     cursor: default;
-    display: inline-block;
+    /* display: inline-block; */
     float: left;
     padding: 7px 4px
 }
@@ -364,7 +364,7 @@ body {
 }
 
 #chart_toolbar_periods_horz {
-    display: inline-block;
+    /* display: inline-block; */
     float: left;
     position: relative;
     z-index: 100
@@ -404,7 +404,7 @@ body {
 .chart_container #chart_toolbar_theme {
     float: left;
     padding: 0 8px;
-    display: none;
+    /* display: none; */
 }
 
 .chart_container #chart_toolbar_theme a.chart_icon {
@@ -503,23 +503,23 @@ body {
     display: block
 }
 
-.chart_container.dark #chart_toolpanel {
-    background-color: #0a0a0a;
+.chart_container.dark #chart_toolpanel {    
+    background-color: #fff;/* 工具条背景颜色 */
     border-right-color: #404040
 }
 
 .chart_container.dark .chart_toolpanel_icon {
-    background-color: #0a0a0a;
+    background-color: #fff; /* 工具条图标背景颜色  */
     border-color: #0a0a0a
 }
 
 .chart_container.dark .chart_toolpanel_button:hover .chart_toolpanel_icon {
-    background-color: #404040;
+    background-color: #f3f9ff;/*工具条鼠标经过的颜色 */
     border-color: #666
 }
 
 .chart_container.dark .chart_toolpanel_button.selected .chart_toolpanel_icon {
-    background-color: #080808;
+    background-color: #f3f9ff; /*工具条选中的颜色 */
     border-color: #666
 }
 
@@ -564,7 +564,7 @@ body {
 }
 
 .chart_container.dark #chart_toolbar .chart_BoxSize {
-    background: url("../img/size_d.png") no-repeat;
+    background: url("../img/size_l.png") no-repeat;
 }
 
 .chart_container.light #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {
@@ -680,8 +680,8 @@ body {
 }
 
 .chart_container.dark #chart_tabbar {
-    background-color: #0a0a0a;
-    border-top-color: #404040
+    background-color: #fff;/*底部工具条颜色*/
+    border-top-color: #000
 }
 
 .chart_container.dark #chart_tabbar a {
@@ -879,8 +879,8 @@ body {
 }
 
 .trade_container.dark {
-    /* background: #0a0a0a; */
-    background-color: #fff;
+    /* background: #0a0a0a;  深色皮肤背景 */
+    background-color: #f3f9ff;
     color: #f1f1f1
 }
 
@@ -1053,7 +1053,8 @@ body {
 }
 
 .trade_container .green {
-    color: #0F0
+    /* 市场价颜色 */
+    color: #f00  
 }
 
 .trade_container .red {
@@ -1166,21 +1167,25 @@ body {
 
 .trades_list ul li.pr-green {
     width: 65px;
+    /* 交易列表 买入价颜色  */
     color: #6c6
 }
 
 .trades_list ul li.pr-red {
     width: 65px;
+    /* 交易列表 卖出价颜色  */
     color: #c66
 }
 
 .trades_list ul li.vl {
     width: 60px;
-    color: #ccc
+     /* 交易列表 卖出价颜色小数点前  */
+    color: #2d7bff
 }
 
 .trades_list ul li.vl g {
-    color: #666
+     /* 交易列表 卖出价颜色小数点后  */
+    color: #ff577a
 }
 
 .trade_container.dark .trades_list ul.newul {

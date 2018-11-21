@@ -61,13 +61,14 @@
         width: 1200,
         height: 650,
         theme: 'dark', // light/dark
-        data:data.data,
         language: 'zh-cn', // zh-cn/en-us/zh-tw
         ranges: ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"],
         symbol: "BTC",
         symbolName: "BTC/USD",
-        type: "poll", // poll/socket
-        url: "/examples/mock.json",
+        type:'data',
+        data:data.data,
+        // type: "poll", // poll/socket/data
+        // url: "/examples/mock.json",
         limit: 1000,
         intervalTime: 5000,
         debug: true,

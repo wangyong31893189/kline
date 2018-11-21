@@ -371,7 +371,8 @@ export class Control {
         toolBar.css({
             left: toolBarRect.x + 'px',
             top: toolBarRect.y + 'px',
-            width: toolBarRect.w + 'px',
+            // width: toolBarRect.w + 'px',
+            width: width + 'px',
             height: toolBarRect.h + 'px'
         });
         if (toolPanelShown) {
