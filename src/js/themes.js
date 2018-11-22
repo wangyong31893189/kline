@@ -193,7 +193,7 @@ export class LightTheme extends Theme {
         this._colors[Theme.Color.Cursor] = "#aaa";//鼠标经过的十字线颜色
         this._colors[Theme.Color.RangeMark] = "#f4853c";//右边最低最高价位的标记颜色
         this._colors[Theme.Color.Indicator0] = "#ddd";//MA5线的颜色
-        this._colors[Theme.Color.Indicator1] = "#f00";//MA10线的颜色
+        this._colors[Theme.Color.Indicator1] = "#f4bc0e";//MA10线的颜色
         this._colors[Theme.Color.Indicator2] = "#f600ff";//BOLL线颜色
         this._colors[Theme.Color.Indicator3] = "#6bf";//SAR线颜色
         this._colors[Theme.Color.Indicator4] = "#a5cf81";//未知
