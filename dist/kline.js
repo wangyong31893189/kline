@@ -3469,7 +3469,7 @@ function () {
     key: "requestOverData",
     value: function requestOverData() {
       if (__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.debug) {
-        console.log("DEBUG: " + __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.requestParam);
+        console.log("requestOverData DEBUG: " + __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.requestParam);
       } // $(document).ready(
       // Kline.instance.G_HTTP_REQUEST = $.ajax({
       //     type: "GET",
@@ -3544,7 +3544,8 @@ function () {
         if (__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.type === 'poll') {
           __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.timer = setTimeout(Control.requestData, intervalTime);
         } else if (__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.type === 'data') {
-          __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.timer = setTimeout(Control.requestData, intervalTime);
+          // Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
+          Control.requestData();
         }
 
         return;

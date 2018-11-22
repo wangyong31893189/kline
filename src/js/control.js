@@ -136,7 +136,7 @@ export class Control {
     //通过传入数据渲染
     static requestOverData() {
         if (Kline.instance.debug) {
-            console.log("DEBUG: " + Kline.instance.requestParam);
+            console.log("requestOverData DEBUG: " + Kline.instance.requestParam);
         }
         // $(document).ready(
             // Kline.instance.G_HTTP_REQUEST = $.ajax({
@@ -206,7 +206,8 @@ export class Control {
             if (Kline.instance.type === 'poll') {
                 Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
             }else if(Kline.instance.type === 'data'){
-                Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
+                // Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
+                Control.requestData();
             }
             return;
         }
