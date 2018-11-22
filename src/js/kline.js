@@ -38,7 +38,7 @@ export default class Kline {
         this.debug = true;
         this.language = "zh-cn";
         this.theme = "dark";
-        this.ranges = ["1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"];
+        this.ranges = ["1M","1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"];
         this.showTrade = true;
         this.tradeWidth = 250;
         this.socketConnected = false;
@@ -50,6 +50,7 @@ export default class Kline {
         this.disableFirebase = false;
 
         this.periodMap = {
+            "01n": 30 * 7 * 86400 * 1000,
             "01w": 7 * 86400 * 1000,
             "03d": 3 * 86400 * 1000,
             "01d": 86400 * 1000,
@@ -67,6 +68,7 @@ export default class Kline {
         };
 
         this.tagMapPeriod = {
+            "1n": "01n",
             "1w": "01w",
             "3d": "03d",
             "1d": "01d",
