@@ -36,6 +36,8 @@ export default class Kline {
         this.stompClient = null;
         this.intervalTime = 5000;
         this.debug = true;
+        this.displayVolume=true;//显示volumn
+        this.displayTimeline=true;//显示时间线
         this.language = "zh-cn";
         this.theme = "dark";
         this.ranges = ["1M","1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"];
@@ -86,7 +88,8 @@ export default class Kline {
         };
 
         Object.assign(this, option);
-
+        Template.displayVolume=this.displayVolume;
+        Template.displayTimeline=this.displayTimeline;
         if (!Kline.created) {
             Kline.instance = this;
             Kline.created = true;
@@ -184,6 +187,8 @@ export default class Kline {
             console.log('DEBUG: interval time changed to ' + intervalTime);
         }
     }
+
+    setIndicator
 
     pause() {
         if (this.debug) {

@@ -12,7 +12,8 @@ import * as ranges from './ranges'
 
 export class Template {
 
-    static displayVolume = true;
+    static displayVolume = true;//显示 Volume
+    static displayTimeline = true;//显示时间线
 
     static createCandlestickDataSource(dsAlias) {
         return new data_sources.MainDataSource(dsAlias);
@@ -31,7 +32,9 @@ export class Template {
         if (this.displayVolume) {
             this.createIndicatorChartComps(dsName, "VOLUME");
         }
-        this.createTimelineComps(dsName);
+        if (this.displayTimeline) {
+            this.createTimelineComps(dsName);
+        }
     }
 
     static createMainChartComps(dsName) {

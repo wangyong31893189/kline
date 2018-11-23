@@ -1906,6 +1906,10 @@ function () {
     this.stompClient = null;
     this.intervalTime = 5000;
     this.debug = true;
+    this.displayVolume = true; //显示volumn
+
+    this.displayTimeline = true; //显示时间线
+
     this.language = "zh-cn";
     this.theme = "dark";
     this.ranges = ["1M", "1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"];
@@ -1953,6 +1957,8 @@ function () {
       "line": "line"
     };
     Object.assign(this, option);
+    __WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].displayVolume = this.displayVolume;
+    __WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].displayTimeline = this.displayTimeline;
 
     if (!Kline.created) {
       Kline.instance = this;
@@ -3066,6 +3072,8 @@ function () {
 
   _createClass(Template, null, [{
     key: "createCandlestickDataSource",
+    //显示 Volume
+    //显示时间线
     value: function createCandlestickDataSource(dsAlias) {
       return new __WEBPACK_IMPORTED_MODULE_2__data_sources__["b" /* MainDataSource */](dsAlias);
     }
@@ -3086,7 +3094,9 @@ function () {
         this.createIndicatorChartComps(dsName, "VOLUME");
       }
 
-      this.createTimelineComps(dsName);
+      if (this.displayTimeline) {
+        this.createTimelineComps(dsName);
+      }
     }
   }, {
     key: "createMainChartComps",
@@ -3226,6 +3236,7 @@ function () {
   return Template;
 }();
 Template.displayVolume = true;
+Template.displayTimeline = true;
 var DefaultTemplate =
 /*#__PURE__*/
 function (_Template) {
