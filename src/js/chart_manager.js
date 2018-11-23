@@ -11,6 +11,7 @@ import * as plotters from './plotters'
 import * as ctools from './ctools'
 import * as areas from './areas'
 import {Util} from './util'
+import Kline from './kline';
 
 
 export class ChartManager {
@@ -149,6 +150,9 @@ export class ChartManager {
         switch (themeName) {
             case "Light":
                 theme = new themes.LightTheme();
+                break;
+            case "Default":
+                theme = new themes.DefaultTheme();
                 break;
             default:
                 themeName = "Dark";
@@ -468,8 +472,9 @@ export class ChartManager {
         let i, cnt = plotterNames.length;
         for (i = 0; i < cnt; i++) {
             plotter = this._plotters[areaName + plotterNames[i]];
-            if (plotter !== undefined)
-                plotter.Draw(context);
+            if (plotter !== undefined){
+                    plotter.Draw(context);
+            }
         }
     }
 

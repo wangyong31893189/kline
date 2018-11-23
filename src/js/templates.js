@@ -9,11 +9,12 @@ import {CName} from './cname'
 import * as layouts from './layouts'
 import * as themes from './themes'
 import * as ranges from './ranges'
+import Kline from './kline';
 
 export class Template {
 
-    static displayVolume = true;//显示 Volume
-    static displayTimeline = true;//显示时间线
+    static showVolume = true;//显示 Volume
+    static showTimeline = true;//显示时间线
 
     static createCandlestickDataSource(dsAlias) {
         return new data_sources.MainDataSource(dsAlias);
@@ -29,12 +30,10 @@ export class Template {
 
     static createTableComps(dsName) {
         this.createMainChartComps(dsName);
-        if (this.displayVolume) {
+        if (this.showVolume) {
             this.createIndicatorChartComps(dsName, "VOLUME");
         }
-        if (this.displayTimeline) {
-            this.createTimelineComps(dsName);
-        }
+        this.createTimelineComps(dsName);
     }
 
     static createMainChartComps(dsName) {
@@ -172,7 +171,9 @@ export class DefaultTemplate extends Template {
         let frame = new layouts.DockableLayout(frameName);
         mgr.setFrame(frame.getName(), frame);
         mgr.setArea(frame.getName(), frame);
-        frame.setGridColor(themes.Theme.Color.Grid1);
+        // if(Kline.instance.grid){//是否显示网格
+            frame.setGridColor(themes.Theme.Color.Grid1);
+        // }
         let area = new areas.TimelineArea(dsName + ".timeline");
         mgr.setArea(area.getName(), area);
         frame.addArea(area);
@@ -197,7 +198,11 @@ export class TemplateMeasuringHandler {
         let height = args.Height;
         let areaName = sender.getNameObject().getCompAt(2);
         if (areaName === "timeline") {
-            sender.setMeasuredDimension(width, 22);
+            if(Kline.instance.showTimeline){
+                sender.setMeasuredDimension(width, 22);
+            }else{
+                sender.setMeasuredDimension(width, 0);
+            }
         }
     }
 

@@ -745,7 +745,7 @@ body {
     overflow: hidden;
     position: absolute;
     text-align: center;
-    visibility: hidden;
+    visibility: hidden!important;
     width: 200px;
     z-index: 200
 }

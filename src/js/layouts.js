@@ -2,6 +2,7 @@ import * as areas from './areas'
 import {ChartManager} from './chart_manager'
 import * as themes from './themes'
 import {ChartSettings} from './chart_settings'
+import Kline from './kline';
 
 export class TableLayout extends areas.ChartAreaGroup {
 
@@ -57,9 +58,15 @@ export class TableLayout extends areas.ChartAreaGroup {
             rh[0] = h;
         }
         let nw = 8;
-        // chart depths sidebar (深度图侧边栏宽度)
+        // chart depths sidebar (深度图侧边栏宽度)        
         let minRW = 76;
+        if(!Kline.instance.showDepth){//是否显示深度图侧边栏
+            minRW=0;
+        }
         let maxRW = Math.min(240, width >> 1);
+        if(!Kline.instance.showDepth){//是否显示深度图侧边栏
+            maxRW=0;
+        }
         let rw = minRW;
         let mgr = ChartManager.instance;
         let timeline = mgr.getTimeline(this.getDataSourceName());
@@ -131,8 +138,10 @@ export class TableLayout extends areas.ChartAreaGroup {
         }
         let mgr = ChartManager.instance;
         let theme = mgr.getTheme(this.getFrameName());
-        context.fillStyle = theme.getColor(themes.Theme.Color.Grid1);
-        context.fillRect(this._areas[0].getRight(), this.getTop(), 1, this.getHeight());
+        // if(Kline.instance.grid){//是否显示网格
+            context.fillStyle = theme.getColor(themes.Theme.Color.Grid1);
+            context.fillRect(this._areas[0].getRight(), this.getTop(), 1, this.getHeight());
+        // }
         let i, cnt = this._areas.length - 2;
         for (i = 0; i < cnt; i += 2)
             context.fillRect(this.getLeft(), this._areas[i].getBottom(), this.getWidth(), 1);

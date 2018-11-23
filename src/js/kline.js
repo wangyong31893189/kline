@@ -30,14 +30,17 @@ export default class Kline {
         this.range = null;
         this.url = "";
         this.limit = 1000;
+        this.showToolBar=true;// true|false 是否显示工具条
+        this.grid=true;// true|false 是否显示十字网格
         this.type = "poll";  //poll|stomp|data   新增加一个类型取数据
         this.subscribePath = "";
         this.sendPath = "";
         this.stompClient = null;
         this.intervalTime = 5000;
         this.debug = true;
-        this.displayVolume=true;//显示volumn
-        this.displayTimeline=true;//显示时间线
+        this.showVolume=true;//true|false 显示volumn
+        this.showDepth=true;//true|false  显示深度图侧边栏
+        this.showTimeline=true;//true|false  显示时间线
         this.language = "zh-cn";
         this.theme = "dark";
         this.ranges = ["1M","1w", "1d", "1h", "30m", "15m", "5m", "1m", "line"];
@@ -88,8 +91,8 @@ export default class Kline {
         };
 
         Object.assign(this, option);
-        Template.displayVolume=this.displayVolume;
-        Template.displayTimeline=this.displayTimeline;
+        Template.showVolume=this.showVolume;
+        Template.showTimeline=this.showTimeline;
         if (!Kline.created) {
             Kline.instance = this;
             Kline.created = true;
@@ -386,7 +389,7 @@ export default class Kline {
                     let tmp = ChartSettings.get();
                     tmp.charts.indics[1] = name;
                     ChartSettings.save();
-                    if (Template.displayVolume === false)
+                    if (Template.showVolume === false)
                         ChartManager.instance.getChart().setIndicator(1, name);
                     else
                         ChartManager.instance.getChart().setIndicator(2, name);

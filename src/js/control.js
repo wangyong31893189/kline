@@ -344,6 +344,9 @@ export class Control {
             height: height + 'px'
         });
         let toolBar = $('#chart_toolbar');
+        if(!Kline.instance.showToolBar){
+            toolBar.hide();
+        }
         let toolPanel = $('#chart_toolpanel');
         let canvasGroup = $('#chart_canvasGroup');
         let tabBar = $('#chart_tabbar');
@@ -502,7 +505,14 @@ export class Control {
             let tmp = ChartSettings.get();
             tmp.theme = 'Light';
             ChartSettings.save();
+        }else if (name === 'default') {
+            $(".trade_container").removeClass("light").removeClass("dark");
+            ChartManager.instance.setThemeName('frame0', 'Default');
+            let tmp = ChartSettings.get();
+            tmp.theme = 'Default';
+            ChartSettings.save();
         }
+
         let a = {};
         a.command = "set current themes";
         a.content = name;
@@ -558,7 +568,7 @@ export class Control {
             tmp.charts.indicsStatus = 'open';
             ChartSettings.save();
             let value = tmp.charts.indics[1];
-            if (Template.displayVolume === false)
+            if (Template.showVolume === false)
                 ChartManager.instance.getChart().setIndicator(2, value);
             else
                 ChartManager.instance.getChart().setIndicator(2, value);

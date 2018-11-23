@@ -92,11 +92,13 @@ return /******/ (function(modules) { // webpackBootstrap
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ctools__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__areas__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__util__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__kline__ = __webpack_require__(3);
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -238,7 +240,11 @@ function () {
 
       switch (themeName) {
         case "Light":
-          theme = new __WEBPACK_IMPORTED_MODULE_8__themes__["b" /* LightTheme */]();
+          theme = new __WEBPACK_IMPORTED_MODULE_8__themes__["c" /* LightTheme */]();
+          break;
+
+        case "Default":
+          theme = new __WEBPACK_IMPORTED_MODULE_8__themes__["b" /* DefaultTheme */]();
           break;
 
         default:
@@ -647,7 +653,10 @@ function () {
 
       for (i = 0; i < cnt; i++) {
         plotter = this._plotters[areaName + plotterNames[i]];
-        if (plotter !== undefined) plotter.Draw(context);
+
+        if (plotter !== undefined) {
+          plotter.Draw(context);
+        }
       }
     }
   }, {
@@ -1899,6 +1908,10 @@ function () {
     this.range = null;
     this.url = "";
     this.limit = 1000;
+    this.showToolBar = true; // true|false 是否显示工具条
+
+    this.grid = true; // true|false 是否显示十字网格
+
     this.type = "poll"; //poll|stomp|data   新增加一个类型取数据
 
     this.subscribePath = "";
@@ -1906,9 +1919,11 @@ function () {
     this.stompClient = null;
     this.intervalTime = 5000;
     this.debug = true;
-    this.displayVolume = true; //显示volumn
+    this.showVolume = true; //true|false 显示volumn
 
-    this.displayTimeline = true; //显示时间线
+    this.showDepth = true; //true|false  显示深度图侧边栏
+
+    this.showTimeline = true; //true|false  显示时间线
 
     this.language = "zh-cn";
     this.theme = "dark";
@@ -1957,8 +1972,8 @@ function () {
       "line": "line"
     };
     Object.assign(this, option);
-    __WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].displayVolume = this.displayVolume;
-    __WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].displayTimeline = this.displayTimeline;
+    __WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].showVolume = this.showVolume;
+    __WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].showTimeline = this.showTimeline;
 
     if (!Kline.created) {
       Kline.instance = this;
@@ -2275,7 +2290,7 @@ function () {
           var tmp = __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].get();
           tmp.charts.indics[1] = name;
           __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].save();
-          if (__WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].displayVolume === false) __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setIndicator(1, name);else __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setIndicator(2, name);
+          if (__WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].showVolume === false) __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setIndicator(1, name);else __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setIndicator(2, name);
         });
         __WEBPACK_IMPORTED_MODULE_7_jquery___default()("#chart_select_chart_style a").click(function () {
           __WEBPACK_IMPORTED_MODULE_7_jquery___default()("#chart_select_chart_style a").removeClass('selected');
@@ -2688,9 +2703,10 @@ function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return Theme; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "d", function() { return Theme; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return DarkTheme; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return LightTheme; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "c", function() { return LightTheme; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "b", function() { return DefaultTheme; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__kline__ = __webpack_require__(3);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
@@ -2790,7 +2806,7 @@ function (_Theme) {
       // this._colors[Theme.Color.Negative] = "#19b34c";
 
       color_neg = '#ff577a';
-      _this._colors[Theme.Color.Negative] = "#ff577a"; //跌的颜色
+      _this._colors[Theme.Color.Negative] = color_neg; //跌的颜色
       // this._colors[Theme.Color.PositiveDark] = "#3b0e08";
 
       _this._colors[Theme.Color.PositiveDark] = "#5fd292"; //深度图涨颜色
@@ -2931,7 +2947,7 @@ function (_Theme2) {
       // this._colors[Theme.Color.Negative] = "#19b34c";
 
       color_neg = '#ff577a';
-      _this2._colors[Theme.Color.Negative] = "#ff577a"; //跌的颜色
+      _this2._colors[Theme.Color.Negative] = color_neg; //跌的颜色
       // this._colors[Theme.Color.PositiveDark] = "#3b0e08";
 
       _this2._colors[Theme.Color.PositiveDark] = "#5fd292"; //深度图涨颜色
@@ -3014,6 +3030,147 @@ function (_Theme2) {
 
   return LightTheme;
 }(Theme);
+var DefaultTheme =
+/*#__PURE__*/
+function (_Theme3) {
+  _inherits(DefaultTheme, _Theme3);
+
+  function DefaultTheme() {
+    var _this3;
+
+    _classCallCheck(this, DefaultTheme);
+
+    _this3 = _possibleConstructorReturn(this, _getPrototypeOf(DefaultTheme).call(this));
+    _this3._colors = [];
+    var color_pos = '',
+        color_neg = ''; // if (Kline.instance.reverseColor) {
+    //     this._colors[Theme.Color.Positive] = "#db5542";
+    //     this._colors[Theme.Color.Negative] = "#53b37b";
+    //     this._colors[Theme.Color.PositiveDark] = "#ffadaa";
+    //     this._colors[Theme.Color.NegativeDark] = "#66d293";
+    // } else {
+    //     this._colors[Theme.Color.Positive] = "#53b37b";
+    //     this._colors[Theme.Color.Negative] = "#db5542";
+    //     this._colors[Theme.Color.PositiveDark] = "#66d293";
+    //     this._colors[Theme.Color.NegativeDark] = "#ffadaa";
+    // }
+    // this._colors[Theme.Color.Unchanged] = "#fff";
+    // this._colors[Theme.Color.Background] = "#fff";
+    // this._colors[Theme.Color.Cursor] = "#aaa";
+    // this._colors[Theme.Color.RangeMark] = "#f27935";
+    // this._colors[Theme.Color.Indicator0] = "#2fd2b2";
+    // this._colors[Theme.Color.Indicator1] = "#ffb400";
+    // this._colors[Theme.Color.Indicator2] = "#e849b9";
+    // this._colors[Theme.Color.Indicator3] = "#1478c8";
+    // this._colors[Theme.Color.Grid0] = "#eee";
+    // this._colors[Theme.Color.Grid1] = "#afb1b3";
+    // this._colors[Theme.Color.Grid2] = "#ccc";
+    // this._colors[Theme.Color.Grid3] = "#bbb";
+    // this._colors[Theme.Color.Grid4] = "#aaa";
+    // this._colors[Theme.Color.TextPositive] = "#53b37b";
+    // this._colors[Theme.Color.TextNegative] = "#db5542";
+    // this._colors[Theme.Color.Text0] = "#ccc";
+    // this._colors[Theme.Color.Text1] = "#aaa";
+    // this._colors[Theme.Color.Text2] = "#888";
+    // this._colors[Theme.Color.Text3] = "#666";
+    // this._colors[Theme.Color.Text4] = "#444";
+    // this._colors[Theme.Color.LineColorNormal] = "#8c8c8c";
+    // this._colors[Theme.Color.LineColorSelected] = "#393c40";
+    // this._colors[Theme.Color.CircleColorFill] = "#ffffff";
+    // this._colors[Theme.Color.CircleColorStroke] = "#393c40";
+    // this._fonts = [];
+    // this._fonts[Theme.Font.Default] = "12px Tahoma";
+
+    if (__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.reverseColor) {
+      // this._colors[Theme.Color.Positive] = "#990e0e";
+      color_pos = '#ff5179';
+      _this3._colors[Theme.Color.Positive] = color_pos; //涨的颜色
+      // this._colors[Theme.Color.Negative] = "#19b34c";
+
+      color_neg = '#30b051';
+      _this3._colors[Theme.Color.Negative] = color_neg; //跌的颜色
+      // this._colors[Theme.Color.PositiveDark] = "#3b0e08";
+
+      _this3._colors[Theme.Color.PositiveDark] = "#5fd292"; //深度图涨颜色
+      // this._colors[Theme.Color.NegativeDark] = "#004718";
+
+      _this3._colors[Theme.Color.NegativeDark] = "#ffb2ad"; //深度图跌颜色
+    } else {
+      // this._colors[Theme.Color.Positive] = "#19b34c";
+      color_pos = '#30b051';
+      _this3._colors[Theme.Color.Positive] = color_pos; //k线涨的颜色
+      // this._colors[Theme.Color.Negative] = "#990e0e";
+
+      color_neg = '#ff5179';
+      _this3._colors[Theme.Color.Negative] = color_neg; //k线跌的颜色
+      // this._colors[Theme.Color.PositiveDark] = "#004718";
+
+      _this3._colors[Theme.Color.PositiveDark] = "#ffb2ad"; //深度图涨颜色
+      // this._colors[Theme.Color.NegativeDark] = "#3b0e08";
+
+      _this3._colors[Theme.Color.NegativeDark] = "#5fd292"; //深度图跌颜色
+    } // this._colors[Theme.Color.Unchanged] = "#fff";
+
+
+    _this3._colors[Theme.Color.Unchanged] = "#f00"; // this._colors[Theme.Color.Background] = "#0a0a0a";
+
+    _this3._colors[Theme.Color.Background] = "#fff"; //背景颜色
+
+    _this3._colors[Theme.Color.Cursor] = "#aaa"; //鼠标经过的十字线颜色
+
+    _this3._colors[Theme.Color.RangeMark] = "#f00"; //右边最低最高价位的标记颜色 时间线顶部颜色
+
+    _this3._colors[Theme.Color.Indicator0] = "#ddd"; //MA5线的颜色
+
+    _this3._colors[Theme.Color.Indicator1] = "#f4bc0e"; //MA10线的颜色
+
+    _this3._colors[Theme.Color.Indicator2] = "#f600ff"; //BOLL线颜色
+
+    _this3._colors[Theme.Color.Indicator3] = "#6bf"; //SAR线颜色
+
+    _this3._colors[Theme.Color.Indicator4] = "#a5cf81"; //未知
+
+    _this3._colors[Theme.Color.Indicator5] = "#e18b89"; //未知
+
+    _this3._colors[Theme.Color.Grid0] = "#fff"; // 水平线颜色 默认dash
+
+    _this3._colors[Theme.Color.Grid1] = "#eee"; //十字网络颜色
+
+    _this3._colors[Theme.Color.Grid2] = "#666"; //未知
+
+    _this3._colors[Theme.Color.Grid3] = "#888"; //横向时间线标签提示边框颜色
+
+    _this3._colors[Theme.Color.Grid4] = "#aaa"; //竖向价格标签提示边框颜色
+
+    _this3._colors[Theme.Color.TextPositive] = color_pos; //k线跌的颜色
+
+    _this3._colors[Theme.Color.TextNegative] = color_neg; //k线涨的颜色
+
+    _this3._colors[Theme.Color.Text0] = "#444"; //未知
+
+    _this3._colors[Theme.Color.Text1] = "#666"; //未知
+
+    _this3._colors[Theme.Color.Text2] = "#000"; //时间线标签颜色 
+
+    _this3._colors[Theme.Color.Text3] = "#aaa"; //鼠标指针指向的提示文字颜色 
+
+    _this3._colors[Theme.Color.Text4] = "#000"; //时间位置显示文字颜色
+
+    _this3._colors[Theme.Color.LineColorNormal] = "#a6a6a6"; //画线工具画出的颜色 
+
+    _this3._colors[Theme.Color.LineColorSelected] = "#ffffff"; //鼠标经过画线的颜色
+
+    _this3._colors[Theme.Color.CircleColorFill] = "#000000"; //画线工具画的线上圆点颜色
+
+    _this3._colors[Theme.Color.CircleColorStroke] = "#393c40"; //画线工具画的线上圆点边框颜色
+
+    _this3._fonts = [];
+    _this3._fonts[Theme.Font.Default] = "12px Tahoma";
+    return _this3;
+  }
+
+  return DefaultTheme;
+}(Theme);
 
 /***/ }),
 /* 7 */
@@ -3034,6 +3191,7 @@ function (_Theme2) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__layouts__ = __webpack_require__(24);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__themes__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__ranges__ = __webpack_require__(18);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__kline__ = __webpack_require__(3);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
@@ -3051,6 +3209,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
 
 
 
@@ -3090,13 +3249,11 @@ function () {
     value: function createTableComps(dsName) {
       this.createMainChartComps(dsName);
 
-      if (this.displayVolume) {
+      if (this.showVolume) {
         this.createIndicatorChartComps(dsName, "VOLUME");
       }
 
-      if (this.displayTimeline) {
-        this.createTimelineComps(dsName);
-      }
+      this.createTimelineComps(dsName);
     }
   }, {
     key: "createMainChartComps",
@@ -3235,8 +3392,8 @@ function () {
 
   return Template;
 }();
-Template.displayVolume = true;
-Template.displayTimeline = true;
+Template.showVolume = true;
+Template.showTimeline = true;
 var DefaultTemplate =
 /*#__PURE__*/
 function (_Template) {
@@ -3258,8 +3415,10 @@ function (_Template) {
       this.createDataSource(dsName, dsAlias, this.createCandlestickDataSource);
       var frame = new __WEBPACK_IMPORTED_MODULE_8__layouts__["a" /* DockableLayout */](frameName);
       mgr.setFrame(frame.getName(), frame);
-      mgr.setArea(frame.getName(), frame);
-      frame.setGridColor(__WEBPACK_IMPORTED_MODULE_9__themes__["c" /* Theme */].Color.Grid1);
+      mgr.setArea(frame.getName(), frame); // if(Kline.instance.grid){//是否显示网格
+
+      frame.setGridColor(__WEBPACK_IMPORTED_MODULE_9__themes__["d" /* Theme */].Color.Grid1); // }
+
       var area = new __WEBPACK_IMPORTED_MODULE_4__areas__["g" /* TimelineArea */](dsName + ".timeline");
       mgr.setArea(area.getName(), area);
       frame.addArea(area);
@@ -3292,7 +3451,11 @@ function () {
       var areaName = sender.getNameObject().getCompAt(2);
 
       if (areaName === "timeline") {
-        sender.setMeasuredDimension(width, 22);
+        if (__WEBPACK_IMPORTED_MODULE_11__kline__["a" /* default */].instance.showTimeline) {
+          sender.setMeasuredDimension(width, 22);
+        } else {
+          sender.setMeasuredDimension(width, 0);
+        }
       }
     }
   }]);
@@ -3705,6 +3868,11 @@ function () {
         height: height + 'px'
       });
       var toolBar = __WEBPACK_IMPORTED_MODULE_6_jquery___default()('#chart_toolbar');
+
+      if (!__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.showToolBar) {
+        toolBar.hide();
+      }
+
       var toolPanel = __WEBPACK_IMPORTED_MODULE_6_jquery___default()('#chart_toolpanel');
       var canvasGroup = __WEBPACK_IMPORTED_MODULE_6_jquery___default()('#chart_canvasGroup');
       var tabBar = __WEBPACK_IMPORTED_MODULE_6_jquery___default()('#chart_tabbar');
@@ -3873,6 +4041,14 @@ function () {
 
         _tmp.theme = 'Light';
         __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].save();
+      } else if (name === 'default') {
+        __WEBPACK_IMPORTED_MODULE_6_jquery___default()(".trade_container").removeClass("light").removeClass("dark");
+        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.setThemeName('frame0', 'Default');
+
+        var _tmp2 = __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].get();
+
+        _tmp2.theme = 'Default';
+        __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].save();
       }
 
       var a = {};
@@ -3935,7 +4111,7 @@ function () {
         tmp.charts.indicsStatus = 'open';
         __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].save();
         var value = tmp.charts.indics[1];
-        if (__WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].displayVolume === false) __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setIndicator(2, value);else __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setIndicator(2, value);
+        if (__WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].showVolume === false) __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setIndicator(2, value);else __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setIndicator(2, value);
         __WEBPACK_IMPORTED_MODULE_6_jquery___default()("#chart_tabbar").find('a').each(function () {
           if (__WEBPACK_IMPORTED_MODULE_6_jquery___default()(this).attr('name') === value) __WEBPACK_IMPORTED_MODULE_6_jquery___default()(this).addClass('selected');
         });
@@ -3944,9 +4120,9 @@ function () {
         __WEBPACK_IMPORTED_MODULE_6_jquery___default()('#chart_show_indicator').removeClass('selected');
         __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setIndicator(2, 'NONE');
 
-        var _tmp2 = __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].get();
+        var _tmp3 = __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].get();
 
-        _tmp2.charts.indicsStatus = 'close';
+        _tmp3.charts.indicsStatus = 'close';
         __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].save();
         __WEBPACK_IMPORTED_MODULE_6_jquery___default()('#chart_tabbar')[0].style.display = 'none';
         __WEBPACK_IMPORTED_MODULE_6_jquery___default()("#chart_tabbar a").removeClass("selected");
@@ -5811,7 +5987,7 @@ function (_Plotter) {
     _classCallCheck(this, BackgroundPlotter);
 
     _this = _possibleConstructorReturn(this, _getPrototypeOf(BackgroundPlotter).call(this, name));
-    _this._color = __WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Background;
+    _this._color = __WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background;
     return _this;
   }
 
@@ -5964,7 +6140,7 @@ function (_NamedObject2) {
       }
 
       var theme = mgr.getTheme(this.getFrameName());
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Grid0);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Grid0);
       context.beginPath();
       var dashLen = 4,
           dashSolid = 1;
@@ -6121,25 +6297,25 @@ function (_NamedObject3) {
       }
 
       if (strokePosRects.length > 0) {
-        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         Plotter.createRectangles(context, strokePosRects);
         context.stroke();
       }
 
       if (fillPosRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         Plotter.createRectangles(context, fillPosRects);
         context.fill();
       }
 
       if (fillUchRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         Plotter.createRectangles(context, fillUchRects);
         context.fill();
       }
 
       if (fillNegRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         Plotter.createRectangles(context, fillNegRects);
         context.fill();
       }
@@ -6313,25 +6489,25 @@ function (_Plotter2) {
       }
 
       if (strokePosRects.length > 0) {
-        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         Plotter.createRectangles(context, strokePosRects);
         context.stroke();
       }
 
       if (fillPosRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         Plotter.createRectangles(context, fillPosRects);
         context.fill();
       }
 
       if (fillUchRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         Plotter.createRectangles(context, fillUchRects);
         context.fill();
       }
 
       if (fillNegRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         Plotter.createRectangles(context, fillNegRects);
         context.fill();
       }
@@ -6467,19 +6643,19 @@ function (_Plotter3) {
       }
 
       if (fillPosRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         Plotter.createRectangles(context, fillPosRects);
         context.fill();
       }
 
       if (fillUchRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         Plotter.createRectangles(context, fillUchRects);
         context.fill();
       }
 
       if (fillNegRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         Plotter.createRectangles(context, fillNegRects);
         context.fill();
       }
@@ -6507,10 +6683,10 @@ function (_Plotter4) {
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var ds = mgr.getDataSource(this.getDataSourceName());
       var theme = mgr.getTheme(this.getFrameName());
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "left";
       context.textBaseline = "top";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text4);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
       var rect = {
         x: area.getLeft() + 4,
         y: area.getTop() + 2,
@@ -6575,14 +6751,14 @@ function (_Plotter4) {
 
         if (change >= 0) {
           change = ' ' + change.toFixed(2);
-          context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.TextPositive);
+          context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.TextPositive);
         } else {
           change = change.toFixed(2);
-          context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.TextNegative);
+          context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.TextNegative);
         }
 
         if (!Plotter.drawString(context, change, rect)) return;
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text4);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
         if (!Plotter.drawString(context, ' %', rect)) return;
       }
 
@@ -6639,7 +6815,7 @@ function (_Plotter4) {
         var color = out.getColor();
 
         if (color === undefined) {
-          color = __WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Indicator0 + n;
+          color = __WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Indicator0 + n;
         }
 
         context.fillStyle = theme.getColor(color);
@@ -6731,7 +6907,7 @@ function (_NamedObject4) {
 
           if (points.length > 0) {
             var color = out.getColor();
-            if (color === undefined) color = __WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Indicator0 + n;
+            if (color === undefined) color = __WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Indicator0 + n;
             context.strokeStyle = theme.getColor(color);
             Plotter.drawLines(context, points);
           }
@@ -6809,19 +6985,19 @@ function (_NamedObject4) {
       }
 
       if (strokePosRects.length > 0) {
-        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         Plotter.createRectangles(context, strokePosRects);
         context.stroke();
       }
 
       if (fillPosRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         Plotter.createRectangles(context, fillPosRects);
         context.fill();
       }
 
       if (fillNegRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         Plotter.createRectangles(context, fillNegRects);
         context.fill();
       }
@@ -6874,25 +7050,25 @@ function (_NamedObject4) {
       }
 
       if (strokePosRects.length > 0) {
-        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         Plotter.createRectangles(context, strokePosRects);
         context.stroke();
       }
 
       if (strokeNegRects.length > 0) {
-        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         Plotter.createRectangles(context, strokeNegRects);
         context.stroke();
       }
 
       if (fillPosRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         Plotter.createRectangles(context, fillPosRects);
         context.fill();
       }
 
       if (fillNegRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         Plotter.createRectangles(context, fillNegRects);
         context.fill();
       }
@@ -6908,7 +7084,7 @@ function (_NamedObject4) {
       var endAngle = 2 * Math.PI;
       context.save();
       context.translate(0.5, 0.5);
-      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Indicator3);
+      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Indicator3);
       context.beginPath();
 
       for (var i = first; i < last; i++) {
@@ -6945,10 +7121,10 @@ function (_Plotter5) {
       var timeline = mgr.getTimeline(this.getDataSourceName());
       var dp = mgr.getDataProvider(this.getAreaName() + ".secondary");
       var theme = mgr.getTheme(this.getFrameName());
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "left";
       context.textBaseline = "top";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text4);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
       var rect = {
         x: area.getLeft() + 4,
         y: area.getTop() + 2,
@@ -6996,7 +7172,7 @@ function (_Plotter5) {
         if (isNaN(v)) continue;
         info = "  " + out.getName() + ": " + v.toFixed(2);
         color = out.getColor();
-        if (color === undefined) color = __WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Indicator0 + n;
+        if (color === undefined) color = __WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Indicator0 + n;
         context.fillStyle = theme.getColor(color);
         if (!Plotter.drawString(context, info, rect)) return;
       }
@@ -7030,10 +7206,10 @@ function (_NamedObject5) {
       var first = timeline.getFirstIndex();
       var center = first + timeline.getLastIndex() >> 1;
       var theme = mgr.getTheme(this.getFrameName());
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textBaseline = "middle";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text4);
-      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text4);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
+      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
       var digits = ds.getDecimalDigits();
       this.drawMark(context, dp.getMinValue(), digits, range.toY(dp.getMinValue()), first, center, dp.getMinValueIndex(), timeline);
       this.drawMark(context, dp.getMaxValue(), digits, range.toY(dp.getMaxValue()), first, center, dp.getMaxValueIndex(), timeline);
@@ -7105,7 +7281,7 @@ function (_Plotter6) {
       var d = new Date();
       var local_utc_diff = d.getTimezoneOffset() * 60 * 1000;
       var theme = mgr.getTheme(this.getFrameName());
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "center";
       context.textBaseline = "middle";
       var lang = mgr.getLanguage();
@@ -7129,12 +7305,12 @@ function (_Plotter6) {
 
           if (localDate % m === 0) {
             if (lang === "zh-cn") text = month.toString() + "月" + date.toString() + "日";else if (lang === "zh-tw") text = month.toString() + "月" + date.toString() + "日";else if (lang === "en-us") text = TimelinePlotter.MonthConvert[month] + " " + date.toString();
-            context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text4);
+            context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
           } else if (localDate % TimelinePlotter.TIME_INTERVAL[n] === 0) {
             var strMinute = minute.toString();
             if (minute < 10) strMinute = "0" + strMinute;
             text = hour.toString() + ":" + strMinute;
-            context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text2);
+            context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text2);
           }
         } else if (date === 1 && hour < timeInterval / TimelinePlotter.TP_HOUR) {
           if (month === 1) {
@@ -7144,7 +7320,7 @@ function (_Plotter6) {
             if (lang === "zh-cn") text = month.toString() + "月";else if (lang === "zh-tw") text = month.toString() + "月";else if (lang === "en-us") text = TimelinePlotter.MonthConvert[month];
           }
 
-          context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text4);
+          context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
         }
 
         if (text.length > 0) {
@@ -7160,7 +7336,7 @@ function (_Plotter6) {
       }
 
       if (gridRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Grid1);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Grid1);
         Plotter.createRectangles(context, gridRects);
         context.fill();
       }
@@ -7203,7 +7379,7 @@ function (_NamedObject6) {
     value: function getRequiredWidth(context, v) {
       var mgr = __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance;
       var theme = mgr.getTheme(this.getFrameName());
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       return context.measureText((Math.floor(v) + 0.88).toString()).width + 16;
     }
   }, {
@@ -7227,10 +7403,10 @@ function (_NamedObject6) {
       var right = area.getRight();
       var center = area.getCenter();
       var theme = mgr.getTheme(this.getFrameName());
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "center";
       context.textBaseline = "middle";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text2);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text2);
       var gridRects = [];
 
       for (var n in gradations) {
@@ -7251,7 +7427,7 @@ function (_NamedObject6) {
       }
 
       if (gridRects.length > 0) {
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Grid1);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Grid1);
         Plotter.createRectangles(context, gridRects);
         context.fill();
       }
@@ -7315,7 +7491,7 @@ function (_NamedObject7) {
   }, {
     key: "DrawBackground",
     value: function DrawBackground(context) {
-      context.fillStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Background);
+      context.fillStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background);
       context.fillRect(this.m_left, this.m_top, this.m_right - this.m_left, this.m_bottom - this.m_top);
 
       var all = __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart()._depthData;
@@ -7324,30 +7500,30 @@ function (_NamedObject7) {
         var ask_bottom = this.m_pRange.toY(all.array[this.m_ask_si].rate) - this.y_offset;
         var bid_top = this.m_pRange.toY(all.array[this.m_bid_si].rate) + this.y_offset;
         var ask_gradient = context.createLinearGradient(this.m_left, 0, this.m_right, 0);
-        ask_gradient.addColorStop(0, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Background));
-        ask_gradient.addColorStop(1, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.PositiveDark));
+        ask_gradient.addColorStop(0, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background));
+        ask_gradient.addColorStop(1, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.PositiveDark));
         context.fillStyle = ask_gradient;
         context.fillRect(this.m_left, this.m_top, this.m_right - this.m_left, ask_bottom - this.m_top);
         var bid_gradient = context.createLinearGradient(this.m_left, 0, this.m_right, 0);
-        bid_gradient.addColorStop(0, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Background));
-        bid_gradient.addColorStop(1, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.NegativeDark));
+        bid_gradient.addColorStop(0, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background));
+        bid_gradient.addColorStop(1, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.NegativeDark));
         context.fillStyle = bid_gradient;
         context.fillRect(this.m_left, bid_top, this.m_right - this.m_left, this.m_bottom - bid_top);
       } else if (this.m_mode === 1) {
         var _ask_gradient = context.createLinearGradient(this.m_left, 0, this.m_right, 0);
 
-        _ask_gradient.addColorStop(0, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Background));
+        _ask_gradient.addColorStop(0, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background));
 
-        _ask_gradient.addColorStop(1, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.PositiveDark));
+        _ask_gradient.addColorStop(1, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.PositiveDark));
 
         context.fillStyle = _ask_gradient;
         context.fillRect(this.m_left, this.m_top, this.m_right - this.m_left, this.m_bottom - this.m_top);
       } else if (this.m_mode === 2) {
         var _bid_gradient = context.createLinearGradient(this.m_left, 0, this.m_right, 0);
 
-        _bid_gradient.addColorStop(0, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Background));
+        _bid_gradient.addColorStop(0, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background));
 
-        _bid_gradient.addColorStop(1, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.NegativeDark));
+        _bid_gradient.addColorStop(1, this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.NegativeDark));
 
         context.fillStyle = _bid_gradient;
         context.fillRect(this.m_left, this.m_top, this.m_right - this.m_left, this.m_bottom - this.m_top);
@@ -7357,7 +7533,7 @@ function (_NamedObject7) {
     key: "DrawLine",
     value: function DrawLine(context) {
       if (this.m_mode === 0 || this.m_mode === 1) {
-        context.strokeStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Positive);
+        context.strokeStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Positive);
         context.beginPath();
         context.moveTo(Math.floor(this.m_ask_points[0].x) + 0.5, Math.floor(this.m_ask_points[0].y) + 0.5);
 
@@ -7369,7 +7545,7 @@ function (_NamedObject7) {
       }
 
       if (this.m_mode === 0 || this.m_mode === 2) {
-        context.strokeStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Negative);
+        context.strokeStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Negative);
         context.beginPath();
         context.moveTo(this.m_bid_points[0].x + 0.5, this.m_bid_points[0].y + 0.5);
 
@@ -7555,7 +7731,7 @@ function (_NamedObject7) {
 
       if (gridRects.length > 0) {
         var theme = mgr.getTheme(this.getFrameName());
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Grid1);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Grid1);
         Plotter.createRectangles(context, gridRects);
         context.fill();
       }
@@ -7581,7 +7757,7 @@ function (_NamedObject7) {
       ask_point.push(ask_last_add);
       bid_point.unshift(bid_first_add);
       bid_point.push(bid_last_add);
-      context.fillStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Background);
+      context.fillStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background);
       context.beginPath();
       context.moveTo(Math.floor(ask_point[0].x) + 0.5, Math.floor(ask_point[0].y) + 0.5);
 
@@ -7616,8 +7792,8 @@ function (_NamedObject7) {
       var p2y = p1y + 2.5;
       var p3x = p1x + 5;
       var p3y = p1y - 2.5;
-      context.fillStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Mark);
-      context.strokeStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Mark);
+      context.fillStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Mark);
+      context.strokeStyle = this.m_pTheme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Mark);
     }
   }]);
 
@@ -7647,11 +7823,11 @@ function (_Plotter7) {
       var ds = mgr.getDataSource(this.getDataSourceName());
       if (ds.getDataCount() < 1) return;
       var theme = mgr.getTheme(this.getFrameName());
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "left";
       context.textBaseline = "middle";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.RangeMark);
-      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.RangeMark);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.RangeMark);
+      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.RangeMark);
       var v = ds.getDataAt(ds.getDataCount() - 1).volume;
       var y = range.toY(v);
       var left = area.getLeft() + 1;
@@ -7690,11 +7866,11 @@ function (_Plotter8) {
       var v = ds._dataItems[ds._dataItems.length - 1].close;
       if (v <= range.getMinValue() || v >= range.getMaxValue()) return;
       var theme = mgr.getTheme(this.getFrameName());
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "left";
       context.textBaseline = "middle";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.RangeMark);
-      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.RangeMark);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.RangeMark);
+      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.RangeMark);
       var y = range.toY(v);
       var left = area.getLeft() + 1;
       Plotter.drawLine(context, left, y, left + 7, y);
@@ -7735,7 +7911,7 @@ function (_Plotter9) {
 
       var range = mgr.getRange(this.getAreaName());
       var theme = mgr.getTheme(this.getFrameName());
-      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Cursor);
+      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Cursor);
       var x = timeline.toItemCenter(timeline.getSelectedIndex());
       Plotter.drawLine(context, x, area.getTop() - 1, x, area.getBottom());
       var pos = range.getSelectedPosition();
@@ -7771,14 +7947,14 @@ function (_Plotter10) {
       var theme = mgr.getTheme(this.getFrameName());
       var lang = mgr.getLanguage();
       var x = timeline.toItemCenter(timeline.getSelectedIndex());
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Background);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background);
       context.fillRect(x - 52.5, area.getTop() + 2.5, 106, 18);
-      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Grid3);
+      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Grid3);
       context.strokeRect(x - 52.5, area.getTop() + 2.5, 106, 18);
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "center";
       context.textBaseline = "middle";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text4);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
       var time = new Date(ds.getDataAt(timeline.getSelectedIndex()).date);
       var month = time.getMonth() + 1;
       var date = time.getDate();
@@ -7887,14 +8063,14 @@ function (_NamedObject8) {
         "y": y - 10
       }]);
       var theme = mgr.getTheme(this.getFrameName());
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Background);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background);
       context.fill();
-      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Grid4);
+      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Grid4);
       context.stroke();
-      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Font.Default);
+      context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "center";
       context.textBaseline = "middle";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.Text3);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text3);
       var digits = 2;
 
       if (range.getNameObject().getCompAt(2) === "main") {
@@ -7955,8 +8131,8 @@ function (_NamedObject9) {
   }, {
     key: "drawCrossCursor",
     value: function drawCrossCursor(context) {
-      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.LineColorNormal);
-      context.fillStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.LineColorNormal);
+      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.LineColorNormal);
+      context.fillStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.LineColorNormal);
       var tempPt = this.toolObject.getPoint(0).getPosXY();
 
       if (tempPt === null) {
@@ -7980,14 +8156,14 @@ function (_NamedObject9) {
       var centerY = center.y;
       context.beginPath();
       context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-      context.fillStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.CircleColorFill);
+      context.fillStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.CircleColorFill);
       context.fill();
       context.stroke();
     }
   }, {
     key: "drawCtrlPt",
     value: function drawCtrlPt(context) {
-      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.CircleColorStroke);
+      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.CircleColorStroke);
 
       for (var i = 0; i < this.ctrlPtsNum; i++) {
         this.drawCircle(context, this.ctrlPts[1][i], this.normalSize);
@@ -7996,7 +8172,7 @@ function (_NamedObject9) {
   }, {
     key: "highlightCtrlPt",
     value: function highlightCtrlPt(context) {
-      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.CircleColorStroke);
+      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.CircleColorStroke);
 
       for (var i = 0; i < this.ctrlPtsNum; i++) {
         if (this.toolObject.getPoint(i).getState() === __WEBPACK_IMPORTED_MODULE_4__cpoint__["a" /* CPoint */].state.Highlight) this.drawCircle(context, this.ctrlPts[1][i], this.selectedSize);
@@ -8102,20 +8278,20 @@ function (_NamedObject9) {
   }, {
     key: "updateDraw",
     value: function updateDraw(context) {
-      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.LineColorNormal);
+      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.LineColorNormal);
       this.draw(context);
       this.drawCtrlPt(context);
     }
   }, {
     key: "finishDraw",
     value: function finishDraw(context) {
-      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.LineColorNormal);
+      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.LineColorNormal);
       this.draw(context);
     }
   }, {
     key: "highlight",
     value: function highlight(context) {
-      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.LineColorSelected);
+      context.strokeStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.LineColorSelected);
       this.draw(context);
       this.drawCtrlPt(context);
       this.highlightCtrlPt(context);
@@ -8474,7 +8650,7 @@ function (_CToolPlotter9) {
     value: function draw(context) {
       context.font = "12px Tahoma";
       context.textAlign = "left";
-      context.fillStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.LineColorNormal);
+      context.fillStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.LineColorNormal);
       this.updateCtrlPtPos();
       this.getAreaPos();
       this.startPoint = this.ctrlPts[1][0];
@@ -8690,7 +8866,7 @@ function (_CToolPlotter11) {
     value: function drawLinesAndInfo(context, startPoint, endPoint) {
       context.font = "12px Tahoma";
       context.textAlign = "left";
-      context.fillStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["c" /* Theme */].Color.LineColorNormal);
+      context.fillStyle = this.theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.LineColorNormal);
       var text;
 
       if (this.toolObject.state === __WEBPACK_IMPORTED_MODULE_9__ctools__["n" /* CToolObject */].state.Draw) {
@@ -12745,12 +12921,12 @@ function () {
     value: function setIndicator(index, indicName) {
       if (indicName === 'NONE') {
         var _index = 2;
-        if (__WEBPACK_IMPORTED_MODULE_3__templates__["b" /* Template */].displayVolume === false) _index = 1;
+        if (__WEBPACK_IMPORTED_MODULE_3__templates__["b" /* Template */].showVolume === false) _index = 1;
         var areaName = __WEBPACK_IMPORTED_MODULE_0__chart_manager__["a" /* ChartManager */].instance.getIndicatorAreaName('frame0.k0', _index);
         if (areaName !== '') __WEBPACK_IMPORTED_MODULE_0__chart_manager__["a" /* ChartManager */].instance.removeIndicator(areaName);
       } else {
         var _index2 = 2;
-        if (__WEBPACK_IMPORTED_MODULE_3__templates__["b" /* Template */].displayVolume === false) _index2 = 1;
+        if (__WEBPACK_IMPORTED_MODULE_3__templates__["b" /* Template */].showVolume === false) _index2 = 1;
 
         var _areaName = __WEBPACK_IMPORTED_MODULE_0__chart_manager__["a" /* ChartManager */].instance.getIndicatorAreaName('frame0.k0', _index2);
 
@@ -13375,6 +13551,7 @@ Timeline.PADDING_RIGHT = 8;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__chart_manager__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__themes__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__chart_settings__ = __webpack_require__(4);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__kline__ = __webpack_require__(3);
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -13396,6 +13573,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -13476,10 +13654,22 @@ function (_areas$ChartAreaGroup) {
         rh[0] = h;
       }
 
-      var nw = 8; // chart depths sidebar (深度图侧边栏宽度)
+      var nw = 8; // chart depths sidebar (深度图侧边栏宽度)        
 
       var minRW = 76;
+
+      if (!__WEBPACK_IMPORTED_MODULE_4__kline__["a" /* default */].instance.showDepth) {
+        //是否显示深度图侧边栏
+        minRW = 0;
+      }
+
       var maxRW = Math.min(240, width >> 1);
+
+      if (!__WEBPACK_IMPORTED_MODULE_4__kline__["a" /* default */].instance.showDepth) {
+        //是否显示深度图侧边栏
+        maxRW = 0;
+      }
+
       var rw = minRW;
       var mgr = __WEBPACK_IMPORTED_MODULE_1__chart_manager__["a" /* ChartManager */].instance;
       var timeline = mgr.getTimeline(this.getDataSourceName());
@@ -13570,9 +13760,11 @@ function (_areas$ChartAreaGroup) {
       }
 
       var mgr = __WEBPACK_IMPORTED_MODULE_1__chart_manager__["a" /* ChartManager */].instance;
-      var theme = mgr.getTheme(this.getFrameName());
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_2__themes__["c" /* Theme */].Color.Grid1);
-      context.fillRect(this._areas[0].getRight(), this.getTop(), 1, this.getHeight());
+      var theme = mgr.getTheme(this.getFrameName()); // if(Kline.instance.grid){//是否显示网格
+
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_2__themes__["d" /* Theme */].Color.Grid1);
+      context.fillRect(this._areas[0].getRight(), this.getTop(), 1, this.getHeight()); // }
+
       var i,
           cnt = this._areas.length - 2;
 
@@ -13583,7 +13775,7 @@ function (_areas$ChartAreaGroup) {
       if (!mgr.getCaptureMouseWheelDirectly()) {
         for (i = 0, cnt += 2; i < cnt; i += 2) {
           if (this._areas[i].isSelected()) {
-            context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_2__themes__["c" /* Theme */].Color.Indicator1);
+            context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_2__themes__["d" /* Theme */].Color.Indicator1);
             context.strokeRect(this.getLeft() + 0.5, this.getTop() + 0.5, this.getWidth() - 1, this.getHeight() - 1);
             break;
           }
@@ -14072,9 +14264,9 @@ function (_Indicator) {
 
     _this.addOutput(new __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */]("LOW", new __WEBPACK_IMPORTED_MODULE_0__exprs__["r" /* LowExpr */](), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.None));
 
-    _this.addOutput(new __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */]("CLOSE", new __WEBPACK_IMPORTED_MODULE_0__exprs__["e" /* CloseExpr */](), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.Line, __WEBPACK_IMPORTED_MODULE_1__themes__["c" /* Theme */].Color.Indicator0));
+    _this.addOutput(new __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */]("CLOSE", new __WEBPACK_IMPORTED_MODULE_0__exprs__["e" /* CloseExpr */](), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.Line, __WEBPACK_IMPORTED_MODULE_1__themes__["d" /* Theme */].Color.Indicator0));
 
-    _this.addOutput(new __WEBPACK_IMPORTED_MODULE_0__exprs__["A" /* RangeOutputExpr */]("MA", new __WEBPACK_IMPORTED_MODULE_0__exprs__["t" /* MaExpr */](new __WEBPACK_IMPORTED_MODULE_0__exprs__["e" /* CloseExpr */](), M1), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.Line, __WEBPACK_IMPORTED_MODULE_1__themes__["c" /* Theme */].Color.Indicator1));
+    _this.addOutput(new __WEBPACK_IMPORTED_MODULE_0__exprs__["A" /* RangeOutputExpr */]("MA", new __WEBPACK_IMPORTED_MODULE_0__exprs__["t" /* MaExpr */](new __WEBPACK_IMPORTED_MODULE_0__exprs__["e" /* CloseExpr */](), M1), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.Line, __WEBPACK_IMPORTED_MODULE_1__themes__["d" /* Theme */].Color.Indicator1));
 
     return _this;
   }
@@ -14214,13 +14406,13 @@ function (_Indicator4) {
 
     _this4.addParameter(M2);
 
-    var VOLUME = new __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */]("VOLUME", new __WEBPACK_IMPORTED_MODULE_0__exprs__["H" /* VolumeExpr */](), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.VolumeStick, __WEBPACK_IMPORTED_MODULE_1__themes__["c" /* Theme */].Color.Text4);
+    var VOLUME = new __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */]("VOLUME", new __WEBPACK_IMPORTED_MODULE_0__exprs__["H" /* VolumeExpr */](), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.VolumeStick, __WEBPACK_IMPORTED_MODULE_1__themes__["d" /* Theme */].Color.Text4);
 
     _this4.addOutput(VOLUME);
 
-    _this4.addOutput(new __WEBPACK_IMPORTED_MODULE_0__exprs__["A" /* RangeOutputExpr */]("MA", new __WEBPACK_IMPORTED_MODULE_0__exprs__["t" /* MaExpr */](VOLUME, M1), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.Line, __WEBPACK_IMPORTED_MODULE_1__themes__["c" /* Theme */].Color.Indicator0));
+    _this4.addOutput(new __WEBPACK_IMPORTED_MODULE_0__exprs__["A" /* RangeOutputExpr */]("MA", new __WEBPACK_IMPORTED_MODULE_0__exprs__["t" /* MaExpr */](VOLUME, M1), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.Line, __WEBPACK_IMPORTED_MODULE_1__themes__["d" /* Theme */].Color.Indicator0));
 
-    _this4.addOutput(new __WEBPACK_IMPORTED_MODULE_0__exprs__["A" /* RangeOutputExpr */]("MA", new __WEBPACK_IMPORTED_MODULE_0__exprs__["t" /* MaExpr */](VOLUME, M2), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.Line, __WEBPACK_IMPORTED_MODULE_1__themes__["c" /* Theme */].Color.Indicator1));
+    _this4.addOutput(new __WEBPACK_IMPORTED_MODULE_0__exprs__["A" /* RangeOutputExpr */]("MA", new __WEBPACK_IMPORTED_MODULE_0__exprs__["t" /* MaExpr */](VOLUME, M2), __WEBPACK_IMPORTED_MODULE_0__exprs__["y" /* OutputExpr */].outputStyle.Line, __WEBPACK_IMPORTED_MODULE_1__themes__["d" /* Theme */].Color.Indicator1));
 
     return _this4;
   }
@@ -15053,7 +15245,7 @@ exports = module.exports = __webpack_require__(29)(false);
 
 
 // module
-exports.push([module.i, "html,\nbody {\n    min-height: 100%;\n    margin: 0;\n    min-width: 100%\n}\n\n.chart_container {\n    cursor: default;\n    font-family: arial, sans, serif;\n    font-size: 12px;\n    height: 100%;\n    position: relative;\n    width: 100%\n}\n\n.chart_container div,\n.chart_container ul,\n.chart_container form {\n    margin: 0;\n    padding: 0\n}\n\n.chart_container a:hover {\n    text-decoration: none\n}\n\n.chart_container ul {\n    list-style: none;\n    border: 0;\n    margin: 0;\n    padding: 0\n}\n\n.chart_container button {\n    cursor: pointer\n}\n\n#chart_dom_elem_cache {\n    *font-weight: bold;\n    position: absolute;\n    visibility: hidden;\n    z-index: -1\n}\n\n#chart_toolbar {\n    border-bottom: 1px solid;\n    *font-weight: bold;\n    height: 29px;\n    position: absolute;\n    z-index: 3\n}\n\n.chart_container.dark #chart_toolbar {\n    /* background-color: #0a0a0a;  工具条背景色*/\n    background-color: #fff;\n    border-bottom-color: #404040\n}\n\n.chart_container.light #chart_toolbar {\n    background-color: #fff;\n    border-bottom-color: #afb1b3\n}\n\n.chart_container .chart_toolbar_sep {\n    float: left;\n    height: 100%;\n    width: 16px\n}\n\n.chart_container .chart_toolbar_minisep {\n    float: left;\n    height: 100%;\n    width: 4px\n}\n\n.chart_container .chart_dropdown {\n    display: inline-block;\n    float: left;\n    position: relative;\n    z-index: 100\n}\n\n.chart_container .chart_dropdown_t {\n    background-origin: content-box;\n    background-repeat: no-repeat;\n    border: 1px solid;\n    border-bottom-width: 0;\n    margin-top: 3px;\n    padding-right: 10px;\n    z-index: 101;\n    position: relative\n}\n\n.chart_container .chart_dropdown_t a {\n    display: inline-block;\n    padding: 3px 12px 5px 10px\n}\n\n.chart_container .chart_dropdown_data {\n    border: 1px solid;\n    display: none;\n    position: absolute;\n    padding: 6px 8px 6px 8px;\n    margin-top: -1px;\n    z-index: 100\n}\n\n.chart_container .chart_dropdown_data table {\n    border-collapse: collapse;\n    font-weight: normal;\n    white-space: nowrap\n}\n\n.chart_container .chart_dropdown_data td {\n    border-bottom: 1px solid;\n    padding: 8px 6px;\n    vertical-align: top\n}\n\n.market_chooser .chart_dropdown_data {\n    width: 370px\n}\n\n.market_chooser .chart_dropdown_data td {\n    border-bottom: 1px solid;\n    padding: 1px 6px !important;\n    vertical-align: top;\n    line-height: 24px\n}\n\n.market_chooser li {\n    float: left;\n    width: 80px;\n    height: 24px;\n    line-height: 24px\n}\n\n.chart_container .chart_dropdown_data td.marketName_ a.dark {\n    color: #fff\n}\n\n.chart_container .chart_dropdown_data td.marketName_ a.light {\n    color: #000\n}\n\n.chart_container .chart_dropdown_data table tr:last-child td {\n    border-bottom: 0\n}\n\n.chart_container .chart_dropdown_data li {\n    white-space: nowrap;\n    display: inline-block\n}\n\n.chart_container .chart_dropdown_data a {\n    text-decoration: none;\n    cursor: pointer;\n    padding: 5px 6px 5px 6px\n}\n\n.chart_container .chart_dropdown-hover.chart_dropdown_data {\n    display: block\n}\n\n#chart_dropdown_symbols .chart_dropdown_data td {\n    padding: 8px 6px 0 6px\n}\n\n#chart_dropdown_symbols .chart_dropdown_data li {\n    display: block;\n    height: 26px\n}\n\n#chart_dropdown_symbols .chart_dropdown_data a {\n    cursor: pointer\n}\n\n#chart_dropdown_themes .chart_dropdown_data td:first-child {\n    padding: 6px 1px 7px 6px\n}\n\n.chart_container.dark .chart_dropdown_t {\n    background-image: url(" + escape(__webpack_require__(30)) + ");\n    background-position: right 9px;\n    border-color: #0a0a0a;\n    color: #e5e5e5\n}\n\n.chart_container.dark .chart_dropdown-hover.chart_dropdown_t {\n    background-color: #0a0a0a;\n    background-image: url(" + escape(__webpack_require__(31)) + ");\n    background-position: right 8px;\n    border-color: #606060;\n    color: #fff\n}\n\n.chart_container.dark .chart_dropdown_data {\n    background-color: rgba(10, 10, 10, 0.8);\n    border-color: #606060\n}\n\n.chart_container.dark .chart_dropdown_data td {\n    border-bottom-color: #404040;\n    color: #e5e5e5\n}\n\n.chart_container.dark .chart_dropdown_data li a {\n    color: #1987da\n}\n\n.chart_container.dark .chart_dropdown_data li a:hover {\n    background-color: #383838\n}\n\n.chart_container.dark .chart_dropdown_data li a.selected {\n    color: #ffac00\n}\n\n.chart_container.light .chart_dropdown_t {\n    background-image: url(" + escape(__webpack_require__(32)) + ");\n    background-position: right 10px;\n    border-color: #fff;\n    color: #393c40\n}\n\n.chart_container.light .chart_dropdown-hover.chart_dropdown_t {\n    background-color: #fff;\n    background-image: url(" + escape(__webpack_require__(33)) + ");\n    background-position: right 9px;\n    border-color: #4c4f53;\n    color: #393c40\n}\n\n.chart_container.light .chart_dropdown_data {\n    background-color: #fff;\n    border-color: #4c4f53\n}\n\n.chart_container.light .chart_dropdown_data td {\n    border-bottom-color: #e4e5e6;\n    color: #393c40\n}\n\n.chart_container.light .chart_dropdown_data li a {\n    color: #1478c8\n}\n\n.chart_container.light .chart_dropdown_data a:hover {\n    background-color: #f4f4f4\n}\n\n.chart_container.light .chart_dropdown_data a.selected {\n    color: #f27935\n}\n\n.chart_container .chart_toolbar_label {\n    cursor: default;\n    /* display: inline-block; */\n    float: left;\n    padding: 7px 4px\n}\n\n.chart_container.dark .chart_toolbar_label {\n    border-color: #232323;\n    color: #e5e5e5\n}\n\n.chart_container.light .chart_toolbar_label {\n    border-color: #fff;\n    color: #393c40\n}\n\n.chart_container .chart_toolbar_button {\n    border: 1px solid;\n    cursor: pointer;\n    float: left;\n    margin: 3px 2px;\n    padding: 3px 10px;\n    position: relative;\n    z-index: 100\n}\n\n.chart_container.dark .chart_toolbar_button {\n    border-color: #404040;\n    color: #e5e5e5\n}\n\n.chart_container.dark .chart_toolbar_button:hover {\n    background-color: #383838;\n    border-color: #606060;\n    color: #fff\n}\n\n.chart_container.dark .chart_toolbar_button.selected {\n    background-color: #383838;\n    border-color: #606060;\n    color: #ffac00\n}\n\n.chart_container.dark .chart_toolbar_button.selected:hover {\n    background-color: #474747;\n    border-color: #808080;\n    color: #ffac00\n}\n\n.chart_container.light .chart_toolbar_button {\n    border-color: #ccc;\n    color: #393c40\n}\n\n.chart_container.light .chart_toolbar_button:hover {\n    background-color: #f4f4f4;\n    color: #393c40\n}\n\n.chart_container.light .chart_toolbar_button.selected {\n    background-color: #f4f4f4;\n    border-color: #f27935;\n    color: #f27935\n}\n\n.chart_container .chart_toolbar_tabgroup {\n    float: left\n}\n\n.chart_container .chart_toolbar_tabgroup li {\n    display: inline-block;\n    padding: 4px 0;\n    margin: 3px 0\n}\n\n.chart_container .chart_toolbar_tabgroup li a {\n    cursor: pointer;\n    padding: 4px 4px\n}\n\n.chart_container .chart_toolbar_tabgroup li a:hover {\n    text-decoration: none\n}\n\n.chart_container.dark .chart_toolbar_tabgroup li a {\n    color: #1987da\n}\n\n.chart_container.dark .chart_toolbar_tabgroup li a:hover {\n    background-color: #383838\n}\n\n.chart_container.dark .chart_toolbar_tabgroup li a.selected {\n    /* 时间range选中 时间颜色 */\n    color: #444;\n    font-weight: 700;\n\n}\n\n.chart_container.light .chart_toolbar_tabgroup li a {\n    /* 时间range 时间颜色 */\n    color: #999\n}\n\n.chart_container.light .chart_toolbar_tabgroup li a:hover {\n    background-color: #f4f4f4\n}\n\n.chart_container.light .chart_toolbar_tabgroup li a.selected {\n    color: #f27935\n}\n\n#chart_toolbar_periods_horz {\n    /* display: inline-block; */\n    float: left;\n    position: relative;\n    z-index: 100\n}\n\n#chart_toolbar_periods_vert {\n    float: left\n}\n\n.chart_container a.chart_icon {\n    border: 1px solid;\n    height: 16px;\n    padding: 0;\n    width: 16px;\n    box-sizing:border-box;\n}\n\n.chart_container a.chart_icon:hover {\n    border-width: 2px;\n}\n\n.chart_container .chart_dropdown_data a.chart_icon {\n    display: inline-block;\n    margin: 0 6px 0 6px\n}\n\n.chart_container a.chart_icon_theme_dark,\n.chart_container .chart_dropdown_data li a.chart_icon_theme_dark:hover {\n    background-color: #000\n}\n\n.chart_container a.chart_icon_theme_light,\n.chart_container .chart_dropdown_data li a.chart_icon_theme_light:hover {\n    background-color: #fff\n}\n\n.chart_container #chart_toolbar_theme {\n    float: left;\n    padding: 0 8px;\n    /* display: none; */\n}\n\n.chart_container #chart_toolbar_theme a.chart_icon {\n    cursor: pointer;\n    float: left;\n    margin: 6px 4px\n}\n\n.chart_container #chart_select_theme td:last-child {\n    padding: 6px 6px 0 8px\n}\n\n.chart_container #chart_select_theme li {\n    padding: 0 4px 0 4px\n}\n\n.chart_container.dark a.chart_icon {\n    border-color: #aaa\n}\n\n.chart_container.dark a.chart_icon:hover {\n    border-color: #1987da\n}\n\n.chart_container.dark a.chart_icon.selected {\n    border-color: #ffac00\n}\n\n.chart_container.light a.chart_icon {\n    border-color: #aaa\n}\n\n.chart_container.light a.chart_icon.selected {\n    border-color: #f27935\n}\n\n.chart_container #chart_updated_time {\n    float: right;\n    margin: 4px 3px;\n    padding: 3px 10px\n}\n\n.chart_container.dark #chart_updated_time {\n    color: #e5e5e5\n}\n\n.chart_container.light #chart_updated_time {\n    color: #393c40\n}\n\n#chart_toolpanel {\n    border-right: 1px solid;\n    display: none;\n    position: absolute;\n    width: 32px;\n    z-index: 2\n}\n\n#chart_toolpanel .chart_toolpanel_separator {\n    position: relative;\n    height: 4px\n}\n\n#chart_toolpanel .chart_toolpanel_button {\n    position: relative;\n    z-index: 100\n}\n\n#chart_toolpanel .chart_toolpanel_icon {\n    background-origin: content-box;\n    background-repeat: no-repeat;\n    border: 1px solid;\n    cursor: pointer;\n    height: 16px;\n    margin: 1px 4px 1px 4px;\n    padding: 3px;\n    position: relative;\n    width: 16px;\n    z-index: 101\n}\n\n#chart_toolpanel .chart_toolpanel_tip {\n    border-radius: 4px;\n    border: 1px solid;\n    display: none;\n    *font-weight: bold;\n    position: absolute;\n    padding: 3px 6px 4px 6px;\n    margin-left: 36px;\n    margin-top: -25px;\n    white-space: nowrap;\n    z-index: 100\n}\n\n#chart_toolpanel .chart_toolpanel_button:hover .chart_toolpanel_tip {\n    display: block\n}\n\n.chart_container.dark #chart_toolpanel {    \n    background-color: #fff;/* 工具条背景颜色 */\n    border-right-color: #404040\n}\n\n.chart_container.dark .chart_toolpanel_icon {\n    background-color: #fff; /* 工具条图标背景颜色  */\n    border-color: #0a0a0a\n}\n\n.chart_container.dark .chart_toolpanel_button:hover .chart_toolpanel_icon {\n    background-color: #f3f9ff;/*工具条鼠标经过的颜色 */\n    border-color: #666\n}\n\n.chart_container.dark .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-color: #f3f9ff; /*工具条选中的颜色 */\n    border-color: #666\n}\n\n.chart_container.dark .chart_toolpanel_tip {\n    background-color: #ffac00;\n    border-color: #ffac00;\n    color: #0a0a0a\n}\n\n.chart_container.light #chart_toolpanel {\n    background-color: #fff;\n    border-right-color: #afb1b3\n}\n\n.chart_container.light .chart_toolpanel_icon {\n    background-color: #fff;\n    border-color: #fff\n}\n\n.chart_container.light .chart_toolpanel_button:hover .chart_toolpanel_icon {\n    background-color: #eee;\n    border-color: #afb1b3\n}\n\n.chart_container.light .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-color: #f4f4f4;\n    border-color: #afb1b3\n}\n\n.chart_container.light .chart_toolpanel_tip {\n    background-color: #f27938;\n    border-color: #f27938;\n    color: #eee\n}\n\n.chart_container.dark #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {\n    background-image: url(" + escape(__webpack_require__(34)) + ")\n}\n\n.chart_container.dark #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-image: url(" + escape(__webpack_require__(35)) + ")\n}\n\n.chart_container.dark #chart_toolbar .chart_BoxSize {\n    background: url(" + escape(__webpack_require__(39)) + ") no-repeat;\n}\n\n.chart_container.light #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {\n    background-image: url(" + escape(__webpack_require__(37)) + ")\n}\n\n.chart_container.light #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-image: url(" + escape(__webpack_require__(38)) + ")\n}\n\n.chart_container.light #chart_toolbar .chart_BoxSize {\n    background: url(" + escape(__webpack_require__(39)) + ") no-repeat;\n}\n\n.chart_container #chart_toolpanel #chart_Cursor {\n    background-position: 0 0\n}\n\n.chart_container #chart_toolpanel #chart_CrossCursor {\n    background-position: 0 -20px\n}\n\n.chart_container #chart_toolpanel #chart_SegLine {\n    background-position: 0 -40px\n}\n\n.chart_container #chart_toolpanel #chart_StraightLine {\n    background-position: 0 -60px\n}\n\n.chart_container #chart_toolpanel #chart_RayLine {\n    background-position: 0 -100px\n}\n\n.chart_container #chart_toolpanel #chart_ArrowLine {\n    background-position: 0 -80px\n}\n\n.chart_container #chart_toolpanel #chart_HoriSegLine {\n    background-position: 0 -160px\n}\n\n.chart_container #chart_toolpanel #chart_HoriStraightLine {\n    background-position: 0 -120px\n}\n\n.chart_container #chart_toolpanel #chart_HoriRayLine {\n    background-position: 0 -140px\n}\n\n.chart_container #chart_toolpanel #chart_VertiStraightLine {\n    background-position: 0 -180px\n}\n\n.chart_container #chart_toolpanel #chart_PriceLine {\n    background-position: 0 -200px\n}\n\n.chart_container #chart_toolpanel #chart_TriParallelLine {\n    background-position: 0 -220px\n}\n\n.chart_container #chart_toolpanel #chart_BiParallelLine {\n    background-position: 0 -240px\n}\n\n.chart_container #chart_toolpanel #chart_BiParallelRayLine {\n    background-position: 0 -260px\n}\n\n.chart_container .chart_toolpanel_button #chart_DrawFibRetrace {\n    background-position: 0 -280px\n}\n\n.chart_container #chart_toolpanel #chart_DrawFibFans {\n    background-position: 0 -300px\n}\n\n#chart_tabbar {\n    border-top: 1px solid;\n    cursor: default;\n    display: none;\n    *font-weight: bold;\n    height: 22px;\n    overflow: hidden;\n    position: absolute;\n    z-index: 1\n}\n\n#chart_tabbar ul {\n    height: 100%;\n    list-style: none;\n    padding: 0 0 0 4px\n}\n\n#chart_tabbar li {\n    display: inline-block;\n    height: 100%;\n    margin: 0\n}\n\n#chart_tabbar a {\n    cursor: pointer;\n    display: inline-block;\n    height: 100%;\n    margin: 0;\n    padding: 3px 4px 0 4px;\n    overflow: hidden\n}\n\n#chart_tabbar a:hover {\n    text-decoration: none\n}\n\n.chart_container.dark #chart_tabbar {\n    background-color: #fff;/*底部工具条颜色*/\n    border-top-color: #000\n}\n\n.chart_container.dark #chart_tabbar a {\n    color: #e5e5e5\n}\n\n.chart_container.dark #chart_tabbar a:hover {\n    background-color: #383838;\n    color: #fff\n}\n\n.chart_container.dark #chart_tabbar a.selected {\n    color: #ffac00\n}\n\n.chart_container.light #chart_tabbar {\n    background-color: #fff;\n    border-top-color: #afb1b3\n}\n\n.chart_container.light #chart_tabbar a {\n    color: #393c40\n}\n\n.chart_container.light #chart_tabbar a:hover {\n    background-color: #f4f4f4;\n    color: #393c40\n}\n\n.chart_container.light #chart_tabbar a.selected {\n    color: #f27935\n}\n\n#chart_canvasGroup {\n    position: absolute;\n    z-index: 0\n}\n\n#chart_mainCanvas {\n    overflow: hidden;\n    position: absolute;\n    z-index: 0\n}\n\n#chart_overlayCanvas {\n    overflow: hidden;\n    position: absolute;\n    z-index: 2\n}\n\n#chart_loading {\n    border: 1px solid;\n    border-radius: 4px;\n    font-size: 18px;\n    font-weight: bold;\n    line-height: 48px;\n    overflow: hidden;\n    position: absolute;\n    text-align: center;\n    visibility: hidden;\n    width: 200px;\n    z-index: 200\n}\n\n#chart_loading.activated {\n    visibility: visible\n}\n\n.chart_container.dark #chart_loading {\n    border-color: #aaa;\n    background-color: rgba(0, 0, 0, 0.6);\n    color: #ccc\n}\n\n.chart_container.light #chart_loading {\n    border-color: #afb1b3;\n    background-color: rgba(244, 244, 244, 0.8);\n    color: #393c40\n}\n\n#chart_parameter_settings {\n    border-radius: 4px;\n    border: 1px solid;\n    width: 640px;\n    position: absolute;\n    overflow: hidden;\n    visibility: hidden;\n    z-index: 500\n}\n\n#chart_parameter_settings.clicked {\n    visibility: visible\n}\n\n#chart_parameter_settings h2 {\n    padding: 8px 12px;\n    margin: 0\n}\n\n#chart_parameter_settings table {\n    border-collapse: collapse;\n    width: 100%\n}\n\n#chart_parameter_settings tr {\n    line-height: 32px\n}\n\n#chart_parameter_settings th {\n    text-align: right;\n    padding: 0 4px 0 16px\n}\n\n#chart_parameter_settings input {\n    width: 2em;\n    margin: 0 2px 0 2px\n}\n\n#chart_parameter_settings #close_settings {\n    border-radius: 4px;\n    cursor: pointer;\n    font-weight: bold;\n    text-align: center;\n    margin: 8px auto;\n    padding: 5px 24px 5px 24px;\n    width: 84px\n}\n\n#chart_parameter_settings .chart_str_default {\n    margin-right: 24px\n}\n\n.chart_container.dark #chart_parameter_settings {\n    background-color: rgba(0, 0, 0, 0.9);\n    border-color: rgba(0, 0, 0, 0.9);\n    color: #ccc;\n}\n\n.chart_container.dark #chart_parameter_settings #close_settings {\n    background: #1887da;\n    color: #eee\n}\n\n.chart_container.light #chart_parameter_settings {\n    background-color: rgba(244, 244, 244, 0.8);\n    border-color: #afb1b3;\n    color: #393c40\n}\n\n.chart_container.light #chart_parameter_settings #close_settings {\n    background: #1478c8;\n    color: #eee\n}\n\n.chart_container input,\n.chart_container button {\n    border-radius: 4px;\n    border: 1px solid;\n    padding: 4px\n}\n\n.chart_container input[type=text] {\n    width: 12em\n}\n\n.chart_container input[type=button],\n.chart_container input[type=submit],\n.chart_container button {\n    font-family: arial, sans, serif;\n    padding: 4px 8px;\n    cursor: pointer\n}\n\n.chart_container.dark input,\n.chart_container.dark button {\n    background-color: #151515;\n    border-color: #333;\n    color: #ccc\n}\n\n.chart_container.light input,\n.chart_container.light button {\n    background-color: #ddd;\n    border-color: #ddd;\n    color: #222\n}\n\n.trade_container {\n    width: 250px;\n    height: 100%;\n    float: right;\n    z-index: 99999;\n    font-size: 12px;\n    overflow: hidden\n}\n\n.trade_container.dark {\n    /* background: #0a0a0a;  深色皮肤背景 */\n    background-color: #f3f9ff;\n    color: #f1f1f1\n}\n\n.m_righttop {\n    position: fixed;\n    top: 0;\n    height: 41px;\n    line-height: 41px;\n    width: 230px;\n    text-align: right;\n    padding-right: 20px;\n    font-size: 16px;\n    color: #f78d15;\n    font-family: Gotham, \"Helvetica Neue\", Helvetica, Arial, sans-serif\n}\n\n.m_righttop em {\n    width: 123px;\n    height: 28px;\n    background-position: 0 0;\n    display: block;\n    float: right;\n    margin-top: 5px\n}\n\n.dark .m_righttop em {\n    background-position: 0 0\n}\n\n.m_rightbot {\n    height: 22px;\n    line-height: 22px;\n    border-top: 1px solid #404040;\n    width: 230px;\n    text-align: right;\n    padding-right: 20px;\n    background-color: #0a0a0a;\n    border-bottom-color: #404040\n}\n\n.m_guadan {\n    margin-top: 29px;\n    overflow: hidden;\n    border-left: 1px solid #404040;\n    border-top: 1px solid #404040\n}\n\n.m_guadan a {\n    font-weight: bold;\n    color: #FFF;\n    text-decoration: none\n}\n\n.light .m_guadan {\n    margin-top: 29px;\n    overflow: hidden;\n    border-left: 1px solid #afb1b3;\n    border-top: 1px solid #afb1b3\n}\n\n#orderbook #asks,\n#orderbook #gasks,\n#orderbook #bids,\n#orderbook #gbids {\n    height: 195px;\n    position: relative;\n    display: inline-block;\n    overflow: hidden\n}\n\n.symbol-title {\n    font-size: 14px;\n    font-weight: bold;\n    text-align: center;\n    height: 16px;\n    line-height: 16px;\n    font-family: Arial, sans, serif;\n    padding: 5px\n}\n\n.symbol-title .dark {\n    color: #6BF\n}\n\n.symbol-title .infoDepth {\n    margin-left: 8px;\n    color: #f78d15\n}\n\n.symbol-title a:hover {\n    text-decoration: underline\n}\n\n#asks,\n#bids {\n    width: 150px\n}\n\n#orderbook {\n    padding-left: 3px;\n    border-bottom: 1px solid #222;\n    padding-bottom: 2px;\n    margin-left: 5px;\n    margin-bottom: 2px\n}\n\n#orderbook .table {\n    position: absolute;\n    border-collapse: collapse;\n    padding: 0;\n    margin: 0\n}\n\n#gasks .table,\n#asks .table {\n    bottom: 0\n}\n\n#orderbook .table .row {\n    padding: 0;\n    margin: 0;\n    height: 13px;\n    line-height: 13px;\n    font-family: Consolas, monospace\n}\n\n#orderbook .table .row {\n    line-height: 13px\n}\n\n#orderbook .table .g {\n    color: #666\n}\n\n#gasks,\n#gbids {\n    width: 80px\n}\n\n#gasks .amount,\n#gbids .amount {\n    float: right\n}\n\n#gasks .price,\n#gbids .price {\n    float: left;\n    text-align: right\n}\n\n.price {\n    margin-right: 10px\n}\n\n.price h {\n    visibility: hidden\n}\n\n.price g,\n.amount g {\n    color: #666\n}\n\n#price {\n    text-align: center;\n    font-size: 16px;\n    font-weight: bold;\n    height: 25px;\n    line-height: 25px\n}\n\n.trade_container .green {\n    /* 市场价颜色 */\n    color: #f00  \n}\n\n.trade_container .red {\n    color: #F00\n}\n\n.trade_container.dark #orderbook div.table div.remove g,\n.trade_container.dark #orderbook div.table div.remove span {\n    color: #444\n}\n\n.trade_container.light #orderbook div.table div.remove g,\n.trade_container.light #orderbook div.table div.remove span {\n    color: #ddd\n}\n\n.trade_container.dark #orderbook div.table div.add {\n    display: none;\n    background-color: rgba(238, 238, 238, 0.2)\n}\n\n.trade_container.light #orderbook div.table div.add {\n    display: none;\n    background-color: rgba(100, 100, 100, 0.2)\n}\n\n#trades {\n    overflow-y: auto;\n    text-align: left;\n    color: #666;\n    padding-top: 5px\n}\n\n.trade_container.light {\n    background: #fff;\n    border-left: 1px solid #afb1b3;\n    color: #000\n}\n\n.trade_container.light .m_righttop em {\n    background-position: 0 -32px\n}\n\n.trade_container.light .m_righttop {\n    position: fixed;\n    top: 0;\n    height: 40px;\n    line-height: 40px;\n    background: #FFF;\n    width: 230px;\n    border-bottom: 1px solid #afb1b3;\n    text-align: right;\n    padding-right: 20px\n}\n\n.trade_container.light #trades.trades table {\n    color: #333\n}\n\n.trade_container.light #trades.trades .v {\n    color: #333\n}\n\n.trade_container.light #trades.trades .v g {\n    color: #333\n}\n\n.trade_container.light .m_rightbot {\n    background: #fff;\n    border-top: 1px solid #afb1b3\n}\n\n.trade_container.light #orderbook {\n    border-bottom: 1px solid #afb1b3\n}\n\n.trades_list {\n    padding-left: 25px\n}\n\n.trades_list ul {\n    width: 200px;\n    height: 14px;\n    line-height: 14px;\n    text-align: left;\n    list-style: none;\n    clear: both;\n    zoom: 1;\n    margin: 0;\n    padding: 0\n}\n\n.trades_list ul li {\n    height: 14px;\n    line-height: 14px;\n    color: #999;\n    font-size: 12px;\n    list-style: none;\n    float: left;\n    *display: inline;\n    margin: 0;\n    padding: 0;\n    font-family: Consolas, monospace\n}\n\n.trades_list ul li.tm {\n    width: 62px;\n    color: #999\n}\n\n.trades_list ul li.pr-green {\n    width: 65px;\n    /* 交易列表 买入价颜色  */\n    color: #6c6\n}\n\n.trades_list ul li.pr-red {\n    width: 65px;\n    /* 交易列表 卖出价颜色  */\n    color: #c66\n}\n\n.trades_list ul li.vl {\n    width: 60px;\n     /* 交易列表 卖出价颜色小数点前  */\n    color: #2d7bff\n}\n\n.trades_list ul li.vl g {\n     /* 交易列表 卖出价颜色小数点后  */\n    color: #ff577a\n}\n\n.trade_container.dark .trades_list ul.newul {\n    display: none;\n    background-color: rgba(238, 238, 238, 0.2)\n}\n\n.trade_container.light .trades_list ul.newul {\n    display: none;\n    background-color: rgba(100, 100, 100, 0.2)\n}\n\n.light .trades_list ul li.tm {\n    color: #333\n}\n\n.light .trades_list ul li.pr-green {\n    color: #6c6\n}\n\n.light .trades_list ul li.pr-red {\n    color: #c66\n}\n\n.light .trades_list ul li.vl {\n    color: #333\n}\n\n.light .trades_list ul li.vl g {\n    color: #333\n}\n\n.container .nav {\n    margin: 0;\n    list-style: none;\n    padding: 0 0 0 3px;\n    height: 41px\n}\n\n.container .nav li {\n    display: inline-block;\n    margin-right: 9px\n}\n\n.container a {\n    text-decoration: none;\n    color: #6BF;\n    font-family: Arial, sans, serif\n}\n\n.container a:hover {\n    text-decoration: underline\n}\n\n.container a.active {\n    color: #FC9\n}\n\n.container span {\n    margin-left: 3px;\n    font-family: Consolas, monospace;\n    color: #ccc\n}\n\n.light .container span {\n    color: #333\n}\n\n.light .container a {\n    text-decoration: none;\n    color: #1478c8;\n    font-family: Arial, sans, serif\n}\n\n.chart_BoxSize {\n    width: 20px;\n    height: 20px\n}\n", ""]);
+exports.push([module.i, "html,\nbody {\n    min-height: 100%;\n    margin: 0;\n    min-width: 100%\n}\n\n.chart_container {\n    cursor: default;\n    font-family: arial, sans, serif;\n    font-size: 12px;\n    height: 100%;\n    position: relative;\n    width: 100%\n}\n\n.chart_container div,\n.chart_container ul,\n.chart_container form {\n    margin: 0;\n    padding: 0\n}\n\n.chart_container a:hover {\n    text-decoration: none\n}\n\n.chart_container ul {\n    list-style: none;\n    border: 0;\n    margin: 0;\n    padding: 0\n}\n\n.chart_container button {\n    cursor: pointer\n}\n\n#chart_dom_elem_cache {\n    *font-weight: bold;\n    position: absolute;\n    visibility: hidden;\n    z-index: -1\n}\n\n#chart_toolbar {\n    border-bottom: 1px solid;\n    *font-weight: bold;\n    height: 29px;\n    position: absolute;\n    z-index: 3\n}\n\n.chart_container.dark #chart_toolbar {\n    /* background-color: #0a0a0a;  工具条背景色*/\n    background-color: #fff;\n    border-bottom-color: #404040\n}\n\n.chart_container.light #chart_toolbar {\n    background-color: #fff;\n    border-bottom-color: #afb1b3\n}\n\n.chart_container .chart_toolbar_sep {\n    float: left;\n    height: 100%;\n    width: 16px\n}\n\n.chart_container .chart_toolbar_minisep {\n    float: left;\n    height: 100%;\n    width: 4px\n}\n\n.chart_container .chart_dropdown {\n    display: inline-block;\n    float: left;\n    position: relative;\n    z-index: 100\n}\n\n.chart_container .chart_dropdown_t {\n    background-origin: content-box;\n    background-repeat: no-repeat;\n    border: 1px solid;\n    border-bottom-width: 0;\n    margin-top: 3px;\n    padding-right: 10px;\n    z-index: 101;\n    position: relative\n}\n\n.chart_container .chart_dropdown_t a {\n    display: inline-block;\n    padding: 3px 12px 5px 10px\n}\n\n.chart_container .chart_dropdown_data {\n    border: 1px solid;\n    display: none;\n    position: absolute;\n    padding: 6px 8px 6px 8px;\n    margin-top: -1px;\n    z-index: 100\n}\n\n.chart_container .chart_dropdown_data table {\n    border-collapse: collapse;\n    font-weight: normal;\n    white-space: nowrap\n}\n\n.chart_container .chart_dropdown_data td {\n    border-bottom: 1px solid;\n    padding: 8px 6px;\n    vertical-align: top\n}\n\n.market_chooser .chart_dropdown_data {\n    width: 370px\n}\n\n.market_chooser .chart_dropdown_data td {\n    border-bottom: 1px solid;\n    padding: 1px 6px !important;\n    vertical-align: top;\n    line-height: 24px\n}\n\n.market_chooser li {\n    float: left;\n    width: 80px;\n    height: 24px;\n    line-height: 24px\n}\n\n.chart_container .chart_dropdown_data td.marketName_ a.dark {\n    color: #fff\n}\n\n.chart_container .chart_dropdown_data td.marketName_ a.light {\n    color: #000\n}\n\n.chart_container .chart_dropdown_data table tr:last-child td {\n    border-bottom: 0\n}\n\n.chart_container .chart_dropdown_data li {\n    white-space: nowrap;\n    display: inline-block\n}\n\n.chart_container .chart_dropdown_data a {\n    text-decoration: none;\n    cursor: pointer;\n    padding: 5px 6px 5px 6px\n}\n\n.chart_container .chart_dropdown-hover.chart_dropdown_data {\n    display: block\n}\n\n#chart_dropdown_symbols .chart_dropdown_data td {\n    padding: 8px 6px 0 6px\n}\n\n#chart_dropdown_symbols .chart_dropdown_data li {\n    display: block;\n    height: 26px\n}\n\n#chart_dropdown_symbols .chart_dropdown_data a {\n    cursor: pointer\n}\n\n#chart_dropdown_themes .chart_dropdown_data td:first-child {\n    padding: 6px 1px 7px 6px\n}\n\n.chart_container.dark .chart_dropdown_t {\n    background-image: url(" + escape(__webpack_require__(30)) + ");\n    background-position: right 9px;\n    border-color: #0a0a0a;\n    color: #e5e5e5\n}\n\n.chart_container.dark .chart_dropdown-hover.chart_dropdown_t {\n    background-color: #0a0a0a;\n    background-image: url(" + escape(__webpack_require__(31)) + ");\n    background-position: right 8px;\n    border-color: #606060;\n    color: #fff\n}\n\n.chart_container.dark .chart_dropdown_data {\n    background-color: rgba(10, 10, 10, 0.8);\n    border-color: #606060\n}\n\n.chart_container.dark .chart_dropdown_data td {\n    border-bottom-color: #404040;\n    color: #e5e5e5\n}\n\n.chart_container.dark .chart_dropdown_data li a {\n    color: #1987da\n}\n\n.chart_container.dark .chart_dropdown_data li a:hover {\n    background-color: #383838\n}\n\n.chart_container.dark .chart_dropdown_data li a.selected {\n    color: #ffac00\n}\n\n.chart_container.light .chart_dropdown_t {\n    background-image: url(" + escape(__webpack_require__(32)) + ");\n    background-position: right 10px;\n    border-color: #fff;\n    color: #393c40\n}\n\n.chart_container.light .chart_dropdown-hover.chart_dropdown_t {\n    background-color: #fff;\n    background-image: url(" + escape(__webpack_require__(33)) + ");\n    background-position: right 9px;\n    border-color: #4c4f53;\n    color: #393c40\n}\n\n.chart_container.light .chart_dropdown_data {\n    background-color: #fff;\n    border-color: #4c4f53\n}\n\n.chart_container.light .chart_dropdown_data td {\n    border-bottom-color: #e4e5e6;\n    color: #393c40\n}\n\n.chart_container.light .chart_dropdown_data li a {\n    color: #1478c8\n}\n\n.chart_container.light .chart_dropdown_data a:hover {\n    background-color: #f4f4f4\n}\n\n.chart_container.light .chart_dropdown_data a.selected {\n    color: #f27935\n}\n\n.chart_container .chart_toolbar_label {\n    cursor: default;\n    /* display: inline-block; */\n    float: left;\n    padding: 7px 4px\n}\n\n.chart_container.dark .chart_toolbar_label {\n    border-color: #232323;\n    color: #e5e5e5\n}\n\n.chart_container.light .chart_toolbar_label {\n    border-color: #fff;\n    color: #393c40\n}\n\n.chart_container .chart_toolbar_button {\n    border: 1px solid;\n    cursor: pointer;\n    float: left;\n    margin: 3px 2px;\n    padding: 3px 10px;\n    position: relative;\n    z-index: 100\n}\n\n.chart_container.dark .chart_toolbar_button {\n    border-color: #404040;\n    color: #e5e5e5\n}\n\n.chart_container.dark .chart_toolbar_button:hover {\n    background-color: #383838;\n    border-color: #606060;\n    color: #fff\n}\n\n.chart_container.dark .chart_toolbar_button.selected {\n    background-color: #383838;\n    border-color: #606060;\n    color: #ffac00\n}\n\n.chart_container.dark .chart_toolbar_button.selected:hover {\n    background-color: #474747;\n    border-color: #808080;\n    color: #ffac00\n}\n\n.chart_container.light .chart_toolbar_button {\n    border-color: #ccc;\n    color: #393c40\n}\n\n.chart_container.light .chart_toolbar_button:hover {\n    background-color: #f4f4f4;\n    color: #393c40\n}\n\n.chart_container.light .chart_toolbar_button.selected {\n    background-color: #f4f4f4;\n    border-color: #f27935;\n    color: #f27935\n}\n\n.chart_container .chart_toolbar_tabgroup {\n    float: left\n}\n\n.chart_container .chart_toolbar_tabgroup li {\n    display: inline-block;\n    padding: 4px 0;\n    margin: 3px 0\n}\n\n.chart_container .chart_toolbar_tabgroup li a {\n    cursor: pointer;\n    padding: 4px 4px\n}\n\n.chart_container .chart_toolbar_tabgroup li a:hover {\n    text-decoration: none\n}\n\n.chart_container.dark .chart_toolbar_tabgroup li a {\n    color: #1987da\n}\n\n.chart_container.dark .chart_toolbar_tabgroup li a:hover {\n    background-color: #383838\n}\n\n.chart_container.dark .chart_toolbar_tabgroup li a.selected {\n    /* 时间range选中 时间颜色 */\n    color: #444;\n    font-weight: 700;\n\n}\n\n.chart_container.light .chart_toolbar_tabgroup li a {\n    /* 时间range 时间颜色 */\n    color: #999\n}\n\n.chart_container.light .chart_toolbar_tabgroup li a:hover {\n    background-color: #f4f4f4\n}\n\n.chart_container.light .chart_toolbar_tabgroup li a.selected {\n    color: #f27935\n}\n\n#chart_toolbar_periods_horz {\n    /* display: inline-block; */\n    float: left;\n    position: relative;\n    z-index: 100\n}\n\n#chart_toolbar_periods_vert {\n    float: left\n}\n\n.chart_container a.chart_icon {\n    border: 1px solid;\n    height: 16px;\n    padding: 0;\n    width: 16px;\n    box-sizing:border-box;\n}\n\n.chart_container a.chart_icon:hover {\n    border-width: 2px;\n}\n\n.chart_container .chart_dropdown_data a.chart_icon {\n    display: inline-block;\n    margin: 0 6px 0 6px\n}\n\n.chart_container a.chart_icon_theme_dark,\n.chart_container .chart_dropdown_data li a.chart_icon_theme_dark:hover {\n    background-color: #000\n}\n\n.chart_container a.chart_icon_theme_light,\n.chart_container .chart_dropdown_data li a.chart_icon_theme_light:hover {\n    background-color: #fff\n}\n\n.chart_container #chart_toolbar_theme {\n    float: left;\n    padding: 0 8px;\n    /* display: none; */\n}\n\n.chart_container #chart_toolbar_theme a.chart_icon {\n    cursor: pointer;\n    float: left;\n    margin: 6px 4px\n}\n\n.chart_container #chart_select_theme td:last-child {\n    padding: 6px 6px 0 8px\n}\n\n.chart_container #chart_select_theme li {\n    padding: 0 4px 0 4px\n}\n\n.chart_container.dark a.chart_icon {\n    border-color: #aaa\n}\n\n.chart_container.dark a.chart_icon:hover {\n    border-color: #1987da\n}\n\n.chart_container.dark a.chart_icon.selected {\n    border-color: #ffac00\n}\n\n.chart_container.light a.chart_icon {\n    border-color: #aaa\n}\n\n.chart_container.light a.chart_icon.selected {\n    border-color: #f27935\n}\n\n.chart_container #chart_updated_time {\n    float: right;\n    margin: 4px 3px;\n    padding: 3px 10px\n}\n\n.chart_container.dark #chart_updated_time {\n    color: #e5e5e5\n}\n\n.chart_container.light #chart_updated_time {\n    color: #393c40\n}\n\n#chart_toolpanel {\n    border-right: 1px solid;\n    display: none;\n    position: absolute;\n    width: 32px;\n    z-index: 2\n}\n\n#chart_toolpanel .chart_toolpanel_separator {\n    position: relative;\n    height: 4px\n}\n\n#chart_toolpanel .chart_toolpanel_button {\n    position: relative;\n    z-index: 100\n}\n\n#chart_toolpanel .chart_toolpanel_icon {\n    background-origin: content-box;\n    background-repeat: no-repeat;\n    border: 1px solid;\n    cursor: pointer;\n    height: 16px;\n    margin: 1px 4px 1px 4px;\n    padding: 3px;\n    position: relative;\n    width: 16px;\n    z-index: 101\n}\n\n#chart_toolpanel .chart_toolpanel_tip {\n    border-radius: 4px;\n    border: 1px solid;\n    display: none;\n    *font-weight: bold;\n    position: absolute;\n    padding: 3px 6px 4px 6px;\n    margin-left: 36px;\n    margin-top: -25px;\n    white-space: nowrap;\n    z-index: 100\n}\n\n#chart_toolpanel .chart_toolpanel_button:hover .chart_toolpanel_tip {\n    display: block\n}\n\n.chart_container.dark #chart_toolpanel {    \n    background-color: #fff;/* 工具条背景颜色 */\n    border-right-color: #404040\n}\n\n.chart_container.dark .chart_toolpanel_icon {\n    background-color: #fff; /* 工具条图标背景颜色  */\n    border-color: #0a0a0a\n}\n\n.chart_container.dark .chart_toolpanel_button:hover .chart_toolpanel_icon {\n    background-color: #f3f9ff;/*工具条鼠标经过的颜色 */\n    border-color: #666\n}\n\n.chart_container.dark .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-color: #f3f9ff; /*工具条选中的颜色 */\n    border-color: #666\n}\n\n.chart_container.dark .chart_toolpanel_tip {\n    background-color: #ffac00;\n    border-color: #ffac00;\n    color: #0a0a0a\n}\n\n.chart_container.light #chart_toolpanel {\n    background-color: #fff;\n    border-right-color: #afb1b3\n}\n\n.chart_container.light .chart_toolpanel_icon {\n    background-color: #fff;\n    border-color: #fff\n}\n\n.chart_container.light .chart_toolpanel_button:hover .chart_toolpanel_icon {\n    background-color: #eee;\n    border-color: #afb1b3\n}\n\n.chart_container.light .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-color: #f4f4f4;\n    border-color: #afb1b3\n}\n\n.chart_container.light .chart_toolpanel_tip {\n    background-color: #f27938;\n    border-color: #f27938;\n    color: #eee\n}\n\n.chart_container.dark #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {\n    background-image: url(" + escape(__webpack_require__(34)) + ")\n}\n\n.chart_container.dark #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-image: url(" + escape(__webpack_require__(35)) + ")\n}\n\n.chart_container.dark #chart_toolbar .chart_BoxSize {\n    background: url(" + escape(__webpack_require__(39)) + ") no-repeat;\n}\n\n.chart_container.light #chart_toolpanel .chart_toolpanel_button .chart_toolpanel_icon {\n    background-image: url(" + escape(__webpack_require__(37)) + ")\n}\n\n.chart_container.light #chart_toolpanel .chart_toolpanel_button.selected .chart_toolpanel_icon {\n    background-image: url(" + escape(__webpack_require__(38)) + ")\n}\n\n.chart_container.light #chart_toolbar .chart_BoxSize {\n    background: url(" + escape(__webpack_require__(39)) + ") no-repeat;\n}\n\n.chart_container #chart_toolpanel #chart_Cursor {\n    background-position: 0 0\n}\n\n.chart_container #chart_toolpanel #chart_CrossCursor {\n    background-position: 0 -20px\n}\n\n.chart_container #chart_toolpanel #chart_SegLine {\n    background-position: 0 -40px\n}\n\n.chart_container #chart_toolpanel #chart_StraightLine {\n    background-position: 0 -60px\n}\n\n.chart_container #chart_toolpanel #chart_RayLine {\n    background-position: 0 -100px\n}\n\n.chart_container #chart_toolpanel #chart_ArrowLine {\n    background-position: 0 -80px\n}\n\n.chart_container #chart_toolpanel #chart_HoriSegLine {\n    background-position: 0 -160px\n}\n\n.chart_container #chart_toolpanel #chart_HoriStraightLine {\n    background-position: 0 -120px\n}\n\n.chart_container #chart_toolpanel #chart_HoriRayLine {\n    background-position: 0 -140px\n}\n\n.chart_container #chart_toolpanel #chart_VertiStraightLine {\n    background-position: 0 -180px\n}\n\n.chart_container #chart_toolpanel #chart_PriceLine {\n    background-position: 0 -200px\n}\n\n.chart_container #chart_toolpanel #chart_TriParallelLine {\n    background-position: 0 -220px\n}\n\n.chart_container #chart_toolpanel #chart_BiParallelLine {\n    background-position: 0 -240px\n}\n\n.chart_container #chart_toolpanel #chart_BiParallelRayLine {\n    background-position: 0 -260px\n}\n\n.chart_container .chart_toolpanel_button #chart_DrawFibRetrace {\n    background-position: 0 -280px\n}\n\n.chart_container #chart_toolpanel #chart_DrawFibFans {\n    background-position: 0 -300px\n}\n\n#chart_tabbar {\n    border-top: 1px solid;\n    cursor: default;\n    display: none;\n    *font-weight: bold;\n    height: 22px;\n    overflow: hidden;\n    position: absolute;\n    z-index: 1\n}\n\n#chart_tabbar ul {\n    height: 100%;\n    list-style: none;\n    padding: 0 0 0 4px\n}\n\n#chart_tabbar li {\n    display: inline-block;\n    height: 100%;\n    margin: 0\n}\n\n#chart_tabbar a {\n    cursor: pointer;\n    display: inline-block;\n    height: 100%;\n    margin: 0;\n    padding: 3px 4px 0 4px;\n    overflow: hidden\n}\n\n#chart_tabbar a:hover {\n    text-decoration: none\n}\n\n.chart_container.dark #chart_tabbar {\n    background-color: #fff;/*底部工具条颜色*/\n    border-top-color: #000\n}\n\n.chart_container.dark #chart_tabbar a {\n    color: #e5e5e5\n}\n\n.chart_container.dark #chart_tabbar a:hover {\n    background-color: #383838;\n    color: #fff\n}\n\n.chart_container.dark #chart_tabbar a.selected {\n    color: #ffac00\n}\n\n.chart_container.light #chart_tabbar {\n    background-color: #fff;\n    border-top-color: #afb1b3\n}\n\n.chart_container.light #chart_tabbar a {\n    color: #393c40\n}\n\n.chart_container.light #chart_tabbar a:hover {\n    background-color: #f4f4f4;\n    color: #393c40\n}\n\n.chart_container.light #chart_tabbar a.selected {\n    color: #f27935\n}\n\n#chart_canvasGroup {\n    position: absolute;\n    z-index: 0\n}\n\n#chart_mainCanvas {\n    overflow: hidden;\n    position: absolute;\n    z-index: 0\n}\n\n#chart_overlayCanvas {\n    overflow: hidden;\n    position: absolute;\n    z-index: 2\n}\n\n#chart_loading {\n    border: 1px solid;\n    border-radius: 4px;\n    font-size: 18px;\n    font-weight: bold;\n    line-height: 48px;\n    overflow: hidden;\n    position: absolute;\n    text-align: center;\n    visibility: hidden!important;\n    width: 200px;\n    z-index: 200\n}\n\n#chart_loading.activated {\n    visibility: visible\n}\n\n.chart_container.dark #chart_loading {\n    border-color: #aaa;\n    background-color: rgba(0, 0, 0, 0.6);\n    color: #ccc\n}\n\n.chart_container.light #chart_loading {\n    border-color: #afb1b3;\n    background-color: rgba(244, 244, 244, 0.8);\n    color: #393c40\n}\n\n#chart_parameter_settings {\n    border-radius: 4px;\n    border: 1px solid;\n    width: 640px;\n    position: absolute;\n    overflow: hidden;\n    visibility: hidden;\n    z-index: 500\n}\n\n#chart_parameter_settings.clicked {\n    visibility: visible\n}\n\n#chart_parameter_settings h2 {\n    padding: 8px 12px;\n    margin: 0\n}\n\n#chart_parameter_settings table {\n    border-collapse: collapse;\n    width: 100%\n}\n\n#chart_parameter_settings tr {\n    line-height: 32px\n}\n\n#chart_parameter_settings th {\n    text-align: right;\n    padding: 0 4px 0 16px\n}\n\n#chart_parameter_settings input {\n    width: 2em;\n    margin: 0 2px 0 2px\n}\n\n#chart_parameter_settings #close_settings {\n    border-radius: 4px;\n    cursor: pointer;\n    font-weight: bold;\n    text-align: center;\n    margin: 8px auto;\n    padding: 5px 24px 5px 24px;\n    width: 84px\n}\n\n#chart_parameter_settings .chart_str_default {\n    margin-right: 24px\n}\n\n.chart_container.dark #chart_parameter_settings {\n    background-color: rgba(0, 0, 0, 0.9);\n    border-color: rgba(0, 0, 0, 0.9);\n    color: #ccc;\n}\n\n.chart_container.dark #chart_parameter_settings #close_settings {\n    background: #1887da;\n    color: #eee\n}\n\n.chart_container.light #chart_parameter_settings {\n    background-color: rgba(244, 244, 244, 0.8);\n    border-color: #afb1b3;\n    color: #393c40\n}\n\n.chart_container.light #chart_parameter_settings #close_settings {\n    background: #1478c8;\n    color: #eee\n}\n\n.chart_container input,\n.chart_container button {\n    border-radius: 4px;\n    border: 1px solid;\n    padding: 4px\n}\n\n.chart_container input[type=text] {\n    width: 12em\n}\n\n.chart_container input[type=button],\n.chart_container input[type=submit],\n.chart_container button {\n    font-family: arial, sans, serif;\n    padding: 4px 8px;\n    cursor: pointer\n}\n\n.chart_container.dark input,\n.chart_container.dark button {\n    background-color: #151515;\n    border-color: #333;\n    color: #ccc\n}\n\n.chart_container.light input,\n.chart_container.light button {\n    background-color: #ddd;\n    border-color: #ddd;\n    color: #222\n}\n\n.trade_container {\n    width: 250px;\n    height: 100%;\n    float: right;\n    z-index: 99999;\n    font-size: 12px;\n    overflow: hidden\n}\n\n.trade_container.dark {\n    /* background: #0a0a0a;  深色皮肤背景 */\n    background-color: #f3f9ff;\n    color: #f1f1f1\n}\n\n.m_righttop {\n    position: fixed;\n    top: 0;\n    height: 41px;\n    line-height: 41px;\n    width: 230px;\n    text-align: right;\n    padding-right: 20px;\n    font-size: 16px;\n    color: #f78d15;\n    font-family: Gotham, \"Helvetica Neue\", Helvetica, Arial, sans-serif\n}\n\n.m_righttop em {\n    width: 123px;\n    height: 28px;\n    background-position: 0 0;\n    display: block;\n    float: right;\n    margin-top: 5px\n}\n\n.dark .m_righttop em {\n    background-position: 0 0\n}\n\n.m_rightbot {\n    height: 22px;\n    line-height: 22px;\n    border-top: 1px solid #404040;\n    width: 230px;\n    text-align: right;\n    padding-right: 20px;\n    background-color: #0a0a0a;\n    border-bottom-color: #404040\n}\n\n.m_guadan {\n    margin-top: 29px;\n    overflow: hidden;\n    border-left: 1px solid #404040;\n    border-top: 1px solid #404040\n}\n\n.m_guadan a {\n    font-weight: bold;\n    color: #FFF;\n    text-decoration: none\n}\n\n.light .m_guadan {\n    margin-top: 29px;\n    overflow: hidden;\n    border-left: 1px solid #afb1b3;\n    border-top: 1px solid #afb1b3\n}\n\n#orderbook #asks,\n#orderbook #gasks,\n#orderbook #bids,\n#orderbook #gbids {\n    height: 195px;\n    position: relative;\n    display: inline-block;\n    overflow: hidden\n}\n\n.symbol-title {\n    font-size: 14px;\n    font-weight: bold;\n    text-align: center;\n    height: 16px;\n    line-height: 16px;\n    font-family: Arial, sans, serif;\n    padding: 5px\n}\n\n.symbol-title .dark {\n    color: #6BF\n}\n\n.symbol-title .infoDepth {\n    margin-left: 8px;\n    color: #f78d15\n}\n\n.symbol-title a:hover {\n    text-decoration: underline\n}\n\n#asks,\n#bids {\n    width: 150px\n}\n\n#orderbook {\n    padding-left: 3px;\n    border-bottom: 1px solid #222;\n    padding-bottom: 2px;\n    margin-left: 5px;\n    margin-bottom: 2px\n}\n\n#orderbook .table {\n    position: absolute;\n    border-collapse: collapse;\n    padding: 0;\n    margin: 0\n}\n\n#gasks .table,\n#asks .table {\n    bottom: 0\n}\n\n#orderbook .table .row {\n    padding: 0;\n    margin: 0;\n    height: 13px;\n    line-height: 13px;\n    font-family: Consolas, monospace\n}\n\n#orderbook .table .row {\n    line-height: 13px\n}\n\n#orderbook .table .g {\n    color: #666\n}\n\n#gasks,\n#gbids {\n    width: 80px\n}\n\n#gasks .amount,\n#gbids .amount {\n    float: right\n}\n\n#gasks .price,\n#gbids .price {\n    float: left;\n    text-align: right\n}\n\n.price {\n    margin-right: 10px\n}\n\n.price h {\n    visibility: hidden\n}\n\n.price g,\n.amount g {\n    color: #666\n}\n\n#price {\n    text-align: center;\n    font-size: 16px;\n    font-weight: bold;\n    height: 25px;\n    line-height: 25px\n}\n\n.trade_container .green {\n    /* 市场价颜色 */\n    color: #f00  \n}\n\n.trade_container .red {\n    color: #F00\n}\n\n.trade_container.dark #orderbook div.table div.remove g,\n.trade_container.dark #orderbook div.table div.remove span {\n    color: #444\n}\n\n.trade_container.light #orderbook div.table div.remove g,\n.trade_container.light #orderbook div.table div.remove span {\n    color: #ddd\n}\n\n.trade_container.dark #orderbook div.table div.add {\n    display: none;\n    background-color: rgba(238, 238, 238, 0.2)\n}\n\n.trade_container.light #orderbook div.table div.add {\n    display: none;\n    background-color: rgba(100, 100, 100, 0.2)\n}\n\n#trades {\n    overflow-y: auto;\n    text-align: left;\n    color: #666;\n    padding-top: 5px\n}\n\n.trade_container.light {\n    background: #fff;\n    border-left: 1px solid #afb1b3;\n    color: #000\n}\n\n.trade_container.light .m_righttop em {\n    background-position: 0 -32px\n}\n\n.trade_container.light .m_righttop {\n    position: fixed;\n    top: 0;\n    height: 40px;\n    line-height: 40px;\n    background: #FFF;\n    width: 230px;\n    border-bottom: 1px solid #afb1b3;\n    text-align: right;\n    padding-right: 20px\n}\n\n.trade_container.light #trades.trades table {\n    color: #333\n}\n\n.trade_container.light #trades.trades .v {\n    color: #333\n}\n\n.trade_container.light #trades.trades .v g {\n    color: #333\n}\n\n.trade_container.light .m_rightbot {\n    background: #fff;\n    border-top: 1px solid #afb1b3\n}\n\n.trade_container.light #orderbook {\n    border-bottom: 1px solid #afb1b3\n}\n\n.trades_list {\n    padding-left: 25px\n}\n\n.trades_list ul {\n    width: 200px;\n    height: 14px;\n    line-height: 14px;\n    text-align: left;\n    list-style: none;\n    clear: both;\n    zoom: 1;\n    margin: 0;\n    padding: 0\n}\n\n.trades_list ul li {\n    height: 14px;\n    line-height: 14px;\n    color: #999;\n    font-size: 12px;\n    list-style: none;\n    float: left;\n    *display: inline;\n    margin: 0;\n    padding: 0;\n    font-family: Consolas, monospace\n}\n\n.trades_list ul li.tm {\n    width: 62px;\n    color: #999\n}\n\n.trades_list ul li.pr-green {\n    width: 65px;\n    /* 交易列表 买入价颜色  */\n    color: #6c6\n}\n\n.trades_list ul li.pr-red {\n    width: 65px;\n    /* 交易列表 卖出价颜色  */\n    color: #c66\n}\n\n.trades_list ul li.vl {\n    width: 60px;\n     /* 交易列表 卖出价颜色小数点前  */\n    color: #2d7bff\n}\n\n.trades_list ul li.vl g {\n     /* 交易列表 卖出价颜色小数点后  */\n    color: #ff577a\n}\n\n.trade_container.dark .trades_list ul.newul {\n    display: none;\n    background-color: rgba(238, 238, 238, 0.2)\n}\n\n.trade_container.light .trades_list ul.newul {\n    display: none;\n    background-color: rgba(100, 100, 100, 0.2)\n}\n\n.light .trades_list ul li.tm {\n    color: #333\n}\n\n.light .trades_list ul li.pr-green {\n    color: #6c6\n}\n\n.light .trades_list ul li.pr-red {\n    color: #c66\n}\n\n.light .trades_list ul li.vl {\n    color: #333\n}\n\n.light .trades_list ul li.vl g {\n    color: #333\n}\n\n.container .nav {\n    margin: 0;\n    list-style: none;\n    padding: 0 0 0 3px;\n    height: 41px\n}\n\n.container .nav li {\n    display: inline-block;\n    margin-right: 9px\n}\n\n.container a {\n    text-decoration: none;\n    color: #6BF;\n    font-family: Arial, sans, serif\n}\n\n.container a:hover {\n    text-decoration: underline\n}\n\n.container a.active {\n    color: #FC9\n}\n\n.container span {\n    margin-left: 3px;\n    font-family: Consolas, monospace;\n    color: #ccc\n}\n\n.light .container span {\n    color: #333\n}\n\n.light .container a {\n    text-decoration: none;\n    color: #1478c8;\n    font-family: Arial, sans, serif\n}\n\n.chart_BoxSize {\n    width: 20px;\n    height: 20px\n}\n", ""]);
 
 // exports
 
