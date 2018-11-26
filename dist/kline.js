@@ -4005,7 +4005,9 @@ function () {
   }, {
     key: "mouseWheel",
     value: function mouseWheel(e, delta) {
-      __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.scale(delta > 0 ? 1 : -1);
+      var delta = e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1) || // chrome & ie
+      e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1);
+      __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.scale(delta);
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.redraw("All", true);
       return false;
     }
