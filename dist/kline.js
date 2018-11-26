@@ -3717,10 +3717,11 @@ function () {
       if (!updateDataRes) {
         if (__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.type === 'poll') {
           __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.timer = setTimeout(Control.requestData, intervalTime);
-        } else if (__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.type === 'data') {
-          // Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
-          Control.requestData();
-        }
+        } // else if(Kline.instance.type === 'data'){
+        //     // Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
+        //     Control.requestData();
+        // }
+
 
         return;
       }

@@ -205,10 +205,11 @@ export class Control {
         if (!updateDataRes) {
             if (Kline.instance.type === 'poll') {
                 Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
-            }else if(Kline.instance.type === 'data'){
-                // Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
-                Control.requestData();
             }
+            // else if(Kline.instance.type === 'data'){
+            //     // Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
+            //     Control.requestData();
+            // }
             return;
         }
         if (Kline.instance.data.trades && Kline.instance.data.trades.length > 0) {
