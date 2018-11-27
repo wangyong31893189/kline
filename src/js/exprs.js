@@ -499,7 +499,7 @@ export class AssignExpr extends OpAExpr {
         this._buf[index] = this._exprA.execute(index);
         if (ExprEnv.get()._firstIndex >= 0) {
             if (isNaN(this._buf[index]) && !isNaN(this._buf[index - 1])) {
-                throw this._name + ".assign(" + index + "): NaN";
+                // throw this._name + ".assign(" + index + "): NaN";
             }
         }
     }

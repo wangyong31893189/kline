@@ -520,6 +520,7 @@ export default class Kline {
                     mgr.redraw("All");
                 })
                 .mousedown(function (e) {
+                    Kline.instance.mouseWheelStatus=true;
                     if (e.which !== 1) {
                         ChartManager.instance.deleteToolObject();
                         ChartManager.instance.redraw('OverlayCanvas', false);

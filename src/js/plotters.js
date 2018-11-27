@@ -573,7 +573,7 @@ export class MainInfoPlotter extends Plotter {
         context.font = theme.getFont(themes.Theme.Font.Default);
         context.textAlign = "left";
         context.textBaseline = "top";
-        context.fillStyle = theme.getColor(themes.Theme.Color.Text4);
+        context.fillStyle = theme.getColor(themes.Theme.Color.Text5);
         let rect = {
             x: area.getLeft() + 4,
             y: area.getTop() + 2,
@@ -658,7 +658,7 @@ export class MainInfoPlotter extends Plotter {
             }
             if (!Plotter.drawString(context, change, rect))
                 return;
-            context.fillStyle = theme.getColor(themes.Theme.Color.Text4);
+            context.fillStyle = theme.getColor(themes.Theme.Color.Text5);
             if (!Plotter.drawString(context, ' %', rect))
                 return;
         }
@@ -933,7 +933,7 @@ export class IndicatorInfoPlotter extends Plotter {
         context.font = theme.getFont(themes.Theme.Font.Default);
         context.textAlign = "left";
         context.textBaseline = "top";
-        context.fillStyle = theme.getColor(themes.Theme.Color.Text4);
+        context.fillStyle = theme.getColor(themes.Theme.Color.Text6);
         let rect = {
             x: area.getLeft() + 4,
             y: area.getTop() + 2,
@@ -1023,8 +1023,8 @@ export class MinMaxPlotter extends NamedObject {
         let theme = mgr.getTheme(this.getFrameName());
         context.font = theme.getFont(themes.Theme.Font.Default);
         context.textBaseline = "middle";
-        context.fillStyle = theme.getColor(themes.Theme.Color.Text4);
-        context.strokeStyle = theme.getColor(themes.Theme.Color.Text4);
+        context.fillStyle = theme.getColor(themes.Theme.Color.Text7);
+        context.strokeStyle = theme.getColor(themes.Theme.Color.Text7);
         let digits = ds.getDecimalDigits();
         this.drawMark(context, dp.getMinValue(), digits, range.toY(dp.getMinValue()),
             first, center, dp.getMinValueIndex(), timeline);
@@ -1655,10 +1655,15 @@ export class SelectionPlotter extends Plotter {
         let theme = mgr.getTheme(this.getFrameName());
         context.strokeStyle = theme.getColor(themes.Theme.Color.Cursor);
         let x = timeline.toItemCenter(timeline.getSelectedIndex());
-        Plotter.drawLine(context, x, area.getTop() - 1, x, area.getBottom());
+        // Plotter.drawLine(context, x, area.getTop() - 1, x, area.getBottom());
+        // drawDashedLine(context, x1, y1, x2, y2, dashLen, dashSolid)
+        Plotter.drawDashedLine(context, x, area.getTop() - 1, x, area.getBottom(),10,6);
         let pos = range.getSelectedPosition();
         if (pos >= 0) {
-            Plotter.drawLine(context, area.getLeft(), pos, area.getRight(), pos);
+            // createHorzDashedLine(context, x1, x2, y, dashLen, dashSolid)
+            // Plotter.drawLine(context, area.getLeft(), pos, area.getRight(), pos);
+            context.strokeStyle = theme.getColor(themes.Theme.Color.Cursor);
+            Plotter.drawDashedLine(context,area.getLeft(), pos, area.getRight(), pos,8,4);
         }
     }
 
@@ -1698,9 +1703,9 @@ export class TimelineSelectionPlotter extends Plotter {
         let theme = mgr.getTheme(this.getFrameName());
         let lang = mgr.getLanguage();
         let x = timeline.toItemCenter(timeline.getSelectedIndex());
-        context.fillStyle = theme.getColor(themes.Theme.Color.Background);
+        context.fillStyle = theme.getColor(themes.Theme.Color.TimeBack);
         context.fillRect(x - 52.5, area.getTop() + 2.5, 106, 18);
-        context.strokeStyle = theme.getColor(themes.Theme.Color.Grid3);
+        context.strokeStyle = theme.getColor(themes.Theme.Color.TimeGrid);
         context.strokeRect(x - 52.5, area.getTop() + 2.5, 106, 18);
         context.font = theme.getFont(themes.Theme.Font.Default);
         context.textAlign = "center";

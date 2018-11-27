@@ -2034,6 +2034,8 @@ function () {
           mgr.onMouseUp("frame0", x, y);
           mgr.redraw("All");
         }).mousedown(function (e) {
+          Kline.instance.mouseWheelStatus = true;
+
           if (e.which !== 1) {
             __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.deleteToolObject();
             __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.redraw('OverlayCanvas', false);
@@ -2756,6 +2758,7 @@ Theme.Color = {
   NegativeDark: Theme.theme_color_id++,
   Unchanged: Theme.theme_color_id++,
   Background: Theme.theme_color_id++,
+  TimeBack: Theme.theme_color_id++,
   Cursor: Theme.theme_color_id++,
   RangeMark: Theme.theme_color_id++,
   Indicator0: Theme.theme_color_id++,
@@ -2769,6 +2772,7 @@ Theme.Color = {
   Grid2: Theme.theme_color_id++,
   Grid3: Theme.theme_color_id++,
   Grid4: Theme.theme_color_id++,
+  TimeGrid: Theme.theme_color_id++,
   TextPositive: Theme.theme_color_id++,
   TextNegative: Theme.theme_color_id++,
   Text0: Theme.theme_color_id++,
@@ -2776,6 +2780,9 @@ Theme.Color = {
   Text2: Theme.theme_color_id++,
   Text3: Theme.theme_color_id++,
   Text4: Theme.theme_color_id++,
+  Text5: Theme.theme_color_id++,
+  Text6: Theme.theme_color_id++,
+  Text7: Theme.theme_color_id++,
   LineColorNormal: Theme.theme_color_id++,
   LineColorSelected: Theme.theme_color_id++,
   CircleColorFill: Theme.theme_color_id++,
@@ -2834,6 +2841,8 @@ function (_Theme) {
 
     _this._colors[Theme.Color.Background] = "#f3f9ff"; //背景颜色
 
+    _this._colors[Theme.Color.TimeBack] = "#30b051"; //背景颜色
+
     _this._colors[Theme.Color.Cursor] = "#aaa"; //鼠标经过的十字线颜色
 
     _this._colors[Theme.Color.RangeMark] = "#f4853c"; //右边最低最高价位的标记颜色
@@ -2860,6 +2869,8 @@ function (_Theme) {
 
     _this._colors[Theme.Color.Grid4] = "#aaa"; //竖向价格标签提示边框颜色
 
+    _this._colors[Theme.Color.TimeGrid] = "#30b051"; //竖向价格标签提示边框颜色
+
     _this._colors[Theme.Color.TextPositive] = color_pos; //k线跌的颜色
 
     _this._colors[Theme.Color.TextNegative] = color_neg; //k线涨的颜色
@@ -2873,6 +2884,12 @@ function (_Theme) {
     _this._colors[Theme.Color.Text3] = "#aaa"; //鼠标指针指向的提示文字颜色 
 
     _this._colors[Theme.Color.Text4] = "#000"; //高低收涨幅显示文字颜色
+
+    _this._colors[Theme.Color.Text5] = "#00f"; //深度中间位信息颜色
+
+    _this._colors[Theme.Color.Text6] = "#333"; //K线提示信息文字颜色
+
+    _this._colors[Theme.Color.Text7] = "#aaf"; //K线最大最小值文字颜色
 
     _this._colors[Theme.Color.LineColorNormal] = "#a6a6a6"; //画线工具画出的颜色 
 
@@ -2975,6 +2992,8 @@ function (_Theme2) {
 
     _this2._colors[Theme.Color.Background] = "#f3f9ff"; //背景颜色
 
+    _this2._colors[Theme.Color.TimeBack] = "#30b051"; //背景颜色
+
     _this2._colors[Theme.Color.Cursor] = "#aaa"; //鼠标经过的十字线颜色
 
     _this2._colors[Theme.Color.RangeMark] = "#f4853c"; //右边最低最高价位的标记颜色
@@ -3001,6 +3020,8 @@ function (_Theme2) {
 
     _this2._colors[Theme.Color.Grid4] = "#aaa"; //竖向价格标签提示边框颜色
 
+    _this2._colors[Theme.Color.TimeGrid] = "#30b051"; //竖向价格标签提示边框颜色
+
     _this2._colors[Theme.Color.TextPositive] = color_pos; //k线跌的颜色
 
     _this2._colors[Theme.Color.TextNegative] = color_neg; //k线涨的颜色
@@ -3014,6 +3035,12 @@ function (_Theme2) {
     _this2._colors[Theme.Color.Text3] = "#aaa"; //鼠标指针指向的提示文字颜色 
 
     _this2._colors[Theme.Color.Text4] = "#000"; //高低收涨幅显示文字颜色
+
+    _this2._colors[Theme.Color.Text5] = "#00f"; //深度中间位信息颜色
+
+    _this2._colors[Theme.Color.Text6] = "#333"; //K线提示信息文字颜色
+
+    _this2._colors[Theme.Color.Text7] = "#aaf"; //K线最大最小值文字颜色
 
     _this2._colors[Theme.Color.LineColorNormal] = "#a6a6a6"; //画线工具画出的颜色 
 
@@ -3112,13 +3139,15 @@ function (_Theme3) {
     } // this._colors[Theme.Color.Unchanged] = "#fff";
 
 
-    _this3._colors[Theme.Color.Unchanged] = "#f00"; // this._colors[Theme.Color.Background] = "#0a0a0a";
+    _this3._colors[Theme.Color.Unchanged] = "#ff0"; // this._colors[Theme.Color.Background] = "#0a0a0a";
 
     _this3._colors[Theme.Color.Background] = "#fff"; //背景颜色
 
-    _this3._colors[Theme.Color.Cursor] = "#aaa"; //鼠标经过的十字线颜色
+    _this3._colors[Theme.Color.TimeBack] = "#30b051"; //背景颜色
 
-    _this3._colors[Theme.Color.RangeMark] = "#f00"; //右边最低最高价位的标记颜色 时间线顶部颜色
+    _this3._colors[Theme.Color.Cursor] = "#00f"; //鼠标经过的十字线颜色
+
+    _this3._colors[Theme.Color.RangeMark] = "#00f"; //右边最低最高价位的标记颜色 时间线顶部颜色
 
     _this3._colors[Theme.Color.Indicator0] = "#ddd"; //MA5线的颜色
 
@@ -3142,6 +3171,8 @@ function (_Theme3) {
 
     _this3._colors[Theme.Color.Grid4] = "#aaa"; //竖向价格标签提示边框颜色
 
+    _this3._colors[Theme.Color.TimeGrid] = "#30b051"; //竖向价格标签提示边框颜色
+
     _this3._colors[Theme.Color.TextPositive] = color_pos; //k线跌的颜色
 
     _this3._colors[Theme.Color.TextNegative] = color_neg; //k线涨的颜色
@@ -3150,11 +3181,17 @@ function (_Theme3) {
 
     _this3._colors[Theme.Color.Text1] = "#666"; //未知
 
-    _this3._colors[Theme.Color.Text2] = "#000"; //时间线标签颜色 
+    _this3._colors[Theme.Color.Text2] = "#999"; //时间线标签颜色 
 
     _this3._colors[Theme.Color.Text3] = "#aaa"; //鼠标指针指向的提示文字颜色 
 
-    _this3._colors[Theme.Color.Text4] = "#000"; //时间位置显示文字颜色
+    _this3._colors[Theme.Color.Text4] = "#fff"; //时间位置显示文字颜色
+
+    _this3._colors[Theme.Color.Text5] = "#333"; //K线提示信息文字颜色
+
+    _this3._colors[Theme.Color.Text6] = "#000"; //VOLUME MACD 文字颜色
+
+    _this3._colors[Theme.Color.Text7] = "#f00"; //K线最大最小值文字颜色
 
     _this3._colors[Theme.Color.LineColorNormal] = "#a6a6a6"; //画线工具画出的颜色 
 
@@ -3883,7 +3920,7 @@ function () {
       toolBarRect.x = 0;
       toolBarRect.y = 0;
       toolBarRect.w = chartWidth;
-      toolBarRect.h = 29;
+      toolBarRect.h = 40;
       var toolPanelRect = {};
       toolPanelRect.x = 0;
       toolPanelRect.y = toolBarRect.h + 1;
@@ -4006,6 +4043,10 @@ function () {
   }, {
     key: "mouseWheel",
     value: function mouseWheel(e, delta) {
+      if (!__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.mouseWheelStatus) {
+        return;
+      }
+
       var delta = e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1) || // chrome & ie
       e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1);
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.scale(delta);
@@ -6689,7 +6730,7 @@ function (_Plotter4) {
       context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "left";
       context.textBaseline = "top";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text5);
       var rect = {
         x: area.getLeft() + 4,
         y: area.getTop() + 2,
@@ -6761,7 +6802,7 @@ function (_Plotter4) {
         }
 
         if (!Plotter.drawString(context, change, rect)) return;
-        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
+        context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text5);
         if (!Plotter.drawString(context, ' %', rect)) return;
       }
 
@@ -7127,7 +7168,7 @@ function (_Plotter5) {
       context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "left";
       context.textBaseline = "top";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text6);
       var rect = {
         x: area.getLeft() + 4,
         y: area.getTop() + 2,
@@ -7211,8 +7252,8 @@ function (_NamedObject5) {
       var theme = mgr.getTheme(this.getFrameName());
       context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textBaseline = "middle";
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
-      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text4);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text7);
+      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Text7);
       var digits = ds.getDecimalDigits();
       this.drawMark(context, dp.getMinValue(), digits, range.toY(dp.getMinValue()), first, center, dp.getMinValueIndex(), timeline);
       this.drawMark(context, dp.getMaxValue(), digits, range.toY(dp.getMaxValue()), first, center, dp.getMaxValueIndex(), timeline);
@@ -7915,12 +7956,17 @@ function (_Plotter9) {
       var range = mgr.getRange(this.getAreaName());
       var theme = mgr.getTheme(this.getFrameName());
       context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Cursor);
-      var x = timeline.toItemCenter(timeline.getSelectedIndex());
-      Plotter.drawLine(context, x, area.getTop() - 1, x, area.getBottom());
+      var x = timeline.toItemCenter(timeline.getSelectedIndex()); // Plotter.drawLine(context, x, area.getTop() - 1, x, area.getBottom());
+      // drawDashedLine(context, x1, y1, x2, y2, dashLen, dashSolid)
+
+      Plotter.drawDashedLine(context, x, area.getTop() - 1, x, area.getBottom(), 10, 6);
       var pos = range.getSelectedPosition();
 
       if (pos >= 0) {
-        Plotter.drawLine(context, area.getLeft(), pos, area.getRight(), pos);
+        // createHorzDashedLine(context, x1, x2, y, dashLen, dashSolid)
+        // Plotter.drawLine(context, area.getLeft(), pos, area.getRight(), pos);
+        context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Cursor);
+        Plotter.drawDashedLine(context, area.getLeft(), pos, area.getRight(), pos, 8, 4);
       }
     }
   }]);
@@ -7950,9 +7996,9 @@ function (_Plotter10) {
       var theme = mgr.getTheme(this.getFrameName());
       var lang = mgr.getLanguage();
       var x = timeline.toItemCenter(timeline.getSelectedIndex());
-      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Background);
+      context.fillStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.TimeBack);
       context.fillRect(x - 52.5, area.getTop() + 2.5, 106, 18);
-      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.Grid3);
+      context.strokeStyle = theme.getColor(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Color.TimeGrid);
       context.strokeRect(x - 52.5, area.getTop() + 2.5, 106, 18);
       context.font = theme.getFont(__WEBPACK_IMPORTED_MODULE_6__themes__["d" /* Theme */].Font.Default);
       context.textAlign = "center";
@@ -11471,8 +11517,7 @@ function (_OpAExpr3) {
       this._buf[index] = this._exprA.execute(index);
 
       if (ExprEnv.get()._firstIndex >= 0) {
-        if (isNaN(this._buf[index]) && !isNaN(this._buf[index - 1])) {
-          throw this._name + ".assign(" + index + "): NaN";
+        if (isNaN(this._buf[index]) && !isNaN(this._buf[index - 1])) {// throw this._name + ".assign(" + index + "): NaN";
         }
       }
     }

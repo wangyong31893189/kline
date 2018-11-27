@@ -357,7 +357,7 @@ export class Control {
         toolBarRect.x = 0;
         toolBarRect.y = 0;
         toolBarRect.w = chartWidth;
-        toolBarRect.h = 29;
+        toolBarRect.h = 40;
         let toolPanelRect = {};
         toolPanelRect.x = 0;
         toolPanelRect.y = toolBarRect.h + 1;
@@ -472,6 +472,9 @@ export class Control {
     }
 
     static mouseWheel(e, delta) {
+        if(!Kline.instance.mouseWheelStatus){
+            return;
+        }     
         var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||  // chrome & ie
                   (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));
         ChartManager.instance.scale(delta);

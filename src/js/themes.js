@@ -12,6 +12,7 @@ export class Theme {
         NegativeDark: Theme.theme_color_id++,
         Unchanged: Theme.theme_color_id++,
         Background: Theme.theme_color_id++,
+        TimeBack: Theme.theme_color_id++,
         Cursor: Theme.theme_color_id++,
         RangeMark: Theme.theme_color_id++,
         Indicator0: Theme.theme_color_id++,
@@ -25,6 +26,7 @@ export class Theme {
         Grid2: Theme.theme_color_id++,
         Grid3: Theme.theme_color_id++,
         Grid4: Theme.theme_color_id++,
+        TimeGrid: Theme.theme_color_id++,
         TextPositive: Theme.theme_color_id++,
         TextNegative: Theme.theme_color_id++,
         Text0: Theme.theme_color_id++,
@@ -32,6 +34,9 @@ export class Theme {
         Text2: Theme.theme_color_id++,
         Text3: Theme.theme_color_id++,
         Text4: Theme.theme_color_id++,
+        Text5: Theme.theme_color_id++,
+        Text6: Theme.theme_color_id++,
+        Text7: Theme.theme_color_id++,
         LineColorNormal: Theme.theme_color_id++,
         LineColorSelected: Theme.theme_color_id++,
         CircleColorFill: Theme.theme_color_id++,
@@ -89,6 +94,7 @@ export class DarkTheme extends Theme {
         this._colors[Theme.Color.Unchanged] = "#f00";
         // this._colors[Theme.Color.Background] = "#0a0a0a";
         this._colors[Theme.Color.Background] = "#f3f9ff";//背景颜色
+        this._colors[Theme.Color.TimeBack] = "#30b051";//背景颜色
         this._colors[Theme.Color.Cursor] = "#aaa";//鼠标经过的十字线颜色
         this._colors[Theme.Color.RangeMark] = "#f4853c";//右边最低最高价位的标记颜色
         this._colors[Theme.Color.Indicator0] = "#ddd";//MA5线的颜色
@@ -102,6 +108,7 @@ export class DarkTheme extends Theme {
         this._colors[Theme.Color.Grid2] = "#666";//未知
         this._colors[Theme.Color.Grid3] = "#888";//横向时间线标签提示边框颜色
         this._colors[Theme.Color.Grid4] = "#aaa";//竖向价格标签提示边框颜色
+        this._colors[Theme.Color.TimeGrid] = "#30b051";//竖向价格标签提示边框颜色
         this._colors[Theme.Color.TextPositive] = color_pos;//k线跌的颜色
         this._colors[Theme.Color.TextNegative] = color_neg;//k线涨的颜色
         this._colors[Theme.Color.Text0] = "#444";//未知
@@ -109,6 +116,9 @@ export class DarkTheme extends Theme {
         this._colors[Theme.Color.Text2] = "#000";//时间线标签颜色 
         this._colors[Theme.Color.Text3] = "#aaa";//鼠标指针指向的提示文字颜色 
         this._colors[Theme.Color.Text4] = "#000";//高低收涨幅显示文字颜色
+        this._colors[Theme.Color.Text5] = "#00f";//深度中间位信息颜色
+        this._colors[Theme.Color.Text6] = "#333";//K线提示信息文字颜色
+        this._colors[Theme.Color.Text7] = "#aaf";//K线最大最小值文字颜色
         this._colors[Theme.Color.LineColorNormal] = "#a6a6a6";//画线工具画出的颜色 
         this._colors[Theme.Color.LineColorSelected] = "#ffffff";//鼠标经过画线的颜色
         this._colors[Theme.Color.CircleColorFill] = "#000000";//画线工具画的线上圆点颜色
@@ -190,6 +200,7 @@ export class LightTheme extends Theme {
         this._colors[Theme.Color.Unchanged] = "#f00";
         // this._colors[Theme.Color.Background] = "#0a0a0a";
         this._colors[Theme.Color.Background] = "#f3f9ff";//背景颜色
+        this._colors[Theme.Color.TimeBack] = "#30b051";//背景颜色
         this._colors[Theme.Color.Cursor] = "#aaa";//鼠标经过的十字线颜色
         this._colors[Theme.Color.RangeMark] = "#f4853c";//右边最低最高价位的标记颜色
         this._colors[Theme.Color.Indicator0] = "#ddd";//MA5线的颜色
@@ -203,6 +214,7 @@ export class LightTheme extends Theme {
         this._colors[Theme.Color.Grid2] = "#666";//未知
         this._colors[Theme.Color.Grid3] = "#888";//横向时间线标签提示边框颜色
         this._colors[Theme.Color.Grid4] = "#aaa";//竖向价格标签提示边框颜色
+        this._colors[Theme.Color.TimeGrid] = "#30b051";//竖向价格标签提示边框颜色
         this._colors[Theme.Color.TextPositive] = color_pos;//k线跌的颜色
         this._colors[Theme.Color.TextNegative] = color_neg;//k线涨的颜色
         this._colors[Theme.Color.Text0] = "#444";//未知
@@ -210,6 +222,9 @@ export class LightTheme extends Theme {
         this._colors[Theme.Color.Text2] = "#000";//时间线标签颜色 
         this._colors[Theme.Color.Text3] = "#aaa";//鼠标指针指向的提示文字颜色 
         this._colors[Theme.Color.Text4] = "#000";//高低收涨幅显示文字颜色
+        this._colors[Theme.Color.Text5] = "#00f";//深度中间位信息颜色
+        this._colors[Theme.Color.Text6] = "#333";//K线提示信息文字颜色
+        this._colors[Theme.Color.Text7] = "#aaf";//K线最大最小值文字颜色
         this._colors[Theme.Color.LineColorNormal] = "#a6a6a6";//画线工具画出的颜色 
         this._colors[Theme.Color.LineColorSelected] = "#ffffff";//鼠标经过画线的颜色
         this._colors[Theme.Color.CircleColorFill] = "#000000";//画线工具画的线上圆点颜色
@@ -287,11 +302,12 @@ export class DefaultTheme extends Theme {
             this._colors[Theme.Color.NegativeDark] = "#5fd292";//深度图跌颜色
         }
         // this._colors[Theme.Color.Unchanged] = "#fff";
-        this._colors[Theme.Color.Unchanged] = "#f00";
+        this._colors[Theme.Color.Unchanged] = "#ff0";
         // this._colors[Theme.Color.Background] = "#0a0a0a";
         this._colors[Theme.Color.Background] = "#fff";//背景颜色
-        this._colors[Theme.Color.Cursor] = "#aaa";//鼠标经过的十字线颜色
-        this._colors[Theme.Color.RangeMark] = "#f00";//右边最低最高价位的标记颜色 时间线顶部颜色
+        this._colors[Theme.Color.TimeBack] = "#30b051";//背景颜色
+        this._colors[Theme.Color.Cursor] = "#00f";//鼠标经过的十字线颜色
+        this._colors[Theme.Color.RangeMark] = "#00f";//右边最低最高价位的标记颜色 时间线顶部颜色
         this._colors[Theme.Color.Indicator0] = "#ddd";//MA5线的颜色
         this._colors[Theme.Color.Indicator1] = "#f4bc0e";//MA10线的颜色
         this._colors[Theme.Color.Indicator2] = "#f600ff";//BOLL线颜色
@@ -303,13 +319,17 @@ export class DefaultTheme extends Theme {
         this._colors[Theme.Color.Grid2] = "#666";//未知
         this._colors[Theme.Color.Grid3] = "#888";//横向时间线标签提示边框颜色
         this._colors[Theme.Color.Grid4] = "#aaa";//竖向价格标签提示边框颜色
+        this._colors[Theme.Color.TimeGrid] = "#30b051";//竖向价格标签提示边框颜色
         this._colors[Theme.Color.TextPositive] = color_pos;//k线跌的颜色
         this._colors[Theme.Color.TextNegative] = color_neg;//k线涨的颜色
         this._colors[Theme.Color.Text0] = "#444";//未知
         this._colors[Theme.Color.Text1] = "#666";//未知
-        this._colors[Theme.Color.Text2] = "#000";//时间线标签颜色 
+        this._colors[Theme.Color.Text2] = "#999";//时间线标签颜色 
         this._colors[Theme.Color.Text3] = "#aaa";//鼠标指针指向的提示文字颜色 
-        this._colors[Theme.Color.Text4] = "#000";//时间位置显示文字颜色
+        this._colors[Theme.Color.Text4] = "#fff";//时间位置显示文字颜色
+        this._colors[Theme.Color.Text5] = "#333";//K线提示信息文字颜色
+        this._colors[Theme.Color.Text6] = "#000";//VOLUME MACD 文字颜色
+        this._colors[Theme.Color.Text7] = "#f00";//K线最大最小值文字颜色
         this._colors[Theme.Color.LineColorNormal] = "#a6a6a6";//画线工具画出的颜色 
         this._colors[Theme.Color.LineColorSelected] = "#ffffff";//鼠标经过画线的颜色
         this._colors[Theme.Color.CircleColorFill] = "#000000";//画线工具画的线上圆点颜色
