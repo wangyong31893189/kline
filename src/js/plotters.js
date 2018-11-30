@@ -1026,8 +1026,12 @@ export class MinMaxPlotter extends NamedObject {
         context.fillStyle = theme.getColor(themes.Theme.Color.Text7);
         context.strokeStyle = theme.getColor(themes.Theme.Color.Text7);
         let digits = ds.getDecimalDigits();
+        //最小值
         this.drawMark(context, dp.getMinValue(), digits, range.toY(dp.getMinValue()),
             first, center, dp.getMinValueIndex(), timeline);
+        //最大值
+        context.fillStyle = theme.getColor(themes.Theme.Color.Text9);
+        context.strokeStyle = theme.getColor(themes.Theme.Color.Text9);
         this.drawMark(context, dp.getMaxValue(), digits, range.toY(dp.getMaxValue()),
             first, center, dp.getMaxValueIndex(), timeline);
     }
@@ -1583,8 +1587,8 @@ export class LastVolumePlotter extends Plotter {
         context.font = theme.getFont(themes.Theme.Font.Default);
         context.textAlign = "left";
         context.textBaseline = "middle";
-        context.fillStyle = theme.getColor(themes.Theme.Color.RangeMark);
-        context.strokeStyle = theme.getColor(themes.Theme.Color.RangeMark);
+        context.fillStyle = theme.getColor(themes.Theme.Color.Text10);
+        context.strokeStyle = theme.getColor(themes.Theme.Color.Text10);
         let v = ds.getDataAt(ds.getDataCount() - 1).volume;
         let y = range.toY(v);
         let left = area.getLeft() + 1;
@@ -1622,8 +1626,8 @@ export class LastClosePlotter extends Plotter {
         context.font = theme.getFont(themes.Theme.Font.Default);
         context.textAlign = "left";
         context.textBaseline = "middle";
-        context.fillStyle = theme.getColor(themes.Theme.Color.RangeMark);
-        context.strokeStyle = theme.getColor(themes.Theme.Color.RangeMark);
+        context.fillStyle = theme.getColor(themes.Theme.Color.Text11);
+        context.strokeStyle = theme.getColor(themes.Theme.Color.Text11);
         let y = range.toY(v);
         let left = area.getLeft() + 1;
         Plotter.drawLine(context, left, y, left + 7, y);
@@ -1657,13 +1661,13 @@ export class SelectionPlotter extends Plotter {
         let x = timeline.toItemCenter(timeline.getSelectedIndex());
         // Plotter.drawLine(context, x, area.getTop() - 1, x, area.getBottom());
         // drawDashedLine(context, x1, y1, x2, y2, dashLen, dashSolid)
-        Plotter.drawDashedLine(context, x, area.getTop() - 1, x, area.getBottom(),10,6);
+        Plotter.drawDashedLine(context, x, area.getTop() - 1, x, area.getBottom(),8,4);
         let pos = range.getSelectedPosition();
         if (pos >= 0) {
             // createHorzDashedLine(context, x1, x2, y, dashLen, dashSolid)
             // Plotter.drawLine(context, area.getLeft(), pos, area.getRight(), pos);
             context.strokeStyle = theme.getColor(themes.Theme.Color.Cursor);
-            Plotter.drawDashedLine(context,area.getLeft(), pos, area.getRight(), pos,8,4);
+            Plotter.drawDashedLine(context,area.getLeft(), pos, area.getRight(), pos,6,3);
         }
     }
 

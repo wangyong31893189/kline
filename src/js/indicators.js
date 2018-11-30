@@ -238,7 +238,7 @@ export class VOLUMEIndicator extends Indicator {
         let VOLUME = new exprs.OutputExpr("VOLUME",
             new exprs.VolumeExpr(),
             exprs.OutputExpr.outputStyle.VolumeStick,
-            themes.Theme.Color.Text4
+            themes.Theme.Color.Text8
         );
         this.addOutput(VOLUME);
         this.addOutput(new exprs.RangeOutputExpr("MA",

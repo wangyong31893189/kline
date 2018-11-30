@@ -53,6 +53,15 @@ export default class Kline {
         this.paused = false;
         this.subscribed = null;
         this.disableFirebase = false;
+        this.loading = false;
+        this.rollspeed = 30;
+        this.isFullScreen = false;
+        this.showToolbar = true;
+        this.showIndic = true;
+        this.rotate = 0;
+        this.dealMouseWheelEvent = true;
+        this.autoIntervalTime = false;
+        this.defaultMainStyle = 0;
 
         this.periodMap = {
             "01n": 30 * 7 * 86400 * 1000,
@@ -107,7 +116,9 @@ export default class Kline {
 
     draw() {
         Kline.trade = new KlineTrade();
-        Kline.chartMgr = new ChartManager();
+        Kline.chartMgr = new ChartManager({
+            _captureMouseWheelDirectly: this.dealMouseWheelEvent
+        });
 
         let view = $.parseHTML(tpl);
         for (let k in this.ranges) {
@@ -138,11 +149,25 @@ export default class Kline {
         this.setLanguage(this.language);
 
         $(this.element).css({visibility: "visible"});
+
+        // 设置界面元素的显示
+        if (!this.showIndic)
+            this.switchIndic(false);
+        if (!this.showToolbar)
+            this.switchToolbar(this.showToolbar);
+        if (!this.showTrade)
+            this.setShowTrade(this.showTrade);
+        if (this.isFullScreen)
+            this.sizeKline(this.isFullScreen);
+        if (this.rotate!==0)
+            this.switchRotate(this.rotate);
+        if (this.defaultMainStyle!=0)
+            this.switchMainChartStyle(this.defaultMainStyle);
     }
 
     resize(width, height) {
-        this.width = width;
-        this.height = height;
+        this.width = width || window.innerWidth;
+        this.height = height || window.innerHeight;
         Control.onSize(this.width, this.height);
     }
 
@@ -165,23 +190,31 @@ export default class Kline {
 
     setShowTrade(isShow) {
         this.showTrade = isShow;
+        //if (isShow) {
+          //  $(".trade_container").show();
+        //} else {
+          //  $(".trade_container").hide();
+        //}        
+        //Control.onSize(this.width, this.height);
+        
         if (isShow) {
-            $(".trade_container").show();
+            Control.switchTrade('on');
         } else {
-            $(".trade_container").hide();
+            Control.switchTrade('off');
         }
-        Control.onSize(this.width, this.height);
     }
 
     toggleTrade() {
-        if (!this.showTrade) {
-            this.showTrade = true;
-            $(".trade_container").show();
-        } else {
-            this.showTrade = false;
-            $(".trade_container").hide();
-        }
-        Control.onSize(this.width, this.height);
+        //if (!this.showTrade) {
+        //    this.showTrade = true;
+         //   $(".trade_container").show();
+        //} else {
+          //  this.showTrade = false;
+           // $(".trade_container").hide();
+        //}
+        //Control.onSize(this.width, this.height);
+        let instance = Kline.instance;
+        instance.setShowTrade(!instance.showTrade);
     }
 
     setIntervalTime(intervalTime) {
@@ -190,8 +223,6 @@ export default class Kline {
             console.log('DEBUG: interval time changed to ' + intervalTime);
         }
     }
-
-    setIndicator
 
     pause() {
         if (this.debug) {
@@ -234,7 +265,125 @@ export default class Kline {
         }
     }
 
+    switchIndic(status) {
+        if (status) {
+            Control.switchIndic('on');
+            $('#chart_show_indicator').addClass('selected');
+        } else {
+            Control.switchIndic('off');
+            $('#chart_show_indicator').removeClass('selected');
+        }
+    }
+    
+    switchToolbar(status) {
+        if (status) {
+            $('#chart_toolbar').removeClass('hide');
+        } else {
+            $('#chart_toolbar').addClass('hide');
+        }
+    }
 
+    static autoFull() {
+        Kline.instance.resize(document.body.clientWidth, document.body.clientHeight);
+    }
+    
+    sizeKline(isSized) {
+        if (isSized === undefined) {
+            Kline.instance.isSized = !Kline.instance.isSized;
+        } else {
+            Kline.instance.isSized = isSized;
+        }
+
+        if (Kline.instance.isSized) {
+            $(Kline.instance.element).css({
+                position: 'fixed',
+                left: '0',
+                right: '0',
+                top: '0',
+                bottom: '0',
+                width: '100%',
+                height: '100%',
+                zIndex: '10000'
+            });
+
+            Control.onSize();
+            $('html,body').css({width: '100%', height: '100%', overflow: 'hidden'});
+            $(window).bind('resize', Kline.autoFull);
+        } else {
+            $(Kline.instance.element).attr('style', '');
+            $('html,body').attr('style', '');
+            Control.onSize(Kline.instance.width, Kline.instance.height);
+            $(Kline.instance.element).css({visibility: 'visible', height: Kline.instance.height + 'px'});
+            $(window).unbind('resize', Kline.autoFull);
+        }
+    }
+
+    switchRotate(rotate) {
+        let element = $(this.element);
+        element.removeClass(['rotate90','rotate180','rotate270']);
+        switch(rotate%4) {
+            case 1:
+                this.rotate = 1;
+                element.addClass('rotate90');
+                break;
+            case 2:
+                this.rotate = 2;
+                element.addClass('rotate180');
+                break;
+            case 3:
+                this.rotate = 3;
+                element.addClass('rotate270');
+                break;
+            default:
+                this.rotate = 0;
+                break;
+        }
+    }
+
+    adjustScale(newScale) {
+        if (!this.chartMgr._highlightedFrame)
+            this.chartMgr.onMouseMove("frame0", 1, 1, false);
+        if (newScale>0) {
+            for (let i=newScale;i>0;i--){
+                Control.mouseWheel(null,1);
+            }
+        } else if (newScale<0) {
+            for (let i=-newScale;i>0;i--){
+                Control.mouseWheel(null,-1);
+            }
+        }
+    }
+
+    switchMainChartStyle(newStyle) {
+        let mgr = ChartManager.instance;
+        switch(newStyle) {
+            case 'CandleStick':
+            case 0:
+                newStyle = 'CandleStick';
+                $("#chart_select_chart_style a").removeClass('selected');
+                $("#MCS_" + newStyle).addClass("selected");
+                break;
+            case 1:
+            case 'CandleStickHLC':
+                newStyle = 'CandleStickHLC';
+                $("#chart_select_chart_style a").removeClass('selected');
+                $("#MCS_" + newStyle).addClass("selected");
+                break;
+            case 2:
+            case 'OHLC':
+                newStyle = 'OHLC';
+                $("#chart_select_chart_style a").removeClass('selected');
+                $("#MCS_" + newStyle).addClass("selected");
+                break;
+            default:
+                console.log('ERROR: Unrecognized style');
+                return;
+
+        }
+        mgr.setChartStyle("frame0.k0", newStyle);
+        mgr.redraw();
+    }
+    
     /*********************************************
      * Events
      *********************************************/
@@ -265,8 +414,30 @@ export default class Kline {
 
     onRangeChange(range) {
         if (this.debug) {
-            console.log("DEBUG: range changed to " + range);
+            console.log("DEBUG: range changed to " +range);
         }
+    }
+
+    created() {
+        if (this.debug) {
+            console.log("DEBUG: Kline Created " + Kline.instance.range);
+        }
+    }
+
+    onLoadHistory() {
+        if (Kline.instance.debug) {
+            console.log("DEBUG: Load History Data ");
+        }
+        let f = Kline.instance.chartMgr.getDataSource("frame0.k0").getFirstDate();
+
+        if (f === -1) {
+            let requestParam = Control.setHttpRequestParam(Kline.instance.symbol, Kline.instance.range, Kline.instance.limit, null);
+            Control.requestData(true,requestParam);
+        } else {
+            let requestParam = Control.setHttpRequestParam(Kline.instance.symbol, Kline.instance.range, Kline.instance.limit, f.toString(),'history');
+            Control.requestData(true,requestParam);
+        }
+        ChartManager.instance.redraw('All', false);
     }
 
     registerMouseEvent() {
@@ -280,6 +451,22 @@ export default class Kline {
                     Control.onSize(this.width, this.height)
                 }
             }
+            $(Kline.instance.element).attr('tabindex', 1).keydown(function(event){
+                let rollspeed=Kline.instance.rollspeed;
+                if (event.keyCode==39) {
+                    let mgr = ChartManager.instance;
+                    mgr.onMouseDown('frame0',0, 0);
+                    mgr.onMouseMove("frame0", rollspeed, 0, true);
+                    mgr.onMouseUp('frame0',rollspeed, 0);
+                    mgr.redraw("All", false);
+                } else if (event.keyCode==37) {
+                    let mgr = ChartManager.instance;
+                    mgr.onMouseDown('frame0',rollspeed, 0);
+                    mgr.onMouseMove("frame0", 0, 0, true);
+                    mgr.onMouseUp('frame0',0, 0);
+                    mgr.redraw("All", false);
+                }
+            })
 
             $('#chart_overlayCanvas').bind("contextmenu", function (e) {
                 e.cancelBubble = true;
@@ -288,6 +475,7 @@ export default class Kline {
                 e.stopPropagation();
                 return false;
             });
+            $("#chart_overlayCanvas").bind('_LoadHistory', Kline.instance.onLoadHistory);
             $(".chart_container .chart_dropdown .chart_dropdown_t")
                 .mouseover(function () {
                     let container = $(".chart_container");
@@ -313,6 +501,14 @@ export default class Kline {
                 .mouseout(function () {
                     $(this).next().removeClass("chart_dropdown-hover");
                     $(this).removeClass("chart_dropdown-hover");
+                })
+                .click(function() {
+                    let t = $(this);
+                    if (t.hasClass("chart_dropdown-hover")) {
+                        t.trigger('mouseout');
+                    } else {
+                        t.trigger('mouseover');
+                    }
                 });
             $(".chart_dropdown_data")
                 .mouseover(function () {
@@ -381,6 +577,11 @@ export default class Kline {
                         Control.switchIndic('on');
                     }
                 });
+            $('#chart_show_trade')
+                .click(function () {
+                    Kline.instance.toggleTrade();
+                });
+            
             $("#chart_tabbar li a")
                 .click(function () {
                     $("#chart_tabbar li a").removeClass('selected');
@@ -459,6 +660,14 @@ export default class Kline {
                     Control.switchIndic('off');
                 }
             });
+            $('#chart_enable_trade li a').click(function () {
+                $('#chart_enable_trade a').removeClass('selected');
+                if ($(this).attr('name') === 'on') {
+                    Kline.instance.setShowTrade(true);
+                } else if ($(this).attr('name') === 'off') {
+                    Kline.instance.setShowTrade(false);
+                }
+            });
             $('#chart_language_setting_div li a').click(function () {
 
                 $('#chart_language_setting_div a').removeClass('selected');
@@ -485,7 +694,62 @@ export default class Kline {
                 }
                 ChartManager.instance.redraw('OverlayCanvas', false);
             });
+            function getC(ev) {
+                let x1=ev.targetTouches[0].pageX;
+                let y1=ev.targetTouches[0].pageY;
+                let x2=ev.targetTouches[1].pageX;
+                let y2=ev.targetTouches[1].pageY;
+                let a=x1-x2;
+                let b=y1-y2;
+                return Math.sqrt(a*a+b*b)//已知两个直角边开平方得出 斜角边
+            }
             $("#chart_overlayCanvas")
+                .on("touchstart", function(e) {
+                    if (e.targetTouches.length==2) {
+                        e.preventDefault();
+                        Kline.instance.downC = getC(e);
+                    } else if (e.targetTouches.length==1) {
+                        e.preventDefault();
+                        Kline.instance.buttonDown = true;
+                        let r = e.target.getBoundingClientRect();
+                        let x = e.touches[0].clientX - r.left;;
+                        let y = e.touches[0].clientY - r.top;
+                        ChartManager.instance.onMouseDown("frame0", x, y);
+                        let mgr = ChartManager.instance;
+
+                        mgr.onMouseMove("frame0", x, y, false);
+                        mgr.redraw('OverlayCanvas', false);
+                    }
+                })
+                .on("touchmove", function(e) {
+                    if (e.targetTouches.length==2) {
+                        e.preventDefault();
+                        Control.mouseWheel(e,(getC(e)-Kline.instance.downC)/20000);
+                    } else if (e.targetTouches.length==1) {
+                        e.preventDefault();
+                        let r = e.target.getBoundingClientRect();
+                        let x = e.touches[0].clientX - r.left;
+                        let y = e.touches[0].clientY - r.top;
+                        let mgr = ChartManager.instance;
+                        if (Kline.instance.buttonDown === true) {
+                            mgr.onMouseMove("frame0", x, y, true);
+                            mgr.redraw("All", false);
+                        } else {
+                            mgr.onMouseMove("frame0", x, y, false);
+                            mgr.redraw("OverlayCanvas");
+                        }
+                    }
+                })
+                .on("touchend", function(e) {
+                    e.preventDefault();
+                    Kline.instance.buttonDown = false;
+                    let r = e.target.getBoundingClientRect();
+                    let x = e.changedTouches[0].clientX - r.left;;
+                    let y = e.changedTouches[0].clientY - r.top;
+                    let mgr = ChartManager.instance;
+                    mgr.onMouseUp("frame0", x, y);
+                    mgr.redraw("All");
+                })
                 .mousemove(function (e) {
                     let r = e.target.getBoundingClientRect();
                     let x = e.clientX - r.left;
@@ -587,31 +851,34 @@ export default class Kline {
 
 
             $('body').on('click', '#sizeIcon', function () {
-                Kline.instance.isSized = !Kline.instance.isSized;
-                if (Kline.instance.isSized) {
-                    $(Kline.instance.element).css({
-                        position: 'fixed',
-                        left: '0',
-                        right: '0',
-                        top: '0',
-                        bottom: '0',
-                        width: '100%',
-                        height: '100%',
-                        zIndex: '10000'
-                    });
+                // Kline.instance.isSized = !Kline.instance.isSized;
+                // if (Kline.instance.isSized) {
+                //     $(Kline.instance.element).css({
+                //         position: 'fixed',
+                //         left: '0',
+                //         right: '0',
+                //         top: '0',
+                //         bottom: '0',
+                //         width: '100%',
+                //         height: '100%',
+                //         zIndex: '10000'
+                //     });
 
-                    Control.onSize();
-                    $('html,body').css({width: '100%', height: '100%', overflow: 'hidden'});
-                } else {
-                    $(Kline.instance.element).attr('style', '');
+                //     Control.onSize();
+                //     $('html,body').css({width: '100%', height: '100%', overflow: 'hidden'});
+                // } else {
+                //     $(Kline.instance.element).attr('style', '');
 
-                    $('html,body').attr('style', '');
+                //     $('html,body').attr('style', '');
 
-                    Control.onSize(Kline.instance.width, Kline.instance.height);
-                    $(Kline.instance.element).css({visibility: 'visible', height: Kline.instance.height + 'px'});
-                }
+                //     Control.onSize(Kline.instance.width, Kline.instance.height);
+                //     $(Kline.instance.element).css({visibility: 'visible', height: Kline.instance.height + 'px'});
+                // }
+                Kline.instance.sizeKline();
             });
 
+            //emit the created event.
+            Kline.instance.created();
         })
 
     }

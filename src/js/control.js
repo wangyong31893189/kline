@@ -79,7 +79,7 @@ export class Control {
     static requestOverStomp() {
         if (!Kline.instance.socketConnected) {
             if (Kline.instance.debug) {
-                console.log("DEBUG: socket is not coonnected")
+                console.log("DEBUG: socket is not connected")
             }
             return;
         }
@@ -191,7 +191,6 @@ export class Control {
             }
             return;
         }
-        $("#chart_loading").removeClass("activated");
 
         let chart = ChartManager.instance.getChart();
         chart.setTitle();
@@ -202,6 +201,21 @@ export class Control {
 
         let intervalTime = Kline.instance.intervalTime < Kline.instance.range ? Kline.instance.intervalTime : Kline.instance.range;
 
+        if (Kline.instance.autoIntervalTime) {
+            let next = Kline.instance.data.next;
+            if (next) {
+                intervalTime = next;
+            } else {
+                intervalTime = Kline.instance.range;
+            }
+            if (Kline.instance.debug) {
+                console.log("DEBUG: set interval time:", intervalTime);
+            }
+            Kline.instance.intervalTime = intervalTime;
+        } else {
+            intervalTime = Kline.instance.intervalTime < Kline.instance.range ? Kline.instance.intervalTime : Kline.instance.range;
+        }
+        
         if (!updateDataRes) {
             if (Kline.instance.type === 'poll') {
                 Kline.instance.timer = setTimeout(Control.requestData, intervalTime);
@@ -212,6 +226,8 @@ export class Control {
             // }
             return;
         }
+        Control.clearRefreshCounter();
+        
         if (Kline.instance.data.trades && Kline.instance.data.trades.length > 0) {
             KlineTrade.instance.pushTrades(Kline.instance.data.trades);
             KlineTrade.instance.klineTradeInit = true;
@@ -219,14 +235,16 @@ export class Control {
         if (Kline.instance.data.depths) {
             KlineTrade.instance.updateDepth(Kline.instance.data.depths);
         }
-        Control.clearRefreshCounter();
-
+        
         if (Kline.instance.type === 'poll') {
             Kline.instance.timer = setTimeout(Control.TwoSecondThread, intervalTime);
         }
         //增加data 数据更新的方法
 
         ChartManager.instance.redraw('All', false);
+        
+        $("#chart_loading").removeClass("activated");
+        Kline.instance.loading = false;
     }
 
     static AbortRequest() {
@@ -423,43 +441,54 @@ export class Control {
         let rowTheme = $('#chart_select_theme')[0];
         let rowTools = $('#chart_enable_tools')[0];
         let rowIndic = $('#chart_enable_indicator')[0];
+        let rowtrade = $('#chart_enable_trade')[0];
         let periodsVert = $('#chart_toolbar_periods_vert');
         let periodsHorz = $('#chart_toolbar_periods_horz')[0];
         let showIndic = $('#chart_show_indicator')[0];
+        let showTrade = $('#chart_show_trade')[0];
         let showTools = $('#chart_show_tools')[0];
         let selectTheme = $('#chart_toolbar_theme')[0];
         let dropDownSettings = $('#chart_dropdown_settings');
         let periodsVertNW = periodsVert[0].offsetWidth;
         let periodsHorzNW = periodsVertNW + periodsHorz.offsetWidth;
-        let showIndicNW = periodsHorzNW + showIndic.offsetWidth + 4;
+        let showTradeNW = periodsHorzNW + showTrade.offsetWidth + 4;
+        let showIndicNW = showTradeNW + showIndic.offsetWidth + 4;
         let showToolsNW = showIndicNW + showTools.offsetWidth + 4;
-        let selectThemeNW = showToolsNW + selectTheme.offsetWidth;
+        let selectThemeNW = showToolsNW + selectTheme.offsetWidth + 4;
         let dropDownSettingsW = dropDownSettings.find(".chart_dropdown_t")[0].offsetWidth + 150;
         periodsVertNW += dropDownSettingsW;
         periodsHorzNW += dropDownSettingsW;
+        showTradeNW += dropDownSettingsW;
         showIndicNW += dropDownSettingsW;
         showToolsNW += dropDownSettingsW;
         selectThemeNW += dropDownSettingsW;
-        if (chartWidth < periodsHorzNW) {
+        if (chartWidth <= periodsHorzNW) {
             domElemCache.append(periodsHorz);
         } else {
             periodsVert.after(periodsHorz);
         }
-        if (chartWidth < showIndicNW) {
+        if (chartWidth <= showTradeNW) {
+            domElemCache.append(showTrade);
+            rowtrade.style.display = "";
+        } else {
+            dropDownSettings.before(showTrade);
+            rowtrade.style.display = "none";
+        }
+        if (chartWidth <= showIndicNW) {
             domElemCache.append(showIndic);
             rowIndic.style.display = "";
         } else {
             dropDownSettings.before(showIndic);
             rowIndic.style.display = "none";
         }
-        if (chartWidth < showToolsNW) {
+        if (chartWidth <= showToolsNW) {
             domElemCache.append(showTools);
             rowTools.style.display = "";
         } else {
             dropDownSettings.before(showTools);
             rowTools.style.display = "none";
         }
-        if (chartWidth < selectThemeNW) {
+        if (chartWidth <= selectThemeNW) {
             domElemCache.append(selectTheme);
             rowTheme.style.display = "";
         } else {
@@ -591,6 +620,28 @@ export class Control {
             ChartSettings.save();
             $('#chart_tabbar')[0].style.display = 'none';
             $("#chart_tabbar a").removeClass("selected");
+        }
+        if (Kline.instance.isSized) {
+            Control.onSize();
+        } else {
+            Control.onSize(Kline.instance.width, Kline.instance.height);
+        }
+    }
+
+    static switchTrade(name) {
+        $('#chart_enable_trade a').removeClass('selected');
+        $("#chart_enable_trade a[name='" + name + "']").addClass('selected');
+        if (name === 'on') {
+            $('#chart_show_trade').addClass('selected');
+            let tmp = ChartSettings.get();
+            tmp.charts.tradeStatus = 'open';
+            ChartSettings.save();
+        } else if (name === 'off') {
+            $('#chart_show_trade').removeClass('selected');
+            ChartManager.instance.getChart().setIndicator(2, 'NONE');
+            let tmp = ChartSettings.get();
+            tmp.charts.indicsStatus = 'close';
+            ChartSettings.save();
         }
         if (Kline.instance.isSized) {
             Control.onSize();

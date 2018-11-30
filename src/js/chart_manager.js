@@ -40,7 +40,7 @@ export class ChartManager {
     static created = false;
     static instance = null;
 
-    constructor() {
+    constructor(option) {
         this._dataSources = {};
         this._dataSourceCache = {};
         this._dataProviders = {};
@@ -66,6 +66,8 @@ export class ChartManager {
         this._overlayCanvas = null;
         this._mainContext = null;
         this._overlayContext = null;
+
+        Object.assign(this, option);
 
         if (!ChartManager.created) {
             ChartManager.instance = this;
@@ -153,6 +155,9 @@ export class ChartManager {
                 break;
             case "Default":
                 theme = new themes.DefaultTheme();
+                break;
+            case "Dark":
+                theme = new themes.DarkTheme();
                 break;
             default:
                 themeName = "Dark";
@@ -759,6 +764,10 @@ export class ChartManager {
     }
 
     onMouseMove(frameName, x, y, drag) {
+        if (Kline.instance.loading) {
+            this.onMouseLeave(frameName,x,y);
+            return;
+        }
         let frame = this.getFrame(frameName);
         if (frame === undefined)
             return;

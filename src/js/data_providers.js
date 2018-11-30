@@ -146,14 +146,28 @@ export class IndicatorDataProvider extends DataProvider {
         let mode = ds.getUpdateMode();
         switch (mode) {
             case data_sources.DataSource.UpdateMode.Refresh: {
+                if (Kline.instance.debug) {
+                    console.log('DEBUG: Data Refresh');
+                }
                 this.refresh();
                 break;
             }
             case data_sources.DataSource.UpdateMode.Append: {
-                indic.reserve(ds.getAppendedCount());
+                if (Kline.instance.debug) {
+                    console.log('DEBUG: Data Append');
+                }
+                let i, last = ds.getDataCount();
+                let cnt = ds.getAppendedCount()
+                indic.reserve(cnt);
+                for (i = last - cnt; i < last; i++) {
+                    indic.execute(ds, i);
+                }
                 break;
             }
             case data_sources.DataSource.UpdateMode.Update: {
+                if (Kline.instance.debug) {
+                    console.log('DEBUG: Data Update');
+                }
                 let i, last = ds.getDataCount();
                 let cnt = ds.getUpdatedCount() + ds.getAppendedCount();
                 for (i = last - cnt; i < last; i++) {
@@ -161,6 +175,18 @@ export class IndicatorDataProvider extends DataProvider {
                 }
                 break;
             }
+            case data_sources.DataSource.UpdateMode.Prepend: {
+                if (Kline.instance.debug) {
+                    console.log('DEBUG: Data Prepend');
+                }
+                let i,sum = ds.getDataCount();
+                indic.reserve(sum);
+                for (i = 0; i < sum; i++) {
+                    indic.execute(ds, i);
+                }
+                break;
+            }
+            
         }
     }
 

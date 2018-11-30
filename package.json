@@ -12,17 +12,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/chxj1992/kline.git"
+    "url": "git+https://github.com/wangyong31893189/kline.git"
   },
   "keywords": [
     "kline"
   ],
-  "author": "chxj1992",
+  "author": "eric",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/chxj1992/kline/issues"
+    "url": "https://github.com/wangyong31893189/kline/issues"
   },
-  "homepage": "https://github.com/chxj1992/kline#readme",
+  "homepage": "https://github.com/wangyong31893189/kline#readme",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.36",
     "@babel/preset-env": "^7.0.0-beta.36",

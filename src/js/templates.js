@@ -145,8 +145,9 @@ export class Template {
         let plotter;
         plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
         mgr.setPlotter(plotter.getName(), plotter);
-        plotter = new plotters.CLiveOrderPlotter(dsName + ".main.main");
-        mgr.setPlotter(plotter.getName(), plotter);
+        
+        //plotter = new plotters.CLiveOrderPlotter(dsName + ".main.main");
+        //mgr.setPlotter(plotter.getName(), plotter);
     }
 
     static createLiveTradeComps(dsName) {
@@ -154,8 +155,9 @@ export class Template {
         let plotter;
         plotter = new plotters.BackgroundPlotter(dsName + ".main.background");
         mgr.setPlotter(plotter.getName(), plotter);
-        plotter = new plotters.CLiveTradePlotter(dsName + ".main.main");
-        mgr.setPlotter(plotter.getName(), plotter);
+        
+        //plotter = new plotters.CLiveTradePlotter(dsName + ".main.main");
+        //mgr.setPlotter(plotter.getName(), plotter);
     }
 
 }
