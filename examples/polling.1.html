@@ -75,7 +75,7 @@
         symbol: "BTC",
         symbolName: "BTC/USD",
         type:'data',
-        data:testData,
+        data:data.data,
         // type: "poll", // poll/socket/data
         // url: "/examples/mock.json",
         limit: 1000,
@@ -89,11 +89,11 @@
 
     kline.draw();
 
-    setTimeout(function(){
-        alert("重新渲染")
-        kline.data.lines=data.data.lines;
-        kline.setSymbol("USDT", "USDT");
-    },1000);
+    // setTimeout(function(){
+    //     alert("重新渲染")
+    //     kline.data.lines=data.data.lines;
+    //     kline.setSymbol("USDT", "USDT");
+    // },1000);
 
     $('#resize-btn').click(function () {
         var height = $('#height').val();
