@@ -357,7 +357,7 @@ export class Control {
         toolBarRect.x = 0;
         toolBarRect.y = 0;
         toolBarRect.w = chartWidth;
-        toolBarRect.h = 40;
+        toolBarRect.h = Kline.instance.toolBarHeight||40;
         let toolPanelRect = {};
         toolPanelRect.x = 0;
         toolPanelRect.y = toolBarRect.h + 1;

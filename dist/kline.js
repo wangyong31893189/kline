@@ -3920,7 +3920,7 @@ function () {
       toolBarRect.x = 0;
       toolBarRect.y = 0;
       toolBarRect.w = chartWidth;
-      toolBarRect.h = 40;
+      toolBarRect.h = __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.toolBarHeight || 40;
       var toolPanelRect = {};
       toolPanelRect.x = 0;
       toolPanelRect.y = toolBarRect.h + 1;
