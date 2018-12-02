@@ -744,7 +744,8 @@ function () {
 
         if (ds.getUpdateMode() === __WEBPACK_IMPORTED_MODULE_5__data_sources__["a" /* DataSource */].UpdateMode.DoNothing) return true;
       } else {
-        ds.setUpdateMode(__WEBPACK_IMPORTED_MODULE_5__data_sources__["a" /* DataSource */].UpdateMode.Refresh);
+        // ds.setUpdateMode(data_sources.DataSource.UpdateMode.Refresh);
+        ds.setUpdateMode(__WEBPACK_IMPORTED_MODULE_5__data_sources__["a" /* DataSource */].UpdateMode.Update);
       }
 
       var timeline = this.getTimeline(dsName);
@@ -1686,6 +1687,12 @@ function () {
       this.onSymbolChange(symbol, symbolName);
     }
   }, {
+    key: "updateKlineData",
+    value: function updateKlineData() {
+      __WEBPACK_IMPORTED_MODULE_0__control__["a" /* Control */].updateKlineData();
+      this.onUpdateKlineData();
+    }
+  }, {
     key: "setTheme",
     value: function setTheme(style) {
       this.theme = style;
@@ -1960,6 +1967,13 @@ function () {
     value: function onRangeChange(range) {
       if (this.debug) {
         console.log("DEBUG: range changed to " + range);
+      }
+    }
+  }, {
+    key: "onUpdateKlineData",
+    value: function onUpdateKlineData() {
+      if (this.debug) {
+        console.log("DEBUG: onUpdateKlineData data changed ");
       }
     }
   }, {
@@ -2727,41 +2741,88 @@ function (_DataSource) {
           console.log("Kline.instance.oldRange==Kline.instance.range", __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange, __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range, __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange == __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range);
         }
 
-        if (firstDate >= data[0][0] && __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange == __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range) {
-          if (firstDate <= data[_cnt - 1][0]) {
-            for (_i = 0; _i < _cnt; _i++) {
-              _e = data[_i];
+        if (__WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange == __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range) {
+          //切换时间周期
+          //append 数据
+          for (_i = 0; _i < _cnt; _i++) {
+            _e = data[_i];
 
-              for (_n = 1; _n <= 4; _n++) {
-                d = this.calcDecimalDigits(_e[_n]);
-                if (this._decimalDigits < d) this._decimalDigits = d;
-              }
-
-              if (_e[0] < firstDate) {
-                prependItem.push({
+            if (_e[0] >= lastItem.date) {
+              if (lastItem.open === _e[1] && lastItem.high === _e[2] && lastItem.low === _e[3] && lastItem.close === _e[4] && lastItem.volume === _e[5]) {
+                this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+              } else {
+                this.setUpdateMode(DataSource.UpdateMode.Update);
+                this._dataItems[lastIndex] = {
                   date: _e[0],
                   open: _e[1],
                   high: _e[2],
                   low: _e[3],
                   close: _e[4],
                   volume: _e[5]
-                });
-              } else {
-                break;
+                };
+                this._updatedCount++;
               }
+
+              _i++;
+
+              if (_i < _cnt) {
+                this.setUpdateMode(DataSource.UpdateMode.Append);
+
+                for (; _i < _cnt; _i++, this._appendedCount++) {
+                  _e = data[_i];
+
+                  this._dataItems.push({
+                    date: _e[0],
+                    open: _e[1],
+                    high: _e[2],
+                    low: _e[3],
+                    close: _e[4],
+                    volume: _e[5]
+                  });
+                }
+              }
+
+              return true;
             }
-
-            this.setUpdateMode(DataSource.UpdateMode.Prepend);
-            _cnt = prependItem.length;
-            this._prependedCount += _cnt;
-
-            for (_i = 0; _i < _cnt; _i++) {
-              this._dataItems.unshift(prependItem.pop());
-            }
-
-            return true;
           }
-        }
+
+          if (firstDate >= data[0][0]) {
+            if (firstDate <= data[_cnt - 1][0]) {
+              for (_i = 0; _i < _cnt; _i++) {
+                _e = data[_i];
+
+                for (_n = 1; _n <= 4; _n++) {
+                  d = this.calcDecimalDigits(_e[_n]);
+                  if (this._decimalDigits < d) this._decimalDigits = d;
+                }
+
+                if (_e[0] < firstDate) {
+                  prependItem.push({
+                    date: _e[0],
+                    open: _e[1],
+                    high: _e[2],
+                    low: _e[3],
+                    close: _e[4],
+                    volume: _e[5]
+                  });
+                } else {
+                  break;
+                }
+              }
+
+              this.setUpdateMode(DataSource.UpdateMode.Prepend);
+              _cnt = prependItem.length;
+              this._prependedCount += _cnt;
+
+              for (_i = 0; _i < _cnt; _i++) {
+                this._dataItems.unshift(prependItem.pop());
+              }
+
+              return true;
+            }
+          }
+        } //append 数据
+
 
         for (_i = 0; _i < _cnt; _i++) {
           _e = data[_i];
@@ -2771,12 +2832,6 @@ function (_DataSource) {
               this.setUpdateMode(DataSource.UpdateMode.DoNothing);
             } else {
               this.setUpdateMode(DataSource.UpdateMode.Update);
-
-              for (_n = 1; _n <= 4; _n++) {
-                d = this.calcDecimalDigits(_e[_n]);
-                if (this._decimalDigits < d) this._decimalDigits = d;
-              }
-
               this._dataItems[lastIndex] = {
                 date: _e[0],
                 open: _e[1],
@@ -2793,13 +2848,8 @@ function (_DataSource) {
             if (_i < _cnt) {
               this.setUpdateMode(DataSource.UpdateMode.Append);
 
-              for (; _i < _cnt; _i++) {
+              for (; _i < _cnt; _i++, this._appendedCount++) {
                 _e = data[_i];
-
-                for (_n = 1; _n <= 4; _n++) {
-                  d = this.calcDecimalDigits(_e[_n]);
-                  if (this._decimalDigits < d) this._decimalDigits = d;
-                }
 
                 this._dataItems.push({
                   date: _e[0],
@@ -2809,8 +2859,6 @@ function (_DataSource) {
                   close: _e[4],
                   volume: _e[5]
                 });
-
-                this._appendedCount++;
               }
             }
 
@@ -4651,6 +4699,26 @@ function () {
       }
 
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().setSymbol(symbol);
+    }
+  }, {
+    key: "updateKlineData",
+    value: function updateKlineData() {
+      if (__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.type === "stomp" && __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.stompClient.ws.readyState === 1) {
+        __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.subscribed.unsubscribe();
+        __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.subscribed = __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.stompClient.subscribe(__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.subscribePath + '/' + symbol + '/' + __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.range, Control.subscribeCallback);
+      }
+
+      var settings = __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].get();
+
+      if (settings.charts.period === "line") {
+        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().strIsLine = true;
+        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.setChartStyle('frame0.k0', 'Line');
+      } else {
+        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().strIsLine = false;
+        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.setChartStyle('frame0.k0', __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].get().charts.chartStyle);
+      }
+
+      __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().updateDataAndDisplay(true);
     }
   }, {
     key: "calcPeriodWeight",
@@ -9688,8 +9756,11 @@ function (_DataProvider) {
     value: function getMinMaxAt(index, minmax) {
       var data = this._candlestickDS.getDataAt(index);
 
-      minmax.min = data.low;
-      minmax.max = data.high;
+      if (data) {
+        minmax.min = data.low;
+        minmax.max = data.high;
+      }
+
       return true;
     }
   }]);
@@ -13308,7 +13379,7 @@ function () {
     }
   }, {
     key: "updateDataAndDisplay",
-    value: function updateDataAndDisplay() {
+    value: function updateDataAndDisplay(flag) {
       __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.symbol = this._symbol;
       __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range = this._range;
       __WEBPACK_IMPORTED_MODULE_0__chart_manager__["a" /* ChartManager */].instance.setCurrentDataSource('frame0.k0', this._symbol + '.' + this._range);
@@ -13324,7 +13395,7 @@ function () {
         __WEBPACK_IMPORTED_MODULE_1__control__["a" /* Control */].requestData();
       }
 
-      __WEBPACK_IMPORTED_MODULE_0__chart_manager__["a" /* ChartManager */].instance.redraw('All', false);
+      __WEBPACK_IMPORTED_MODULE_0__chart_manager__["a" /* ChartManager */].instance.redraw('All', flag != undefined ? flag : false);
     }
   }, {
     key: "setCurrentContractUnit",

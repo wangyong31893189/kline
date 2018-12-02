@@ -719,6 +719,22 @@ export class Control {
         ChartManager.instance.getChart().setSymbol(symbol);
     }
 
+    static updateKlineData() {
+        if (Kline.instance.type === "stomp" && Kline.instance.stompClient.ws.readyState === 1) {
+            Kline.instance.subscribed.unsubscribe();
+            Kline.instance.subscribed = Kline.instance.stompClient.subscribe(Kline.instance.subscribePath + '/' + symbol + '/' + Kline.instance.range, Control.subscribeCallback);
+        }
+        let settings = ChartSettings.get();
+        if (settings.charts.period === "line") {
+            ChartManager.instance.getChart().strIsLine = true;
+            ChartManager.instance.setChartStyle('frame0.k0', 'Line');
+        } else {
+            ChartManager.instance.getChart().strIsLine = false;
+            ChartManager.instance.setChartStyle('frame0.k0', ChartSettings.get().charts.chartStyle);
+        }
+        ChartManager.instance.getChart().updateDataAndDisplay(true);
+    }
+
     static calcPeriodWeight(period) {
         let index = period;
         if (period !== 'line')

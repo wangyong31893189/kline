@@ -123,38 +123,81 @@ export class MainDataSource extends DataSource {
             if (Kline.instance.debug) {
                 console.log("Kline.instance.oldRange==Kline.instance.range",Kline.instance.oldRange,Kline.instance.range,Kline.instance.oldRange==Kline.instance.range)
             }
-            if (firstDate >= data[0][0]&&Kline.instance.oldRange==Kline.instance.range) {
-                if (firstDate <= data[cnt-1][0]) {
-                    for(i = 0; i < cnt; i++) {
-                        e = data[i];
-                        for (n = 1; n <= 4; n++) {
-                            d = this.calcDecimalDigits(e[n]);
-                            if (this._decimalDigits < d)
-                                this._decimalDigits = d;
-                        }
-                        if (e[0] < firstDate) {
-                            prependItem.push({
+            if(Kline.instance.oldRange==Kline.instance.range){//切换时间周期
+                //append 数据
+                for (i = 0; i < cnt; i++) {
+                    e = data[i];
+                    if (e[0] >= lastItem.date) {
+                        if (lastItem.open === e[1] &&
+                            lastItem.high === e[2] &&
+                            lastItem.low === e[3] &&
+                            lastItem.close === e[4] &&
+                            lastItem.volume === e[5]) {
+                            this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+                        } else {
+                            this.setUpdateMode(DataSource.UpdateMode.Update);
+                            this._dataItems[lastIndex] = {
                                 date: e[0],
                                 open: e[1],
                                 high: e[2],
                                 low: e[3],
                                 close: e[4],
                                 volume: e[5]
-                            });
-                        } else {
-                            break;
+                            };
+                            this._updatedCount++;
                         }
+                        i++;
+                        if (i < cnt) {
+                            this.setUpdateMode(DataSource.UpdateMode.Append);
+                            for (; i < cnt; i++, this._appendedCount++) {
+                                e = data[i];
+                                this._dataItems.push({
+                                    date: e[0],
+                                    open: e[1],
+                                    high: e[2],
+                                    low: e[3],
+                                    close: e[4],
+                                    volume: e[5]
+                                });
+                            }
+                        }
+                        return true;
                     }
-                    this.setUpdateMode(DataSource.UpdateMode.Prepend);
-                    cnt = prependItem.length;
-                    this._prependedCount += cnt;
-                    for (i = 0; i < cnt; i++) {
-                        this._dataItems.unshift(prependItem.pop());
+                }
+                
+                if (firstDate >= data[0][0]) {
+                    if (firstDate <= data[cnt-1][0]) {
+                        for(i = 0; i < cnt; i++) {
+                            e = data[i];
+                            for (n = 1; n <= 4; n++) {
+                                d = this.calcDecimalDigits(e[n]);
+                                if (this._decimalDigits < d)
+                                    this._decimalDigits = d;
+                            }
+                            if (e[0] < firstDate) {
+                                prependItem.push({
+                                    date: e[0],
+                                    open: e[1],
+                                    high: e[2],
+                                    low: e[3],
+                                    close: e[4],
+                                    volume: e[5]
+                                });
+                            } else {
+                                break;
+                            }
+                        }
+                        this.setUpdateMode(DataSource.UpdateMode.Prepend);
+                        cnt = prependItem.length;
+                        this._prependedCount += cnt;
+                        for (i = 0; i < cnt; i++) {
+                            this._dataItems.unshift(prependItem.pop());
+                        }
+                        return true;
                     }
-                    return true;
                 }
             }
-            
+            //append 数据
             for (i = 0; i < cnt; i++) {
                 e = data[i];
                 if (e[0] === lastItem.date) {
@@ -166,11 +209,6 @@ export class MainDataSource extends DataSource {
                         this.setUpdateMode(DataSource.UpdateMode.DoNothing);
                     } else {
                         this.setUpdateMode(DataSource.UpdateMode.Update);
-                        for (n = 1; n <= 4; n++) {
-                            d = this.calcDecimalDigits(e[n]);
-                            if (this._decimalDigits < d)
-                                this._decimalDigits = d;
-                        }
                         this._dataItems[lastIndex] = {
                             date: e[0],
                             open: e[1],
@@ -184,13 +222,8 @@ export class MainDataSource extends DataSource {
                     i++;
                     if (i < cnt) {
                         this.setUpdateMode(DataSource.UpdateMode.Append);
-                        for (; i < cnt; i++) {
+                        for (; i < cnt; i++, this._appendedCount++) {
                             e = data[i];
-                            for (n = 1; n <= 4; n++) {
-                                d = this.calcDecimalDigits(e[n]);
-                                if (this._decimalDigits < d)
-                                    this._decimalDigits = d;
-                            }
                             this._dataItems.push({
                                 date: e[0],
                                 open: e[1],
@@ -199,16 +232,15 @@ export class MainDataSource extends DataSource {
                                 close: e[4],
                                 volume: e[5]
                             });
-                            this._appendedCount++;
                         }
                     }
                     return true;
                 }
             }
-             if (cnt < Kline.instance.limit) {
-                 this.setUpdateMode(DataSource.UpdateMode.DoNothing);
-                 return false;
-             }
+            if (cnt < Kline.instance.limit) {
+                this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+                return false;
+            }
         }
         this.setUpdateMode(DataSource.UpdateMode.Refresh);
         this._dataItems = [];

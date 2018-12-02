@@ -40,6 +40,8 @@
 
     <button id="toggle-theme-btn">Toggle Theme</button>
     <hr>
+    <button id="updateKlineData">更新数据</button>
+    <hr>
 
     设置语言:
     <select name="" id="lang-select">
@@ -65,23 +67,24 @@
     for(let i=len-1;i>=0;i--){
         let obj=records[i];
         let arr=[];
-        arr.push(obj.openTime);//开盘时间
+        arr.push(obj.closeTime);//开盘时间
         arr.push(obj.open);//开盘价
         arr.push(obj.high);//最高价
         arr.push(obj.low);//最低价
         arr.push(obj.close);//收盘价
-        arr.push(obj.numberOfTrades);//成交量
+        arr.push(obj.volume);//成交量
         queryKLineData.push(arr);
     }
+    var lines=data2.data.lines.slice(1,50);
     var testData={
         // depths:{
         //     asks:[],
         //     bids:[]
         // },
-        lines:[],
+        lines:lines,
         // trades:[]
     }
-				
+                
     // delete data.data.depths;
     var kline = new Kline({
         // element: "#kline_container",
@@ -114,7 +117,7 @@
         width:1200,//宽度 (px)
         height:485,//高度度 (px)
         disableFirebase:true,//禁用谷歌的firebase
-        data:data2.data,//请求数据
+        data:testData,//请求数据
         range:900000,//默认15分钟
         // range:fqCommon.variablePool.range,//默认选中的时间周期
         type:'data',
@@ -178,6 +181,17 @@
     $('#set-lang-btn').click(function () {
         var lang = $('#lang-select').val();
         kline.setLanguage(lang);
+    });
+    var j=50;
+    $('#updateKlineData').click(function () {
+        var arr=[];
+        for(i=j;i<j+5;i++){
+            console.error("i="+i,"j=="+j,"data2.data.lines="+data2.data.lines.length);
+            arr=data2.data.lines[i];
+            kline.data.lines.push(arr);
+        }
+        j=i;
+        kline.updateKlineData();
     });
 
 </script>

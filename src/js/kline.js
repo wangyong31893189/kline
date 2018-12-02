@@ -180,6 +180,11 @@ export default class Kline {
         this.onSymbolChange(symbol, symbolName);
     }
 
+    updateKlineData() {
+        Control.updateKlineData();
+        this.onUpdateKlineData();
+    }
+
     setTheme(style) {
         this.theme = style;
         Control.switchTheme(style);
@@ -417,6 +422,12 @@ export default class Kline {
     onRangeChange(range) {
         if (this.debug) {
             console.log("DEBUG: range changed to " +range);
+        }
+    }
+
+    onUpdateKlineData() {
+        if (this.debug) {
+            console.log("DEBUG: onUpdateKlineData data changed ");
         }
     }
 

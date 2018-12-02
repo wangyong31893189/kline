@@ -560,7 +560,8 @@ export class ChartManager {
             if (ds.getUpdateMode() === data_sources.DataSource.UpdateMode.DoNothing)
                 return true;
         } else {
-            ds.setUpdateMode(data_sources.DataSource.UpdateMode.Refresh);
+            // ds.setUpdateMode(data_sources.DataSource.UpdateMode.Refresh);
+            ds.setUpdateMode(data_sources.DataSource.UpdateMode.Update);
         }
         let timeline = this.getTimeline(dsName);
         if (timeline !== undefined && timeline !== null) {

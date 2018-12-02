@@ -88,7 +88,7 @@ export class Chart {
         this.updateDataAndDisplay();
     }
 
-    updateDataAndDisplay() {
+    updateDataAndDisplay(flag) {
         Kline.instance.symbol = this._symbol;
         Kline.instance.range = this._range;
         ChartManager.instance.setCurrentDataSource('frame0.k0', this._symbol + '.' + this._range);
@@ -104,7 +104,7 @@ export class Chart {
             Kline.instance.requestParam = Control.setHttpRequestParam(Kline.instance.symbol, Kline.instance.range, null, f.toString());
             Control.requestData();
         }
-        ChartManager.instance.redraw('All', false);
+        ChartManager.instance.redraw('All', flag!=undefined?flag:false);
     }
 
 
