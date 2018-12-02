@@ -733,6 +733,7 @@ export class Control {
             ChartManager.instance.setChartStyle('frame0.k0', ChartSettings.get().charts.chartStyle);
         }
         ChartManager.instance.getChart().updateDataAndDisplay(true);
+        setTimeout(function(){ChartManager.instance.redraw('All', true);ChartManager.instance.redraw("OverlayCanvas");},100);
     }
 
     static calcPeriodWeight(period) {

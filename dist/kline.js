@@ -4719,6 +4719,10 @@ function () {
       }
 
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().updateDataAndDisplay(true);
+      setTimeout(function () {
+        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.redraw('All', true);
+        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.redraw("OverlayCanvas");
+      }, 100);
     }
   }, {
     key: "calcPeriodWeight",
