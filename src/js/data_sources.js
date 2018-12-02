@@ -120,7 +120,10 @@ export class MainDataSource extends DataSource {
             let e, i, n, cnt = data.length;
             let prependItem = [];
             let firstDate = firstItem.date;
-            if (firstDate >= data[0][0]) {
+            if (Kline.instance.debug) {
+                console.log("Kline.instance.oldRange==Kline.instance.range",Kline.instance.oldRange,Kline.instance.range,Kline.instance.oldRange==Kline.instance.range)
+            }
+            if (firstDate >= data[0][0]&&Kline.instance.oldRange==Kline.instance.range) {
                 if (firstDate <= data[cnt-1][0]) {
                     for(i = 0; i < cnt; i++) {
                         e = data[i];
@@ -202,10 +205,10 @@ export class MainDataSource extends DataSource {
                     return true;
                 }
             }
-            // if (cnt < Kline.instance.limit) {
-            //     this.setUpdateMode(DataSource.UpdateMode.DoNothing);
-            //     return false;
-            // }
+             if (cnt < Kline.instance.limit) {
+                 this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+                 return false;
+             }
         }
         this.setUpdateMode(DataSource.UpdateMode.Refresh);
         this._dataItems = [];

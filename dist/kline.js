@@ -1530,7 +1530,8 @@ function () {
     this.height = 650;
     this.symbol = "";
     this.symbolName = "";
-    this.range = null;
+    this.range = 900000; //15分钟
+
     this.url = "";
     this.limit = 1000;
     this.showToolBar = true; // true|false 是否显示工具条
@@ -1608,6 +1609,7 @@ function () {
     Object.assign(this, option);
     __WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].showVolume = this.showVolume;
     __WEBPACK_IMPORTED_MODULE_4__templates__["b" /* Template */].showTimeline = this.showTimeline;
+    this.oldRange = this.range; //存储上一次的选择时间
 
     if (!Kline.created) {
       Kline.instance = this;
@@ -1652,7 +1654,8 @@ function () {
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.bindCanvas("main", document.getElementById("chart_mainCanvas"));
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.bindCanvas("overlay", document.getElementById("chart_overlayCanvas"));
       __WEBPACK_IMPORTED_MODULE_0__control__["a" /* Control */].refreshTemplate();
-      __WEBPACK_IMPORTED_MODULE_0__control__["a" /* Control */].onSize(this.width, this.height);
+      __WEBPACK_IMPORTED_MODULE_0__control__["a" /* Control */].onSize(this.width, this.height); //去除cookie中读取配置
+
       __WEBPACK_IMPORTED_MODULE_0__control__["a" /* Control */].readCookie();
       this.setTheme(this.theme);
       this.setLanguage(this.language);
@@ -2720,7 +2723,11 @@ function (_DataSource) {
         var prependItem = [];
         var firstDate = firstItem.date;
 
-        if (firstDate >= data[0][0]) {
+        if (__WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.debug) {
+          console.log("Kline.instance.oldRange==Kline.instance.range", __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange, __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range, __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange == __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range);
+        }
+
+        if (firstDate >= data[0][0] && __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange == __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range) {
           if (firstDate <= data[_cnt - 1][0]) {
             for (_i = 0; _i < _cnt; _i++) {
               _e = data[_i];
@@ -2809,11 +2816,12 @@ function (_DataSource) {
 
             return true;
           }
-        } // if (cnt < Kline.instance.limit) {
-        //     this.setUpdateMode(DataSource.UpdateMode.DoNothing);
-        //     return false;
-        // }
+        }
 
+        if (_cnt < __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.limit) {
+          this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+          return false;
+        }
       }
 
       this.setUpdateMode(DataSource.UpdateMode.Refresh);
@@ -2994,22 +3002,24 @@ function () {
     }
   }, {
     key: "load",
-    value: function load() {
-      if (document.cookie.length <= 0) return;
-      var start = document.cookie.indexOf("chartSettings=");
-      if (start < 0) return;
-      start += "chartSettings=".length;
-      var end = document.cookie.indexOf(";", start);
-      if (end < 0) end = document.cookie.length;
-      var json = unescape(document.cookie.substring(start, end));
-      ChartSettings._data = JSON.parse(json);
+    value: function load() {// if (document.cookie.length <= 0)
+      //     return;
+      // let start = document.cookie.indexOf("chartSettings=");
+      // if (start < 0)
+      //     return;
+      // start += "chartSettings=".length;
+      // let end = document.cookie.indexOf(";", start);
+      // if (end < 0)
+      //     end = document.cookie.length;
+      // let json = unescape(document.cookie.substring(start, end));
+      // ChartSettings._data = JSON.parse(json);
     }
   }, {
     key: "save",
-    value: function save() {
-      var exdate = new Date();
-      exdate.setDate(exdate.getDate() + 2);
-      document.cookie = "chartSettings=" + escape(JSON.stringify(ChartSettings._data)) + ";expires=" + exdate.toGMTString();
+    value: function save() {//let exdate = new Date();
+      //exdate.setDate(exdate.getDate() + 2);
+      //document.cookie = "chartSettings=" + escape(JSON.stringify(ChartSettings._data)) +
+      //  ";expires=" + exdate.toGMTString();
     }
   }]);
 
@@ -13331,6 +13341,11 @@ function () {
   }, {
     key: "setCurrentPeriod",
     value: function setCurrentPeriod(period) {
+      if (period == __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range) {
+        return;
+      }
+
+      __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange = __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range;
       this._range = __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.periodMap[period];
 
       if (__WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.type === "stomp" && __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.stompClient.ws.readyState === 1) {

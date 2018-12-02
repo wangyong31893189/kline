@@ -70,23 +70,23 @@ export class ChartSettings {
     }
 
     static load() {
-        if (document.cookie.length <= 0)
-            return;
-        let start = document.cookie.indexOf("chartSettings=");
-        if (start < 0)
-            return;
-        start += "chartSettings=".length;
-        let end = document.cookie.indexOf(";", start);
-        if (end < 0)
-            end = document.cookie.length;
-        let json = unescape(document.cookie.substring(start, end));
-        ChartSettings._data = JSON.parse(json);
+        // if (document.cookie.length <= 0)
+        //     return;
+        // let start = document.cookie.indexOf("chartSettings=");
+        // if (start < 0)
+        //     return;
+        // start += "chartSettings=".length;
+        // let end = document.cookie.indexOf(";", start);
+        // if (end < 0)
+        //     end = document.cookie.length;
+        // let json = unescape(document.cookie.substring(start, end));
+        // ChartSettings._data = JSON.parse(json);
     }
 
     static save() {
-        let exdate = new Date();
-        exdate.setDate(exdate.getDate() + 2);
-        document.cookie = "chartSettings=" + escape(JSON.stringify(ChartSettings._data)) +
-            ";expires=" + exdate.toGMTString();
+        //let exdate = new Date();
+        //exdate.setDate(exdate.getDate() + 2);
+        //document.cookie = "chartSettings=" + escape(JSON.stringify(ChartSettings._data)) +
+          //  ";expires=" + exdate.toGMTString();
     }
 }

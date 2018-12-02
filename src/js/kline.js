@@ -27,7 +27,7 @@ export default class Kline {
         this.height = 650;
         this.symbol = "";
         this.symbolName = "";
-        this.range = null;
+        this.range = 900000;//15分钟
         this.url = "";
         this.limit = 1000;
         this.showToolBar=true;// true|false 是否显示工具条
@@ -102,6 +102,7 @@ export default class Kline {
         Object.assign(this, option);
         Template.showVolume=this.showVolume;
         Template.showTimeline=this.showTimeline;
+        this.oldRange=this.range;//存储上一次的选择时间
         if (!Kline.created) {
             Kline.instance = this;
             Kline.created = true;
@@ -143,6 +144,7 @@ export default class Kline {
         ChartManager.instance.bindCanvas("overlay", document.getElementById("chart_overlayCanvas"));
         Control.refreshTemplate();
         Control.onSize(this.width, this.height);
+        //去除cookie中读取配置
         Control.readCookie();
 
         this.setTheme(this.theme);

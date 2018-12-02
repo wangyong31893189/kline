@@ -115,6 +115,7 @@
         height:485,//高度度 (px)
         disableFirebase:true,//禁用谷歌的firebase
         data:data2.data,//请求数据
+        range:900000,//默认15分钟
         // range:fqCommon.variablePool.range,//默认选中的时间周期
         type:'data',
         theme:'default',//主题 dark(暗色)/light(亮色)/default
@@ -140,7 +141,9 @@
 
     kline.draw();
     
-
+    kline.onRangeChange=function(range){//聚合时间改变时触发
+    	console.log("polling.2.html DEBUG: range changed to " +range);
+    }
     // setTimeout(function(){
     //     // alert("重新渲染")
     //     // kline.data.lines=queryKLineData;
