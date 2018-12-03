@@ -245,7 +245,7 @@ export class Control {
         
         // $("#chart_loading").removeClass("activated");
         Kline.instance.loading = false;
-        Kline.instance.refreshStatus=false;
+        // Kline.instance.refreshStatus=false;
     }
 
     static AbortRequest() {
@@ -721,20 +721,8 @@ export class Control {
     }
 
     static updateKlineData() {
-        if (Kline.instance.type === "stomp" && Kline.instance.stompClient.ws.readyState === 1) {
-            Kline.instance.subscribed.unsubscribe();
-            Kline.instance.subscribed = Kline.instance.stompClient.subscribe(Kline.instance.subscribePath + '/' + symbol + '/' + Kline.instance.range, Control.subscribeCallback);
-        }
-        let settings = ChartSettings.get();
-        if (settings.charts.period === "line") {
-            ChartManager.instance.getChart().strIsLine = true;
-            ChartManager.instance.setChartStyle('frame0.k0', 'Line');
-        } else {
-            ChartManager.instance.getChart().strIsLine = false;
-            ChartManager.instance.setChartStyle('frame0.k0', ChartSettings.get().charts.chartStyle);
-        }
+        Kline.instance.refreshStatus=false;   
         ChartManager.instance.getChart().updateDataAndDisplay(true);
-        setTimeout(function(){ChartManager.instance.redraw('All', true);ChartManager.instance.redraw("OverlayCanvas");},100);
     }
 
     static calcPeriodWeight(period) {

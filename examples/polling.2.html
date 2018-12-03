@@ -75,13 +75,13 @@
         arr.push(obj.volume);//成交量
         queryKLineData.push(arr);
     }
-    var lines=data2.data.lines.slice(1,50);
+    var lines=data2.data.lines.slice(1,500);
     var testData={
         // depths:{
         //     asks:[],
         //     bids:[]
         // },
-        lines:lines,
+        lines:[],
         // trades:[]
     }
                 
@@ -147,12 +147,12 @@
     kline.onRangeChange=function(range){//聚合时间改变时触发
     	console.log("polling.2.html DEBUG: range changed to " +range);
     }
-    // setTimeout(function(){
-    //     // alert("重新渲染")
-    //     // kline.data.lines=queryKLineData;
-    //     kline.data.lines=data2.data.lines;
-    //     kline.setSymbol("USDT", "USDT");
-    // },1000);
+    setTimeout(function(){
+        // alert("重新渲染")
+        // kline.data.lines=queryKLineData;
+        kline.data.lines=lines;
+        kline.setSymbol("USDT", "USDT");
+    },1000);
 
     $('#resize-btn').click(function () {
         var height = $('#height').val();
@@ -182,7 +182,7 @@
         var lang = $('#lang-select').val();
         kline.setLanguage(lang);
     });
-    var j=50;
+    var j=500;
     $('#updateKlineData').click(function () {
         var arr=[];
         for(i=j;i<j+5;i++){

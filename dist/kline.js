@@ -4251,8 +4251,7 @@ function () {
 
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.redraw('All', false); // $("#chart_loading").removeClass("activated");
 
-      __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.loading = false;
-      __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.refreshStatus = false;
+      __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.loading = false; // Kline.instance.refreshStatus=false;
     }
   }, {
     key: "AbortRequest",
@@ -4772,26 +4771,8 @@ function () {
   }, {
     key: "updateKlineData",
     value: function updateKlineData() {
-      if (__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.type === "stomp" && __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.stompClient.ws.readyState === 1) {
-        __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.subscribed.unsubscribe();
-        __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.subscribed = __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.stompClient.subscribe(__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.subscribePath + '/' + symbol + '/' + __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.range, Control.subscribeCallback);
-      }
-
-      var settings = __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].get();
-
-      if (settings.charts.period === "line") {
-        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().strIsLine = true;
-        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.setChartStyle('frame0.k0', 'Line');
-      } else {
-        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().strIsLine = false;
-        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.setChartStyle('frame0.k0', __WEBPACK_IMPORTED_MODULE_3__chart_settings__["a" /* ChartSettings */].get().charts.chartStyle);
-      }
-
+      __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.refreshStatus = false;
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.getChart().updateDataAndDisplay(true);
-      setTimeout(function () {
-        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.redraw('All', true);
-        __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.redraw("OverlayCanvas");
-      }, 100);
     }
   }, {
     key: "calcPeriodWeight",
@@ -13481,6 +13462,7 @@ function () {
     key: "setSymbol",
     value: function setSymbol(symbol) {
       this._symbol = symbol;
+      __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.refreshStatus = true;
       this.updateDataAndDisplay();
     }
   }, {
@@ -13501,7 +13483,13 @@ function () {
         __WEBPACK_IMPORTED_MODULE_1__control__["a" /* Control */].requestData();
       }
 
-      __WEBPACK_IMPORTED_MODULE_0__chart_manager__["a" /* ChartManager */].instance.redraw('All', flag != undefined ? flag : false);
+      __WEBPACK_IMPORTED_MODULE_0__chart_manager__["a" /* ChartManager */].instance.redraw('All', false);
+
+      if (flag) {
+        setTimeout(function () {
+          __WEBPACK_IMPORTED_MODULE_0__chart_manager__["a" /* ChartManager */].instance.redraw('All', true);
+        }, 10);
+      }
     }
   }, {
     key: "setCurrentContractUnit",

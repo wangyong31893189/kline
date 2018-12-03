@@ -85,6 +85,7 @@ export class Chart {
 
     setSymbol(symbol) {
         this._symbol = symbol;
+        Kline.instance.refreshStatus=true;
         this.updateDataAndDisplay();
     }
 
@@ -104,7 +105,12 @@ export class Chart {
             Kline.instance.requestParam = Control.setHttpRequestParam(Kline.instance.symbol, Kline.instance.range, null, f.toString());
             Control.requestData();
         }
-        ChartManager.instance.redraw('All', flag!=undefined?flag:false);
+        ChartManager.instance.redraw('All',false);
+        if(flag){
+            setTimeout(function(){
+                ChartManager.instance.redraw('All', true);
+            },10);
+        }
     }
 
 
