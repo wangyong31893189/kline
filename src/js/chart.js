@@ -120,8 +120,10 @@ export class Chart {
 
     setCurrentPeriod(period) {
         if(period==Kline.instance.range){
+            Kline.instance.refreshStatus=false;
             return;
         }
+        Kline.instance.refreshStatus=true;
         this._range = Kline.instance.periodMap[period];
         if (Kline.instance.type === "stomp" && Kline.instance.stompClient.ws.readyState === 1) {
             Kline.instance.subscribed.unsubscribe();

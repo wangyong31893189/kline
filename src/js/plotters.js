@@ -400,6 +400,9 @@ export class CandlestickHLCPlotter extends Plotter {
         let fillNegRects = [];
         for (let i = start; i < last; i++) {
             let data = ds.getDataAt(i);
+            if(!data){
+                continue;
+            }
             let high = range.toY(data.high);
             let low = range.toY(data.low);
             let open = data.open;
@@ -516,6 +519,9 @@ export class OHLCPlotter extends Plotter {
         let fillNegRects = [];
         for (let i = start; i < last; i++) {
             let data = ds.getDataAt(i);
+            if(!data){
+                continue;
+            }
             let high = range.toY(data.high);
             let low = range.toY(data.low);
             let iH = Math.max(low - high, 1);
@@ -808,6 +814,9 @@ export class IndicatorPlotter extends NamedObject {
         let fillNegRects = [];
         for (let i = first; i < last; i++) {
             let data = ds.getDataAt(i);
+            if(!data){
+                continue;
+            }
             let top = range.toY(data.volume);
             let iH = range.toHeight(data.volume);
             if (data.close > data.open) {
@@ -1137,7 +1146,11 @@ export class TimelinePlotter extends Plotter {
         let top = area.getTop();
         let middle = area.getMiddle();
         for (let i = first; i < last; i++) {
-            let utcDate = ds.getDataAt(i).date;
+            let  data=ds.getDataAt(i)
+            if(!data){
+                continue;
+            }
+            let utcDate = data.date;
             let localDate = utcDate - local_utc_diff;
             let time = new Date(utcDate);
             let year = time.getFullYear();

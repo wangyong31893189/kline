@@ -2855,7 +2855,7 @@ function (_DataSource) {
         console.log("Kline.instance.oldRange==Kline.instance.range", __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange, __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range, __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange == __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range);
       }
 
-      if (__WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange != __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range) {
+      if (__WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.refreshStatus) {
         //切换时间周期
         this.setUpdateMode(DataSource.UpdateMode.Refresh);
         this._dataItems = [];
@@ -2883,7 +2883,7 @@ function (_DataSource) {
           });
         }
 
-        __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.oldRange = __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range;
+        __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.refreshStatus = false;
         return true;
       } else {
         this.setUpdateMode(DataSource.UpdateMode.Update);
@@ -6958,6 +6958,11 @@ function (_Plotter2) {
 
       for (var i = start; i < last; i++) {
         var data = ds.getDataAt(i);
+
+        if (!data) {
+          continue;
+        }
+
         var high = range.toY(data.high);
         var low = range.toY(data.low);
         var open = data.open;
@@ -7149,6 +7154,11 @@ function (_Plotter3) {
 
       for (var i = start; i < last; i++) {
         var data = ds.getDataAt(i);
+
+        if (!data) {
+          continue;
+        }
+
         var high = range.toY(data.high);
         var low = range.toY(data.low);
         var iH = Math.max(low - high, 1);
@@ -7510,6 +7520,11 @@ function (_NamedObject4) {
 
       for (var i = first; i < last; i++) {
         var data = ds.getDataAt(i);
+
+        if (!data) {
+          continue;
+        }
+
         var top = range.toY(data.volume);
         var iH = range.toHeight(data.volume);
 
@@ -7876,7 +7891,13 @@ function (_Plotter6) {
       var middle = area.getMiddle();
 
       for (var i = first; i < last; i++) {
-        var utcDate = ds.getDataAt(i).date;
+        var data = ds.getDataAt(i);
+
+        if (!data) {
+          continue;
+        }
+
+        var utcDate = data.date;
         var localDate = utcDate - local_utc_diff;
         var time = new Date(utcDate);
         var year = time.getFullYear();
@@ -13495,9 +13516,11 @@ function () {
     key: "setCurrentPeriod",
     value: function setCurrentPeriod(period) {
       if (period == __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.range) {
+        __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.refreshStatus = false;
         return;
       }
 
+      __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.refreshStatus = true;
       this._range = __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.periodMap[period];
 
       if (__WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.type === "stomp" && __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.stompClient.ws.readyState === 1) {

@@ -245,7 +245,7 @@ export class MainDataSource extends DataSource {
         if (Kline.instance.debug) {
             console.log("Kline.instance.oldRange==Kline.instance.range",Kline.instance.oldRange,Kline.instance.range,Kline.instance.oldRange==Kline.instance.range)
         }
-        if(Kline.instance.oldRange!=Kline.instance.range){//切换时间周期
+        if(Kline.instance.refreshStatus){//切换时间周期
             this.setUpdateMode(DataSource.UpdateMode.Refresh);
             this._dataItems = [];
             let d, n, e, i, cnt = data.length;
@@ -265,7 +265,7 @@ export class MainDataSource extends DataSource {
                     volume: e[5]
                 });
             }
-            Kline.instance.oldRange=Kline.instance.range;
+            Kline.instance.refreshStatus=false;
             return true;
         }else{
             this.setUpdateMode(DataSource.UpdateMode.Update);
