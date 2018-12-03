@@ -230,7 +230,7 @@ export class MainArea extends ChartArea {
             //mgr.getTimeline(this.getDataSourceName()).move(x - this._oldX);
             if (mgr.getTimeline(this.getDataSourceName()).move(x - this._oldX) == 0) {
                 // alert("12313213");
-                // Kline.instance.loading = true;
+                Kline.instance.loading = true;
                 $("#chart_overlayCanvas").trigger('_LoadHistory');
             }
             return this;
@@ -309,7 +309,7 @@ export class IndicatorArea extends ChartArea {
             mgr.hideCursor();
            // mgr.getTimeline(this.getDataSourceName()).move(x - this._oldX);
            if (mgr.getTimeline(this.getDataSourceName()).move(x - this._oldX) == 0) {
-                // Kline.instance.loading = true;
+                Kline.instance.loading = true;
                 $("#chart_overlayCanvas").trigger('_LoadHistory');
             }
             return this;

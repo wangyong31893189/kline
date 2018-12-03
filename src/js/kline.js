@@ -53,7 +53,8 @@ export default class Kline {
         this.paused = false;
         this.subscribed = null;
         this.disableFirebase = false;
-        // this.loading = false;
+        this.loading = false;
+        this.refreshStatus = false;
         this.rollspeed = 30;
         this.isFullScreen = false;
         this.showToolbar = true;

@@ -985,10 +985,11 @@ function () {
   }, {
     key: "onMouseMove",
     value: function onMouseMove(frameName, x, y, drag) {
-      // if (Kline.instance.loading) {
-      //     this.onMouseLeave(frameName,x,y);
-      //     return;
-      // }
+      if (__WEBPACK_IMPORTED_MODULE_13__kline__["a" /* default */].instance.loading) {
+        this.onMouseLeave(frameName, x, y);
+        return;
+      }
+
       var frame = this.getFrame(frameName);
       if (frame === undefined) return;
       this.setFrameMousePos(frameName, x, y);
@@ -1562,8 +1563,9 @@ function () {
     this.isSized = false;
     this.paused = false;
     this.subscribed = null;
-    this.disableFirebase = false; // this.loading = false;
-
+    this.disableFirebase = false;
+    this.loading = false;
+    this.refreshStatus = false;
     this.rollspeed = 30;
     this.isFullScreen = false;
     this.showToolbar = true;
@@ -4248,7 +4250,9 @@ function () {
 
 
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.redraw('All', false); // $("#chart_loading").removeClass("activated");
-      // Kline.instance.loading = false;
+
+      __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.loading = false;
+      __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.refreshStatus = false;
     }
   }, {
     key: "AbortRequest",
@@ -10333,7 +10337,7 @@ function (_ChartArea) {
 
         if (mgr.getTimeline(this.getDataSourceName()).move(x - this._oldX) == 0) {
           // alert("12313213");
-          // Kline.instance.loading = true;
+          Kline.instance.loading = true;
           $("#chart_overlayCanvas").trigger('_LoadHistory');
         }
 
@@ -10431,7 +10435,7 @@ function (_ChartArea2) {
         mgr.hideCursor(); // mgr.getTimeline(this.getDataSourceName()).move(x - this._oldX);
 
         if (mgr.getTimeline(this.getDataSourceName()).move(x - this._oldX) == 0) {
-          // Kline.instance.loading = true;
+          Kline.instance.loading = true;
           $("#chart_overlayCanvas").trigger('_LoadHistory');
         }
 

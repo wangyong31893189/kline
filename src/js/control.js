@@ -244,7 +244,8 @@ export class Control {
         ChartManager.instance.redraw('All', false);
         
         // $("#chart_loading").removeClass("activated");
-        // Kline.instance.loading = false;
+        Kline.instance.loading = false;
+        Kline.instance.refreshStatus=false;
     }
 
     static AbortRequest() {

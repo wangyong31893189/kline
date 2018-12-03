@@ -765,10 +765,10 @@ export class ChartManager {
     }
 
     onMouseMove(frameName, x, y, drag) {
-        // if (Kline.instance.loading) {
-        //     this.onMouseLeave(frameName,x,y);
-        //     return;
-        // }
+        if (Kline.instance.loading) {
+            this.onMouseLeave(frameName,x,y);
+            return;
+        }
         let frame = this.getFrame(frameName);
         if (frame === undefined)
             return;
