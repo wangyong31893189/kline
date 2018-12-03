@@ -245,6 +245,9 @@ export class Control {
         
         // $("#chart_loading").removeClass("activated");
         Kline.instance.loading = false;
+        if(Kline.instance.onDataLoaded){
+            Kline.instance.onDataLoaded();
+        }
         // Kline.instance.refreshStatus=false;
     }
 

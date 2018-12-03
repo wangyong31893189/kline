@@ -419,6 +419,12 @@ export default class Kline {
             console.log("DEBUG: themes changed to : " + theme);
         }
     }
+    //数据加载完成
+    onDataLoaded() {
+        if (this.debug) {
+            console.log("DEBUG: data loaded :"+ Kline.instance.range);
+        }
+    }
 
     onRangeChange(range) {
         if (this.debug) {

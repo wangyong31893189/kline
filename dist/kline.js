@@ -1961,6 +1961,14 @@ function () {
       if (this.debug) {
         console.log("DEBUG: themes changed to : " + theme);
       }
+    } //数据加载完成
+
+  }, {
+    key: "onDataLoaded",
+    value: function onDataLoaded() {
+      if (this.debug) {
+        console.log("DEBUG: data loaded :" + Kline.instance.range);
+      }
     }
   }, {
     key: "onRangeChange",
@@ -4251,7 +4259,12 @@ function () {
 
       __WEBPACK_IMPORTED_MODULE_2__chart_manager__["a" /* ChartManager */].instance.redraw('All', false); // $("#chart_loading").removeClass("activated");
 
-      __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.loading = false; // Kline.instance.refreshStatus=false;
+      __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.loading = false;
+
+      if (__WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.onDataLoaded) {
+        __WEBPACK_IMPORTED_MODULE_0__kline__["a" /* default */].instance.onDataLoaded();
+      } // Kline.instance.refreshStatus=false;
+
     }
   }, {
     key: "AbortRequest",
