@@ -6789,6 +6789,11 @@ function (_NamedObject3) {
 
       for (var i = start; i < last; i++) {
         var data = ds.getDataAt(i);
+
+        if (!data) {
+          continue;
+        }
+
         var high = range.toY(data.high);
         var low = range.toY(data.low);
         var open = data.open;

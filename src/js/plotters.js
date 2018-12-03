@@ -290,6 +290,9 @@ export class CandlestickPlotter extends NamedObject {
         let fillNegRects = [];
         for (let i = start; i < last; i++) {
             let data = ds.getDataAt(i);
+            if(!data){
+                continue;
+            }
             let high = range.toY(data.high);
             let low = range.toY(data.low);
             let open = data.open;
