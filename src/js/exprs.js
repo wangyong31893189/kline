@@ -582,6 +582,9 @@ export class RangeExpr extends OpABExpr {
         if (this._range < 0) {
             this.initRange();
         }
+        if(!this._buf[index]){
+            this._buf[index]={resultA: NaN, result: NaN};
+        }
         let rA = this._buf[index].resultA = this._exprA.execute(index);
         return this._buf[index].result = this.calcResult(index, rA);
     }

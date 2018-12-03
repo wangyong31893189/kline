@@ -113,155 +113,225 @@ export class MainDataSource extends DataSource {
         this._erasedCount = 0;
         this._prependedCount = 0;
         let len = this._dataItems.length;
-        if (len > 0) {
+        // if (len > 0) {
+        //     let lastIndex = len - 1;
+        //     let firstItem = this._dataItems[0];
+        //     let lastItem = this._dataItems[lastIndex];
+        //     let e, i, n, cnt = data.length;
+        //     let prependItem = [];
+        //     let firstDate = firstItem.date;
+        //     if (Kline.instance.debug) {
+        //         console.log("Kline.instance.oldRange==Kline.instance.range",Kline.instance.oldRange,Kline.instance.range,Kline.instance.oldRange==Kline.instance.range)
+        //     }
+        //     if(Kline.instance.oldRange==Kline.instance.range){//切换时间周期
+        //         //append 数据
+        //         for (i = 0; i < cnt; i++) {
+        //             e = data[i];
+        //             if (e[0] >= lastItem.date) {
+        //                 if (lastItem.open === e[1] &&
+        //                     lastItem.high === e[2] &&
+        //                     lastItem.low === e[3] &&
+        //                     lastItem.close === e[4] &&
+        //                     lastItem.volume === e[5]) {
+        //                     this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+        //                 } else {
+        //                     this.setUpdateMode(DataSource.UpdateMode.Update);
+        //                     this._dataItems[lastIndex] = {
+        //                         date: e[0],
+        //                         open: e[1],
+        //                         high: e[2],
+        //                         low: e[3],
+        //                         close: e[4],
+        //                         volume: e[5]
+        //                     };
+        //                     this._updatedCount++;
+        //                 }
+        //                 i++;
+        //                 if (i < cnt) {
+        //                     this.setUpdateMode(DataSource.UpdateMode.Append);
+        //                     for (; i < cnt; i++, this._appendedCount++) {
+        //                         e = data[i];
+        //                         this._dataItems.push({
+        //                             date: e[0],
+        //                             open: e[1],
+        //                             high: e[2],
+        //                             low: e[3],
+        //                             close: e[4],
+        //                             volume: e[5]
+        //                         });
+        //                     }
+        //                 }
+        //                 return true;
+        //             }
+        //         }
+                
+        //         if (firstDate >= data[0][0]) {
+        //             if (firstDate <= data[cnt-1][0]) {
+        //                 for(i = 0; i < cnt; i++) {
+        //                     e = data[i];
+        //                     for (n = 1; n <= 4; n++) {
+        //                         d = this.calcDecimalDigits(e[n]);
+        //                         if (this._decimalDigits < d)
+        //                             this._decimalDigits = d;
+        //                     }
+        //                     if (e[0] < firstDate) {
+        //                         prependItem.push({
+        //                             date: e[0],
+        //                             open: e[1],
+        //                             high: e[2],
+        //                             low: e[3],
+        //                             close: e[4],
+        //                             volume: e[5]
+        //                         });
+        //                     } else {
+        //                         break;
+        //                     }
+        //                 }
+        //                 this.setUpdateMode(DataSource.UpdateMode.Prepend);
+        //                 cnt = prependItem.length;
+        //                 this._prependedCount += cnt;
+        //                 for (i = 0; i < cnt; i++) {
+        //                     this._dataItems.unshift(prependItem.pop());
+        //                 }
+        //                 return true;
+        //             }
+        //         }
+        //     }
+        //     //append 数据
+        //     for (i = 0; i < cnt; i++) {
+        //         e = data[i];
+        //         if (e[0] === lastItem.date) {
+        //             if (lastItem.open === e[1] &&
+        //                 lastItem.high === e[2] &&
+        //                 lastItem.low === e[3] &&
+        //                 lastItem.close === e[4] &&
+        //                 lastItem.volume === e[5]) {
+        //                 this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+        //             } else {
+        //                 this.setUpdateMode(DataSource.UpdateMode.Update);
+        //                 this._dataItems[lastIndex] = {
+        //                     date: e[0],
+        //                     open: e[1],
+        //                     high: e[2],
+        //                     low: e[3],
+        //                     close: e[4],
+        //                     volume: e[5]
+        //                 };
+        //                 this._updatedCount++;
+        //             }
+        //             i++;
+        //             if (i < cnt) {
+        //                 this.setUpdateMode(DataSource.UpdateMode.Append);
+        //                 for (; i < cnt; i++, this._appendedCount++) {
+        //                     e = data[i];
+        //                     this._dataItems.push({
+        //                         date: e[0],
+        //                         open: e[1],
+        //                         high: e[2],
+        //                         low: e[3],
+        //                         close: e[4],
+        //                         volume: e[5]
+        //                     });
+        //                 }
+        //             }
+        //             return true;
+        //         }
+        //     }
+        //     if (cnt < Kline.instance.limit) {
+        //         this.setUpdateMode(DataSource.UpdateMode.DoNothing);
+        //         return false;
+        //     }
+        // }
+        if (Kline.instance.debug) {
+            console.log("Kline.instance.oldRange==Kline.instance.range",Kline.instance.oldRange,Kline.instance.range,Kline.instance.oldRange==Kline.instance.range)
+        }
+        if(Kline.instance.oldRange!=Kline.instance.range){//切换时间周期
+            this.setUpdateMode(DataSource.UpdateMode.Refresh);
+            this._dataItems = [];
+            let d, n, e, i, cnt = data.length;
+            for (i = 0; i < cnt; i++) {
+                e = data[i];
+                for (n = 1; n <= 4; n++) {
+                    d = this.calcDecimalDigits(e[n]);
+                    if (this._decimalDigits < d)
+                        this._decimalDigits = d;
+                }
+                this._dataItems.push({
+                    date: e[0],
+                    open: e[1],
+                    high: e[2],
+                    low: e[3],
+                    close: e[4],
+                    volume: e[5]
+                });
+            }
+            Kline.instance.oldRange=Kline.instance.range;
+            return true;
+        }else{
+            this.setUpdateMode(DataSource.UpdateMode.Update);
+            if(!this._dataItems){
+                this._dataItems = [];
+            }
+            let len = this._dataItems.length;
             let lastIndex = len - 1;
             let firstItem = this._dataItems[0];
             let lastItem = this._dataItems[lastIndex];
-            let e, i, n, cnt = data.length;
-            let prependItem = [];
-            let firstDate = firstItem.date;
-            if (Kline.instance.debug) {
-                console.log("Kline.instance.oldRange==Kline.instance.range",Kline.instance.oldRange,Kline.instance.range,Kline.instance.oldRange==Kline.instance.range)
+            if(data){
+               console.log(data.indexOf(this._dataItems))
             }
-            if(Kline.instance.oldRange==Kline.instance.range){//切换时间周期
-                //append 数据
-                for (i = 0; i < cnt; i++) {
-                    e = data[i];
-                    if (e[0] >= lastItem.date) {
-                        if (lastItem.open === e[1] &&
-                            lastItem.high === e[2] &&
-                            lastItem.low === e[3] &&
-                            lastItem.close === e[4] &&
-                            lastItem.volume === e[5]) {
-                            this.setUpdateMode(DataSource.UpdateMode.DoNothing);
-                        } else {
-                            this.setUpdateMode(DataSource.UpdateMode.Update);
-                            this._dataItems[lastIndex] = {
-                                date: e[0],
-                                open: e[1],
-                                high: e[2],
-                                low: e[3],
-                                close: e[4],
-                                volume: e[5]
-                            };
-                            this._updatedCount++;
-                        }
-                        i++;
-                        if (i < cnt) {
-                            this.setUpdateMode(DataSource.UpdateMode.Append);
-                            for (; i < cnt; i++, this._appendedCount++) {
-                                e = data[i];
-                                this._dataItems.push({
-                                    date: e[0],
-                                    open: e[1],
-                                    high: e[2],
-                                    low: e[3],
-                                    close: e[4],
-                                    volume: e[5]
-                                });
-                            }
-                        }
-                        return true;
-                    }
-                }
-                
-                if (firstDate >= data[0][0]) {
-                    if (firstDate <= data[cnt-1][0]) {
-                        for(i = 0; i < cnt; i++) {
-                            e = data[i];
-                            for (n = 1; n <= 4; n++) {
-                                d = this.calcDecimalDigits(e[n]);
-                                if (this._decimalDigits < d)
-                                    this._decimalDigits = d;
-                            }
-                            if (e[0] < firstDate) {
-                                prependItem.push({
-                                    date: e[0],
-                                    open: e[1],
-                                    high: e[2],
-                                    low: e[3],
-                                    close: e[4],
-                                    volume: e[5]
-                                });
-                            } else {
-                                break;
-                            }
-                        }
-                        this.setUpdateMode(DataSource.UpdateMode.Prepend);
-                        cnt = prependItem.length;
-                        this._prependedCount += cnt;
-                        for (i = 0; i < cnt; i++) {
-                            this._dataItems.unshift(prependItem.pop());
-                        }
-                        return true;
-                    }
-                }
-            }
-            //append 数据
+            
+            let d, n, e, i,cnt=data.length;
+            let preArr=[],cArr=[],appArr=[];
             for (i = 0; i < cnt; i++) {
                 e = data[i];
-                if (e[0] === lastItem.date) {
-                    if (lastItem.open === e[1] &&
-                        lastItem.high === e[2] &&
-                        lastItem.low === e[3] &&
-                        lastItem.close === e[4] &&
-                        lastItem.volume === e[5]) {
-                        this.setUpdateMode(DataSource.UpdateMode.DoNothing);
-                    } else {
-                        this.setUpdateMode(DataSource.UpdateMode.Update);
-                        this._dataItems[lastIndex] = {
-                            date: e[0],
-                            open: e[1],
-                            high: e[2],
-                            low: e[3],
-                            close: e[4],
-                            volume: e[5]
-                        };
-                        this._updatedCount++;
-                    }
-                    i++;
-                    if (i < cnt) {
-                        this.setUpdateMode(DataSource.UpdateMode.Append);
-                        for (; i < cnt; i++, this._appendedCount++) {
-                            e = data[i];
-                            this._dataItems.push({
-                                date: e[0],
-                                open: e[1],
-                                high: e[2],
-                                low: e[3],
-                                close: e[4],
-                                volume: e[5]
-                            });
-                        }
-                    }
-                    return true;
+                if(firstItem&&firstItem.date>=e[0]){//如果第一个小于
+                    preArr.push({
+                        date: e[0],
+                        open: e[1],
+                        high: e[2],
+                        low: e[3],
+                        close: e[4],
+                        volume: e[5]
+                    })
+                    this._appendedCount++
+                }else if(lastItem&&lastItem.date<=e[0]){
+                    appArr.push({
+                        date: e[0],
+                        open: e[1],
+                        high: e[2],
+                        low: e[3],
+                        close: e[4],
+                        volume: e[5]
+                    })
+                    this._appendedCount++
+                }else{
+                    cArr.push({
+                        date: e[0],
+                        open: e[1],
+                        high: e[2],
+                        low: e[3],
+                        close: e[4],
+                        volume: e[5]
+                    })
+                    this._updatedCount++
                 }
+                for (n = 1; n <= 4; n++) {
+                    d = this.calcDecimalDigits(e[n]);
+                    if (this._decimalDigits < d)
+                        this._decimalDigits = d;
+                }
+                // this._dataItems.push({
+                //     date: e[0],
+                //     open: e[1],
+                //     high: e[2],
+                //     low: e[3],
+                //     close: e[4],
+                //     volume: e[5]
+                // });
             }
-            if (cnt < Kline.instance.limit) {
-                this.setUpdateMode(DataSource.UpdateMode.DoNothing);
-                return false;
-            }
+            this._dataItems=[].concat(preArr,cArr,appArr);
+            return true;
         }
-        this.setUpdateMode(DataSource.UpdateMode.Refresh);
-        this._dataItems = [];
-        let d, n, e, i, cnt = data.length;
-        for (i = 0; i < cnt; i++) {
-            e = data[i];
-            for (n = 1; n <= 4; n++) {
-                d = this.calcDecimalDigits(e[n]);
-                if (this._decimalDigits < d)
-                    this._decimalDigits = d;
-            }
-            this._dataItems.push({
-                date: e[0],
-                open: e[1],
-                high: e[2],
-                low: e[3],
-                close: e[4],
-                volume: e[5]
-            });
-        }
-        return true;
     }
 
     select(id) {

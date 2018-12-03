@@ -1154,7 +1154,7 @@ export class TimelinePlotter extends Plotter {
                         text = month.toString() + "月" + date.toString() + "日";
                     else if (lang === "en-us")
                         text = TimelinePlotter.MonthConvert[month] + " " + date.toString();
-                    context.fillStyle = theme.getColor(themes.Theme.Color.Text4);
+                    context.fillStyle = theme.getColor(themes.Theme.Color.Text44);
                 } else if (localDate % TimelinePlotter.TIME_INTERVAL[n] === 0) {
                     let strMinute = minute.toString();
                     if (minute < 10)
@@ -1177,7 +1177,7 @@ export class TimelinePlotter extends Plotter {
                     else if (lang === "en-us")
                         text = TimelinePlotter.MonthConvert[month];
                 }
-                context.fillStyle = theme.getColor(themes.Theme.Color.Text4);
+                context.fillStyle = theme.getColor(themes.Theme.Color.Text44);
             }
             if (text.length > 0) {
                 let x = timeline.toItemCenter(i);

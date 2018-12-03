@@ -34,6 +34,7 @@ export class Theme {
         Text2: Theme.theme_color_id++,
         Text3: Theme.theme_color_id++,
         Text4: Theme.theme_color_id++,
+        Text44: Theme.theme_color_id++,
         Text5: Theme.theme_color_id++,
         Text6: Theme.theme_color_id++,
         Text7: Theme.theme_color_id++,
@@ -285,6 +286,7 @@ export class DefaultTheme extends Theme {
         this._colors[Theme.Color.Text4] = "#fff";//时间位置显示文字颜色   -----
         this._colors[Theme.Color.TimeBack] = "#30b051";//竖向时间线标签背景颜色   ----
         this._colors[Theme.Color.TimeGrid] = "#30b051";//竖向时间线标签提示边框颜色   -----
+        this._colors[Theme.Color.Text44] = "#999";//时间位置日期显示文字颜色   -----
         this._colors[Theme.Color.Text2] = "#999";//时间线标签颜色    ---
 
         this._colors[Theme.Color.TextPositive] = color_pos;//鼠标经过k线跌提示文字的颜色   -----

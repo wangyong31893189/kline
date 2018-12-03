@@ -122,7 +122,6 @@ export class Chart {
         if(period==Kline.instance.range){
             return;
         }
-        Kline.instance.oldRange=Kline.instance.range;
         this._range = Kline.instance.periodMap[period];
         if (Kline.instance.type === "stomp" && Kline.instance.stompClient.ws.readyState === 1) {
             Kline.instance.subscribed.unsubscribe();

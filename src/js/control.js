@@ -60,9 +60,9 @@ export class Control {
         if (Kline.instance.paused) {
             return;
         }
-        if (showLoading === true) {
-            $("#chart_loading").addClass("activated");
-        }
+        // if (showLoading === true) {
+        //     $("#chart_loading").addClass("activated");
+        // }
         if (Kline.instance.type === "stomp" && Kline.instance.stompClient) {
             Control.requestOverStomp();
         } else if(Kline.instance.type === "poll") {
@@ -243,8 +243,8 @@ export class Control {
 
         ChartManager.instance.redraw('All', false);
         
-        $("#chart_loading").removeClass("activated");
-        Kline.instance.loading = false;
+        // $("#chart_loading").removeClass("activated");
+        // Kline.instance.loading = false;
     }
 
     static AbortRequest() {
@@ -432,11 +432,11 @@ export class Control {
             left: (chartWidth - dlgSettings.width()) >> 1,
             top: (height - dlgSettings.height()) >> 1
         });
-        let dlgLoading = $("#chart_loading");
-        dlgLoading.css({
-            left: (chartWidth - dlgLoading.width()) >> 1,
-            top: (height - dlgLoading.height()) >> 2
-        });
+        // let dlgLoading = $("#chart_loading");
+        // dlgLoading.css({
+        //     left: (chartWidth - dlgLoading.width()) >> 1,
+        //     top: (height - dlgLoading.height()) >> 2
+        // });
         let domElemCache = $('#chart_dom_elem_cache');
         let rowTheme = $('#chart_select_theme')[0];
         let rowTools = $('#chart_enable_tools')[0];

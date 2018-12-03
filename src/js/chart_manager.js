@@ -553,7 +553,7 @@ export class ChartManager {
         if (ds === undefined || ds === null) {
             return;
         }
-        if (data !== undefined && data !== null) {
+        if (data) {
             if (!ds.update(data)) {
                 return false;
             }
@@ -765,10 +765,10 @@ export class ChartManager {
     }
 
     onMouseMove(frameName, x, y, drag) {
-        if (Kline.instance.loading) {
-            this.onMouseLeave(frameName,x,y);
-            return;
-        }
+        // if (Kline.instance.loading) {
+        //     this.onMouseLeave(frameName,x,y);
+        //     return;
+        // }
         let frame = this.getFrame(frameName);
         if (frame === undefined)
             return;

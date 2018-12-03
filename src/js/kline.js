@@ -53,7 +53,7 @@ export default class Kline {
         this.paused = false;
         this.subscribed = null;
         this.disableFirebase = false;
-        this.loading = false;
+        // this.loading = false;
         this.rollspeed = 30;
         this.isFullScreen = false;
         this.showToolbar = true;
@@ -102,7 +102,7 @@ export default class Kline {
         Object.assign(this, option);
         Template.showVolume=this.showVolume;
         Template.showTimeline=this.showTimeline;
-        this.oldRange=this.range;//存储上一次的选择时间
+        // this.oldRange=this.range;//存储上一次的选择时间
         if (!Kline.created) {
             Kline.instance = this;
             Kline.created = true;
@@ -655,6 +655,8 @@ export default class Kline {
                     Control.switchTheme('dark');
                 } else if ($(this).attr('name') === 'light') {
                     Control.switchTheme('light');
+                } else if ($(this).attr('name') === 'default') {
+                    Control.switchTheme('default');
                 }
             });
             $('#chart_enable_tools li a').click(function () {
