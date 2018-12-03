@@ -265,7 +265,6 @@ export class MainDataSource extends DataSource {
                     volume: e[5]
                 });
             }
-            Kline.instance.refreshStatus=false;
             return true;
         }else{
             this.setUpdateMode(DataSource.UpdateMode.Update);

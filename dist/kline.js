@@ -2883,7 +2883,6 @@ function (_DataSource) {
           });
         }
 
-        __WEBPACK_IMPORTED_MODULE_2__kline__["a" /* default */].instance.refreshStatus = false;
         return true;
       } else {
         this.setUpdateMode(DataSource.UpdateMode.Update);
