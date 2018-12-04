@@ -275,10 +275,6 @@ export class MainDataSource extends DataSource {
             let lastIndex = len - 1;
             let firstItem = this._dataItems[0];
             let lastItem = this._dataItems[lastIndex];
-            if(data){
-               console.log(data.indexOf(this._dataItems))
-            }
-            
             let d, n, e, i,cnt=data.length;
             let preArr=[],cArr=[],appArr=[];
             for (i = 0; i < cnt; i++) {
